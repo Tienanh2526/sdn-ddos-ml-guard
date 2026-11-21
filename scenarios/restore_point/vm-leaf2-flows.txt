@@ -1,0 +1,47 @@
+﻿### FLOWS
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ cookie=0x2001, duration=9089.021s, table=0, n_packets=38253, n_bytes=2688422, priority=300,in_port=2 actions=LOCAL
+ cookie=0x2002, duration=9088.996s, table=0, n_packets=38218, n_bytes=2686008, priority=350,in_port=3 actions=LOCAL
+ cookie=0x3001, duration=9088.972s, table=0, n_packets=0, n_bytes=0, priority=400,in_port=LOCAL actions=group:10
+ cookie=0x4001, duration=9088.949s, table=0, n_packets=16, n_bytes=1196, priority=500,in_port=LOCAL actions=group:20
+ cookie=0x5002, duration=9088.914s, table=0, n_packets=43, n_bytes=3260, priority=450,in_port=4 actions=group:20
+ cookie=0x5002, duration=9088.891s, table=0, n_packets=5, n_bytes=210, priority=450,arp,in_port=2,arp_tpa=192.168.200.12 actions=output:4
+ cookie=0x5002, duration=9088.870s, table=0, n_packets=400, n_bytes=22000, priority=450,ip,in_port=2,nw_dst=192.168.200.12 actions=output:4
+ cookie=0x5002, duration=9088.847s, table=0, n_packets=0, n_bytes=0, priority=450,arp,in_port=3,arp_tpa=192.168.200.12 actions=output:4
+ cookie=0x5002, duration=9088.825s, table=0, n_packets=0, n_bytes=0, priority=450,ip,in_port=3,nw_dst=192.168.200.12 actions=output:4
+### GROUPS
+OFPST_GROUP_DESC reply (OF1.3) (xid=0x2):
+ group_id=10,type=select,bucket=weight:50,actions=output:2,bucket=weight:50,actions=output:3
+ group_id=20,type=ff,bucket=watch_port:2,actions=output:2,bucket=watch_port:3,actions=output:3
+### VSCTL
+ecd22f28-8b5d-4d16-8574-38404a65565a
+    Bridge br-sdn
+        Controller "tcp:10.10.0.10:6653"
+            is_connected: true
+        Port vx-leaf1
+            Interface vx-leaf1
+                type: vxlan
+                options: {dst_port="4789", key="1001", local_ip="10.10.0.22", remote_ip="10.10.0.21"}
+                bfd_status: {diagnostic="Control Detection Time Expired", flap_count="3", forwarding="true", remote_diagnostic="Control Detection Time Expired", remote_state=up, state=up}
+        Port vx-spine2
+            Interface vx-spine2
+                type: vxlan
+                options: {dst_port="4789", key="1001", local_ip="10.10.0.22", remote_ip="10.10.0.12"}
+                bfd_status: {diagnostic="Control Detection Time Expired", flap_count="7", forwarding="true", remote_diagnostic="Neighbor Signaled Session Down", remote_state=up, state=up}
+        Port vx-client-bak
+            Interface vx-client-bak
+                type: vxlan
+                options: {dst_port="4789", key="2101", local_ip="10.10.0.22", remote_ip="10.10.0.32"}
+        Port vx-spine1
+            Interface vx-spine1
+                type: vxlan
+                options: {dst_port="4789", key="1001", local_ip="10.10.0.22", remote_ip="10.10.0.11"}
+                bfd_status: {diagnostic="No Diagnostic", flap_count="1", forwarding="true", remote_diagnostic="No Diagnostic", remote_state=up, state=up}
+        Port vx-web
+            Interface vx-web
+                type: vxlan
+                options: {dst_port="4789", key="2002", local_ip="10.10.0.22", remote_ip="10.10.0.31"}
+        Port br-sdn
+            Interface br-sdn
+                type: internal
+    ovs_version: "2.17.12"

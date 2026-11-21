@@ -1,0 +1,25 @@
+﻿### FLOWS
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ cookie=0x2001, duration=9103.311s, table=0, n_packets=36897, n_bytes=2512786, priority=300,in_port=1 actions=output:2
+ cookie=0x2001, duration=9103.288s, table=0, n_packets=36536, n_bytes=2497478, priority=300,in_port=2 actions=output:1
+### GROUPS
+OFPST_GROUP_DESC reply (OF1.3) (xid=0x2):
+### VSCTL
+655177f1-e148-468f-a608-0cb75befac2d
+    Bridge br-sdn
+        Controller "tcp:10.10.0.10:6653"
+            is_connected: true
+        Port br-sdn
+            Interface br-sdn
+                type: internal
+        Port vx-leaf1
+            Interface vx-leaf1
+                type: vxlan
+                options: {dst_port="4789", key="1001", local_ip="10.10.0.11", remote_ip="10.10.0.21"}
+                bfd_status: {diagnostic="Control Detection Time Expired", flap_count="7", forwarding="true", remote_diagnostic="Control Detection Time Expired", remote_state=up, state=up}
+        Port vx-leaf2
+            Interface vx-leaf2
+                type: vxlan
+                options: {dst_port="4789", key="1001", local_ip="10.10.0.11", remote_ip="10.10.0.22"}
+                bfd_status: {diagnostic="No Diagnostic", flap_count="1", forwarding="true", remote_diagnostic="No Diagnostic", remote_state=up, state=up}
+    ovs_version: "2.17.12"

@@ -1,0 +1,5 @@
+{
+  "feature": "pin_last",
+  "threshold": 35.015950000000004,
+  "rule": "pin_last > 35.015950000000004"
+}

@@ -1,0 +1,64 @@
+{
+  "interval_s": 2.0,
+  "window_sizes": [
+    5
+  ],
+  "label": "label",
+  "group_col": "run_id",
+  "split_col": "split",
+  "features": [
+    "pin_last",
+    "pin_mean",
+    "pin_std",
+    "pin_min",
+    "pin_max",
+    "pin_slope",
+    "fmod_mean",
+    "fmod_max",
+    "cpu_last",
+    "cpu_mean",
+    "cpu_std",
+    "cpu_max",
+    "api_last",
+    "api_mean",
+    "api_std",
+    "api_max",
+    "rss_delta",
+    "api_err_cnt",
+    "ofconn_min",
+    "flows_delta"
+  ],
+  "groups": {
+    "control_plane": [
+      "pin_last",
+      "pin_mean",
+      "pin_std",
+      "pin_min",
+      "pin_max",
+      "pin_slope",
+      "fmod_mean",
+      "fmod_max"
+    ],
+    "controller_resource": [
+      "cpu_last",
+      "cpu_mean",
+      "cpu_std",
+      "cpu_max",
+      "api_last",
+      "api_mean",
+      "api_std",
+      "api_max",
+      "rss_delta",
+      "api_err_cnt",
+      "ofconn_min"
+    ],
+    "topology": [
+      "flows_delta"
+    ],
+    "data_plane_traffic": []
+  },
+  "notes": {
+    "data_plane_traffic": "Chưa thu thập: cần port stats OVS (pps/bps theo cổng leaf), số IP nguồn, entropy IP/cổng.",
+    "absolute_rss_flowcount": "Không dùng giá trị tuyệt đối (trôi theo phiên) - chỉ dùng delta."
+  }
+}

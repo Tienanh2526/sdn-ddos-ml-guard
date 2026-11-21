@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="urn:opendaylight:flow:inventory">
+    <id>mitigation-test-01</id>
+    <flow-name>mitigation-test-01</flow-name>
+    <table_id>0</table_id>
+    <priority>600</priority>
+    <cookie>31238</cookie>
+    <hard-timeout>120</hard-timeout>
+    <idle-timeout>0</idle-timeout>
+    <match>
+        <ethernet-match>
+            <ethernet-type>
+                <type>2048</type>
+            </ethernet-type>
+        </ethernet-match>
+        <ipv4-source>192.168.200.13/32</ipv4-source>
+        <ipv4-destination>192.168.200.12/32</ipv4-destination>
+        <ip-match>
+            <ip-protocol>17</ip-protocol>
+        </ip-match>
+        <udp-destination-port>45455</udp-destination-port>
+    </match>
+    <instructions/>
+</flow>
