@@ -58,6 +58,16 @@ def load(windows_path: Path, features_path: Path):
     win = win[win["label"].isin([0, 1])].copy()
     win["label"] = win["label"].astype(int)
 
+    # Đặc trưng data-plane chỉ có ở lần chạy mới. Bỏ đặc trưng hoàn toàn rỗng; nếu còn ô rỗng
+    # (trộn lần chạy cũ + mới) thì bỏ các CỬA SỔ thiếu để mọi mô hình so trên cùng một tập.
+    empty = [f for f in features if win[f].isna().all()]
+    features = [f for f in features if f not in empty]
+    n0 = len(win)
+    win = win.dropna(subset=features)
+    if empty or len(win) < n0:
+        print(f"Bỏ {len(empty)} đặc trưng rỗng {empty[:4]}{'...' if len(empty) > 4 else ''}; "
+              f"bỏ {n0 - len(win)} cửa sổ thiếu giá trị")
+
     tr = win[win["split"] == "train"]
     te = win[win["split"] == "test"]
     return win, tr, te, features, feats_meta
@@ -248,6 +258,8 @@ def write_report(win, tr, te, feature, thr, thr_trainf1, base_m,
 
 
 def main():
+    import sys
+    sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser()
     ap.add_argument("--windows", default=str(PROCESSED / "windows_w5.csv"))
     ap.add_argument("--features", default=str(PROCESSED / "features.json"))

@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """A04 — Tấn công tốc độ thấp (low-rate).
 
-Mục đích: tạo "hard positive". Tốc độ 10–30 pps, chồng lấn với mức cao của lưu
-lượng bình thường (N03 lên tới 30 pps) → nhãn 1 nhưng Packet-In thấp. Ngưỡng tĩnh
-sẽ bỏ sót; mô hình phải dựa thêm vào đặc trưng khác để bắt được.
+Mục đích: tạo "hard positive". 10–30 flow mới/s → Packet-In 10–30 pps, THẤP HƠN flash crowd
+hợp lệ (N04, 20–70 pps) → ngưỡng tĩnh theo Packet-In bỏ sót hoặc báo nhầm. Hành vi vẫn là
+tấn công: mỗi flow 1 gói, tới cổng UDP đóng (không có chiều về), cổng nguồn đổi liên tục.
 
-Chạy trên vm-attacker (nguồn 192.168.200.13), chỉ nhắm vm-web.
+Mặc định chạy trên vm-attacker; tráo vai: chạy trên vm-client với --src 192.168.200.11.
 """
 import argparse
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "common"))
-from groundtruth import GroundTruth, send_udp_phases  # noqa: E402
+from groundtruth import GroundTruth, add_src_arg, random_payload, send_udp_phases  # noqa: E402
 
-SRC = "192.168.200.13"      # vm-attacker overlay
 TARGET = "192.168.200.12"   # vm-web overlay
 DST_PORT = 45461
 
@@ -31,16 +30,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True, help="run_id, vd A04-R1")
     ap.add_argument("--out-dir", default=None)
+    add_src_arg(ap, "192.168.200.13")
     args = ap.parse_args()
 
     gt = GroundTruth(
         run_id=args.run, scenario="A04", target=TARGET,
         generator="lowrate_a04.py", phases=PHASES,
-        default_label=1, out_dir=args.out_dir,
+        default_label=1, out_dir=args.out_dir, source=args.src,
     ).begin()
     try:
         send_udp_phases(
-            gt, DST_PORT, b"A04_LOW_RATE", src_ip=SRC,
+            gt, DST_PORT, random_payload(b"A04"), src_ip=args.src,
             flow_mode="per_packet", max_duration=780,
         )
     finally:

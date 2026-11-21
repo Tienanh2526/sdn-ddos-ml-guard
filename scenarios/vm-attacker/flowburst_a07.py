@@ -15,9 +15,8 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "common"))
-from groundtruth import GroundTruth, assert_target_allowed  # noqa: E402
+from groundtruth import GroundTruth, add_src_arg, assert_target_allowed, random_payload  # noqa: E402
 
-SRC = "192.168.200.13"
 TARGET = "192.168.200.12"
 DST_PORT_BASE = 20000      # dải cổng đích để quay vòng
 DST_PORT_SPAN = 20000      # 20000..39999
@@ -37,17 +36,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True, help="run_id, vd A07-R1")
     ap.add_argument("--out-dir", default=None)
+    add_src_arg(ap, "192.168.200.13")
     args = ap.parse_args()
 
     assert_target_allowed(TARGET)
     gt = GroundTruth(
         run_id=args.run, scenario="A07", target=TARGET,
         generator="flowburst_a07.py", phases=PHASES,
-        default_label=1, out_dir=args.out_dir,
+        default_label=1, out_dir=args.out_dir, source=args.src,
     ).begin()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind((SRC, 0))
+    sock.bind((args.src, 0))
+    payload = random_payload(b"A07")
     start = time.monotonic()
     port_i = 0
     try:
@@ -69,7 +70,7 @@ def main():
                     if now >= next_send:
                         dport = DST_PORT_BASE + (port_i % DST_PORT_SPAN)
                         port_i += 1
-                        sock.sendto(b"A07_FLOW_BURST", (TARGET, dport))
+                        sock.sendto(payload(), (TARGET, dport))
                         phase_sent += 1
                         gt.total_sent += 1
                         next_send += 1.0 / rate

@@ -29,8 +29,8 @@ Hiện đang ở cuối chặng 3 (mô hình đã chạy được). Vướng m�
 - [x] Từ điển dữ liệu `docs/data_dictionary.md`
 - [x] Sửa `dataplane_collector.py`: chỉ bắt VXLAN host→leaf, đọc trường overlay (trước đây
       đọc nhầm IP underlay, tỉ lệ SYN luôn 0); thêm `dp_new_flows`; tshark đã cài trên 2 leaf
-- [ ] Thêm cột đặc trưng **mặt phẳng dữ liệu** (`dp_*`: số gói, IP nguồn, flow mới, tỉ lệ SYN)
-      vào `window_features()` trong `src/build_dataset.py` *(3 chỗ, chờ có dữ liệu mới)*.
+- [x] Thêm cột đặc trưng **mặt phẳng dữ liệu** (`dp_*`: flows, gói/flow, reply_ratio, SYN, entropy cổng...)
+      vào `window_features()` trong `src/build_dataset.py` (11 đặc trưng cửa sổ, NaN ở lần chạy cũ).
       ⚠️ KHÔNG dùng cột theo cổng `rxpps_<port>` làm đặc trưng (gắn danh tính host → rò rỉ nhãn)
 
 ## 2. Kịch bản thu dữ liệu khó hơn (thư mục `scenarios/`)
@@ -45,7 +45,17 @@ Lý do: dữ liệu hiện tại quá dễ → cần kịch bản chồng lấn 
 - [x] Viết bộ thu đặc trưng data-plane `dataplane_collector.py` + `preflight.sh`
 - [x] Viết thư viện gán nhãn `groundtruth.py` + `finalize_run.py`
 - [x] Viết hướng dẫn chạy `RUNBOOK.md`
-- [ ] **CHẠY** các kịch bản trên GCP, lặp ≥5 lần/kịch bản
+- [x] **Sửa thiết kế "khó đúng cách"** (21/11) — trước đó N04 và A04 chỉ khác máy gửi → mô hình
+      sẽ học thuộc danh tính (rò rỉ nhãn). Đã sửa:
+  - [x] N04 viết lại thành phiên HTTP thật (Poisson, có response) — `common/traffic.py`
+  - [x] Lưu lượng nền chạy suốt mọi lần thu `vm-client/background_mix.py` (HTTP + UDP có echo)
+  - [x] Dịch vụ UDP echo `vm-web/udp_echo.py` (UDP hợp lệ có chiều về)
+  - [x] Tráo vai `--src` cho mọi generator; payload tấn công kích thước ngẫu nhiên; A05 tốc độ ngẫu nhiên
+  - [x] Bộ thu đo cả chiều về + đặc trưng hành vi (gói/flow, reply_ratio, entropy cổng, kích thước gói)
+  - [x] Kiểm chứng trên GCP: tấn công vs flash crowd cùng số flow (41 vs 46) nhưng
+        gói/flow 1,1 vs 5,8 và reply 0,19 vs 1,01
+- [x] `build_dataset.py` nhận cột `dp_*` (NaN cho lần chạy cũ); `train.py` tự bỏ đặc trưng rỗng
+- [ ] **CHẠY** các kịch bản trên GCP theo kế hoạch tráo vai (RUNBOOK 0.4), lặp 5 lần/kịch bản
 - [ ] Chép dữ liệu mới về `data/raw/` và build lại dataset
 
 ## 3. Mô hình học máy (chặng 3) — Pha A

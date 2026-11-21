@@ -108,7 +108,20 @@ SAMPLE_METRICS = ["controller_cpu_pct", "controller_rss_mb", "api_latency_ms", "
                   "openflow_connections", "openflow_nodes", "inventory_flow_count", "packet_in_rate",
                   "flow_mod_rate", "of_window_seconds", "packet_in_count", "flow_mod_count"]
 HTTP_AGG = ["http_requests", "http_successes", "http_success_rate", "http_latency_mean_ms", "http_latency_max_ms"]
-SAMPLE_COLS = ["timestamp_utc", *SAMPLE_METRICS, "traffic_type", "phase", "expected_rate", "label", *HTTP_AGG]
+# Cột mặt phẳng dữ liệu từ scenarios/vm-leaf/dataplane_collector.py (qua finalize_run.py).
+# Lần chạy cũ (A01–A03, N00–N03) không có -> NaN. KHÔNG lấy cột theo cổng rxpps_<port>
+# (gắn danh tính host -> rò rỉ nhãn), chỉ lấy đặc trưng tổng hợp.
+DP_COLS = ["dp_pkts", "dp_flows", "dp_distinct_src", "dp_syn_ratio", "dp_udp_frac",
+           "dp_pkts_per_flow", "dp_mean_pkt_size", "dp_dst_port_entropy", "dp_reply_ratio"]
+SAMPLE_COLS = ["timestamp_utc", *SAMPLE_METRICS, "traffic_type", "phase", "expected_rate", "label", *HTTP_AGG,
+               *DP_COLS]
+# đặc trưng cửa sổ: (tên, cột mẫu, phép gộp)
+DP_WINDOW = [("dp_pkts_mean", "dp_pkts", "mean"), ("dp_pkts_max", "dp_pkts", "max"),
+             ("dp_flows_mean", "dp_flows", "mean"), ("dp_flows_max", "dp_flows", "max"),
+             ("dp_src_mean", "dp_distinct_src", "mean"), ("dp_syn_mean", "dp_syn_ratio", "mean"),
+             ("dp_udp_frac_mean", "dp_udp_frac", "mean"), ("dp_ppf_mean", "dp_pkts_per_flow", "mean"),
+             ("dp_size_mean", "dp_mean_pkt_size", "mean"), ("dp_dport_h_mean", "dp_dst_port_entropy", "mean"),
+             ("dp_reply_mean", "dp_reply_ratio", "mean")]
 
 FEATURE_GROUPS = {
     # Tín hiệu mặt phẳng điều khiển (OpenFlow giữa switch và controller)
@@ -118,8 +131,8 @@ FEATURE_GROUPS = {
                             "api_max", "rss_delta", "api_err_cnt", "ofconn_min"],
     # Thay đổi trạng thái bảng flow / topo
     "topology": ["flows_delta"],
-    # Lưu lượng mặt phẳng dữ liệu (port stats OVS, theo IP nguồn...) - CHƯA THU THẬP
-    "data_plane_traffic": [],
+    # Hành vi lưu lượng mặt phẳng dữ liệu (leaf) - chỉ có ở các lần chạy mới (scenarios/)
+    "data_plane_traffic": [name for name, _, _ in DP_WINDOW],
 }
 FEATURES = [f for g in FEATURE_GROUPS.values() for f in g]
 INT_COLS = {"seq", "api_http_status", "openflow_connections", "openflow_nodes", "inventory_flow_count",
@@ -201,7 +214,7 @@ def load_run(run: dict, scen: dict) -> tuple[pd.DataFrame, dict]:
 def window_features(g: pd.DataFrame, W: int) -> list[dict]:
     a = {c: g[c].to_numpy(dtype=float) for c in
          ["packet_in_rate", "flow_mod_rate", "controller_cpu_pct", "api_latency_ms", "controller_rss_mb",
-          "inventory_flow_count", "api_http_status", "openflow_connections", "label", "t_rel_s"]}
+          "inventory_flow_count", "api_http_status", "openflow_connections", "label", "t_rel_s", *DP_COLS]}
     seqs, ts, phases = g["seq"].to_numpy(), g["timestamp_utc"].to_numpy(), g["phase"].to_numpy()
     out = []
     for end in range(W - 1, len(g)):
@@ -210,7 +223,12 @@ def window_features(g: pd.DataFrame, W: int) -> list[dict]:
         span = a["t_rel_s"][s][-1] - a["t_rel_s"][s][0]
         lab = a["label"][s]
         frac = float(np.nanmean(lab)) if np.isfinite(lab).any() else np.nan
-        out.append(dict(
+        dp = {}
+        for name, col, how in DP_WINDOW:
+            v = a[col][s]
+            v = v[np.isfinite(v)]
+            dp[name] = (v.mean() if how == "mean" else v.max()) if len(v) else np.nan
+        out.append(dict(**dp,
             start_seq=int(seqs[s][0]), end_seq=int(seqs[s][-1]), start_utc=ts[s][0], end_utc=ts[s][-1],
             span_s=round(span, 3),
             pin_last=pin[-1], pin_mean=pin.mean(), pin_std=pin.std(), pin_min=pin.min(), pin_max=pin.max(),
@@ -393,9 +411,12 @@ def build_report(scen, runs, samples, win, W) -> str:
     R.append("\n")
 
     # 5
-    const = [f for f in FEATURES if lab[f].nunique() <= 1]
-    low = [f for f in FEATURES if f not in const and lab[f].nunique() <= 3]
+    nodata = [f for f in FEATURES if lab[f].isna().all()]
+    const = [f for f in FEATURES if f not in nodata and lab[f].nunique() <= 1]
+    low = [f for f in FEATURES if f not in const + nodata and lab[f].nunique() <= 3]
     R.append("## 5. Đặc trưng hằng số / gần hằng số\n")
+    if nodata:
+        R.append(f"- Chưa có dữ liệu (lần chạy cũ không thu data-plane): `{', '.join(nodata)}`")
     R.append(f"- Hằng số trên toàn bộ cửa sổ có nhãn: `{', '.join(const) or '(không)'}`\n"
              f"- Chỉ 2–3 giá trị: `{', '.join(low) or '(không)'}`\n"
              f"- Ở mức mẫu: openflow_connections = {sorted(v['openflow_connections'].unique().tolist())}, "
@@ -439,10 +460,11 @@ def build_report(scen, runs, samples, win, W) -> str:
     y = lab["label"].astype(int)
     au = []
     for f in FEATURES:
-        x = lab[f]
-        if x.nunique() <= 1:
+        m = lab[f].notna()
+        x, yy = lab.loc[m, f], y[m]
+        if x.nunique() <= 1 or yy.nunique() < 2:
             continue
-        a = roc_auc_score(y, x)
+        a = roc_auc_score(yy, x)
         grp = next(k for k, vs in FEATURE_GROUPS.items() if f in vs)
         au.append((f, grp, max(a, 1 - a), "tấn công cao hơn" if a >= 0.5 else "tấn công thấp hơn"))
     au = pd.DataFrame(au, columns=["Đặc trưng", "Nhóm", "AUC đơn biến", "Chiều"]).sort_values(
@@ -510,8 +532,8 @@ def main() -> None:
     (PROCESSED / "features.json").write_text(json.dumps({
         "interval_s": INTERVAL_S, "window_sizes": windows_sizes, "label": "label",
         "group_col": "run_id", "split_col": "split", "features": FEATURES, "groups": FEATURE_GROUPS,
-        "notes": {"data_plane_traffic": "Chưa thu thập: cần port stats OVS (pps/bps theo cổng leaf), "
-                                        "số IP nguồn, entropy IP/cổng.",
+        "notes": {"data_plane_traffic": "Từ dataplane_collector.py (leaf1, VXLAN host<->leaf, trường overlay). "
+                                        "NaN ở các lần chạy cũ. Không dùng cột theo cổng (rò rỉ danh tính).",
                   "absolute_rss_flowcount": "Không dùng giá trị tuyệt đối (trôi theo phiên) - chỉ dùng delta."},
     }, ensure_ascii=False, indent=2), encoding="utf-8")
 

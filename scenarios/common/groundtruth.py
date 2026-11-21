@@ -20,6 +20,15 @@ from pathlib import Path
 # Chỉ cho phép sinh lưu lượng tới đúng VM của nhóm. Bất kỳ đích nào khác sẽ bị chặn
 # để tránh vô tình bắn ra ngoài phạm vi thử nghiệm.
 ALLOWED_TARGETS = {"192.168.200.12"}
+# Nguồn hợp lệ: client (.11) và attacker (.13). Cho phép cả hai để TRÁO VAI giữa các lần
+# chạy (tấn công từ client, bình thường từ attacker) → mô hình không học thuộc danh tính máy.
+ALLOWED_SOURCES = {"192.168.200.11", "192.168.200.13"}
+
+
+def add_src_arg(ap, default):
+    """Thêm --src cho generator (tráo vai). Phải chạy script trên đúng VM sở hữu IP đó."""
+    ap.add_argument("--src", default=default,
+                    help=f"IP overlay nguồn, mặc định {default}; tráo vai: chạy trên VM kia")
 
 
 def now_iso():
@@ -45,8 +54,11 @@ class GroundTruth:
     """
 
     def __init__(self, run_id, scenario, target, generator,
-                 phases, default_label, out_dir=None):
+                 phases, default_label, out_dir=None, source=None):
         assert_target_allowed(target)
+        if source is not None and source not in ALLOWED_SOURCES:
+            raise SystemExit(f"SOURCE_NOT_ALLOWED={source} (chỉ {sorted(ALLOWED_SOURCES)})")
+        self.source = source
         self.run_id = run_id
         self.scenario = scenario
         self.target = target
@@ -63,7 +75,7 @@ class GroundTruth:
     def begin(self):
         self.start = now_iso()
         print(f"{self.scenario}_START= {self.start}", flush=True)
-        print(f"RUN_ID= {self.run_id} TARGET= {self.target}", flush=True)
+        print(f"RUN_ID= {self.run_id} TARGET= {self.target} SOURCE= {self.source}", flush=True)
         return self
 
     def finish(self):
@@ -76,6 +88,7 @@ class GroundTruth:
             "run_id": self.run_id,
             "scenario": self.scenario,
             "target": self.target,
+            "source": self.source,
             "generator": self.generator,
             "default_label": self.default_label,
             "start_utc": self.start,
@@ -95,6 +108,20 @@ class GroundTruth:
         path.write_text(json.dumps(payload, indent=2))
         print(f"GROUNDTRUTH= {path}", flush=True)
         return path
+
+
+def random_payload(tag, lo=20, hi=300):
+    """Payload kích thước ngẫu nhiên [lo, hi] byte, mở đầu bằng tag để nhận diện trong pcap.
+
+    Kẻ tấn công thật thường đổi kích thước gói; payload cố định ngắn sẽ khiến riêng đặc
+    trưng 'kích thước gói trung bình' đã tách được hai lớp (quá dễ, không thực tế).
+    """
+    import random
+
+    def make():
+        n = random.randint(max(lo, len(tag)), hi)
+        return tag + random.randbytes(n - len(tag))
+    return make
 
 
 class _FlowSender:
@@ -184,7 +211,7 @@ def send_udp_phases(gt, dst_port, payload, src_ip,
                 while time.monotonic() - start < phase_end:
                     now = time.monotonic()
                     if now >= next_send:
-                        sender.send(payload, dst)
+                        sender.send(payload() if callable(payload) else payload, dst)
                         phase_sent += 1
                         gt.total_sent += 1
                         next_send += 1.0 / rate

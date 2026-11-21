@@ -45,10 +45,43 @@ Generator UDP (N04/A04/A05) mặc định `flow_mode="per_packet"` (mỗi gói �
 → Packet-In ≈ tốc độ gửi (đo được 450/450). A06 (hping3 tự tăng cổng nguồn) và A07
 (đổi cổng đích) vốn đã là flow mới mỗi gói.
 
+### 0.2 Bật dịch vụ UDP echo trên vm-web (BẮT BUỘC)
+
+Đầu bên kia của phiên UDP hợp lệ trong lưu lượng nền. Thiếu nó, UDP hợp lệ không có chiều
+về → mô hình học tắt "cứ UDP là tấn công". Mất khi vm-web reboot.
+```bash
+sudo systemd-run --unit=aiguard-udp-echo --collect python3 ~/scenarios/vm-web/udp_echo.py
+systemctl is-active aiguard-udp-echo      # active
+```
+
+### 0.3 Vì sao dữ liệu mới "khó đúng cách" (đã kiểm chứng 21/11 trên GCP)
+
+| Đoạn (TB mỗi mẫu 2 s, leaf1) | flows | gói/flow | reply_ratio | udp_frac |
+|---|---|---|---|---|
+| Chỉ lưu lượng nền | 2,5 | 11,7 | 0,94 | 0,38 |
+| Tấn công low-rate (+nền) | 41 | **1,1** | **0,19** | 0,90 |
+| Flash crowd HTTP (+nền) | 46 | **5,8** | **1,01** | 0,15 |
+
+Số flow (≈ Packet-In) của tấn công và flash crowd **chồng lấn** → ngưỡng tĩnh thất bại;
+**hành vi** (gói/flow, chiều về) khác → mô hình phân biệt được mà không cần biết máy nào gửi.
+
+### 0.4 Kế hoạch lần chạy (TRÁO VAI để chống học thuộc danh tính máy)
+
+| Kịch bản | R1–R3 chạy trên | R4–R5 chạy trên (tráo vai) | Thời lượng |
+|---|---|---|---|
+| N04 flash crowd | vm-client (mặc định) | vm-attacker `--src 192.168.200.13` | 600 s |
+| A04 low-rate | vm-attacker (mặc định) | vm-client `--src 192.168.200.11` | 780 s |
+| A05 pulsing | vm-attacker | vm-client `--src 192.168.200.11` | 520 s |
+| A06 SYN flood | vm-attacker | vm-client `--src 192.168.200.11` | 780 s |
+| A07 flow burst | vm-attacker | vm-client `--src 192.168.200.11` | 780 s |
+
+Đặt ít nhất 1 lần chạy/kịch bản (gợi ý R5 — lần tráo vai) làm `split="test"`.
+**Lưu lượng nền LUÔN chạy trên vm-client** ở mọi lần (kể cả khi vm-client là máy tấn công).
+
 ## 1. Trình tự mỗi lần chạy (ví dụ A04-R1)
 
-Mở song song các phiên SSH. **Bật telemetry + capture TRƯỚC, generator SAU**, để
-cửa sổ baseline có dữ liệu.
+Mở song song các phiên SSH. **Bật telemetry + capture TRƯỚC, rồi lưu lượng nền, generator
+SAU CÙNG**, để cửa sổ baseline có dữ liệu.
 
 **(a) vm-controller** — telemetry + bắt gói OpenFlow (dùng lại mẫu run_n02_capture):
 ```bash
@@ -67,11 +100,19 @@ sudo python3 ~/scenarios/vm-leaf/dataplane_collector.py \
   --out ~/dataplane-A04-R1.csv --samples 450
 ```
 
-**(c) máy sinh lưu lượng** — tùy kịch bản:
+**(b2) vm-client** — lưu lượng NỀN hợp lệ (HTTP Poisson 0,5–3 kết nối/s + phiên UDP có
+echo), chạy dài hơn kịch bản ≥ 60 s, bật TRƯỚC generator ~30 s:
+```bash
+python3 ~/scenarios/vm-client/background_mix.py --duration 900 > ~/bg-A04-R1.log 2>&1 &
+```
+
+**(c) máy sinh lưu lượng** — tùy kịch bản (lần tráo vai: chạy trên VM kia + thêm `--src`):
 ```bash
 # A04 (vm-attacker)
 python3 ~/scenarios/vm-attacker/lowrate_a04.py --run A04-R1
-# N04 (vm-client)
+# A04-R4 tráo vai (chạy trên vm-client)
+python3 ~/scenarios/vm-attacker/lowrate_a04.py --run A04-R4 --src 192.168.200.11
+# N04 (vm-client) — phiên HTTP thật 10→25→35→15 kết nối/s (Packet-In ≈ 2×)
 python3 ~/scenarios/vm-client/flash_crowd_n04.py --run N04-R1
 # A05 (vm-attacker)
 python3 ~/scenarios/vm-attacker/pulsing_a05.py --run A05-R1
@@ -117,17 +158,17 @@ gcloud compute scp vm-controller:~/sdn-ai/dataset/attack/A04/A04-R1.csv \
 Thêm vào `SCENARIOS` (một lần cho mỗi mã kịch bản):
 ```python
 dict(scenario_id="N04", category="normal", attack_type=None, traffic_type="benign_flash_crowd",
-     description="Flash crowd hợp lệ 20->50->70->30 pps, nhiều phiên (cổng 45460)",
+     description="Flash crowd HTTP thật 10->25->35->15 kết nối/s (Packet-In ~2x), Poisson, có response",
      src_host=HOSTS["client"], dst_host=HOSTS["web"], generator="vm-client/flash_crowd_n04.py",
-     rate_profile="20,50,70,30 pps"),
+     rate_profile="10,25,35,15 conn/s"),
 dict(scenario_id="A04", category="attack", attack_type="udp_low_rate", traffic_type="udp_low_rate",
      description="Tấn công tốc độ thấp 10->20->30 pps, chồng lấn vùng bình thường (cổng 45461)",
      src_host=HOSTS["attacker"], dst_host=HOSTS["web"], generator="vm-attacker/lowrate_a04.py",
      rate_profile="10,20,30 pps x 180 s"),
 dict(scenario_id="A05", category="attack", attack_type="udp_pulsing", traffic_type="udp_pulsing",
-     description="Tấn công ngắt quãng 80 pps bật/tắt 20s x 10 chu kỳ (cổng 45462)",
+     description="Tấn công ngắt quãng 40–80 pps (ngẫu nhiên mỗi đợt) bật/tắt 20s x 10 chu kỳ (cổng 45462)",
      src_host=HOSTS["attacker"], dst_host=HOSTS["web"], generator="vm-attacker/pulsing_a05.py",
-     rate_profile="80 pps, 20s on/off"),
+     rate_profile="40-80 pps, 20s on/off"),
 dict(scenario_id="A06", category="attack", attack_type="syn_flood", traffic_type="tcp_syn_flood",
      description="SYN flood tới web:8080, 50->100->200 pps có giới hạn (hping3)",
      src_host=HOSTS["attacker"], dst_host=HOSTS["web"], generator="vm-attacker/synflood_a06.py",

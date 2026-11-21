@@ -1,52 +1,64 @@
 #!/usr/bin/env python3
-"""N04 — Flash crowd (lưu lượng hợp lệ đột biến).
+"""N04 — Flash crowd (lưu lượng hợp lệ đột biến) bằng PHIÊN HTTP THẬT.
 
-Mục đích: tạo "hard negative". Packet-In tăng cao (40–80 pps, chồng lấn vùng tấn
-công) NHƯNG đây là lưu lượng hợp lệ từ nhiều phiên của client → nhãn 0.
-Ngưỡng tĩnh theo Packet-In sẽ báo nhầm; Random Forest kết hợp đặc trưng mặt phẳng
-dữ liệu (ít IP nguồn, tỉ lệ SYN bình thường, HTTP vẫn thành công) thì phân biệt được.
+Mục đích: tạo "hard negative" CÓ CĂN CỨ. Mỗi kết nối HTTP mới sinh 2 Packet-In (chiều đi ở
+leaf1 + chiều về ở leaf2), nên ở 10→25→35→15 kết nối/s Packet-In lên ~20→50→70→30 pps — chồng
+lấn vùng tấn công → ngưỡng tĩnh theo Packet-In báo nhầm. Nhưng HÀNH VI khác tấn công:
+bắt tay TCP đủ, có response (reply_ratio ≈ 1), nhiều gói/flow, cổng đích tập trung 8080,
+thời điểm đến Poisson. Mô hình nhiều đặc trưng phân biệt được một cách hợp lệ.
 
-Chạy trên vm-client (nguồn 192.168.200.11). Nên bật song song HTTP QoS monitor để
-chứng minh dịch vụ vẫn thông suốt.
+Nhãn 0 toàn bộ. Mặc định chạy trên vm-client; tráo vai (--src 192.168.200.13) thì chạy trên
+vm-attacker để mô hình không học thuộc "máy attacker = tấn công".
 """
 import argparse
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "common"))
-from groundtruth import GroundTruth, send_udp_phases  # noqa: E402
+from groundtruth import GroundTruth  # noqa: E402
+from traffic import PoissonHttp, Stats, TARGET, assert_source_allowed  # noqa: E402
 
-SRC = "192.168.200.11"      # vm-client overlay
-TARGET = "192.168.200.12"   # vm-web overlay
-DST_PORT = 45460
-
-# Đột biến hợp lệ: tăng dần rồi giữ ở mức cao, nằm trong vùng chồng lấn với tấn công.
+# (name, begin_s, end_s, kết nối HTTP mới/s, label)
 PHASES = [
-    ("warmup", 0, 120, 20, 0),
-    ("surge1", 120, 300, 50, 0),
-    ("surge2", 300, 480, 70, 0),
-    ("cooldown", 480, 600, 30, 0),
+    ("warmup", 0, 120, 10, 0),
+    ("surge1", 120, 300, 25, 0),
+    ("surge2", 300, 480, 35, 0),
+    ("cooldown", 480, 600, 15, 0),
 ]
+RATE_CAP = 50
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True, help="run_id, vd N04-R1")
+    ap.add_argument("--src", default="192.168.200.11", help="IP overlay nguồn (tráo vai: .13)")
     ap.add_argument("--out-dir", default=None)
     args = ap.parse_args()
+    assert_source_allowed(args.src)
+    assert all(r <= RATE_CAP for *_, r, _ in PHASES)
 
-    gt = GroundTruth(
-        run_id=args.run, scenario="N04", target=TARGET,
-        generator="flash_crowd_n04.py", phases=PHASES,
-        default_label=0, out_dir=args.out_dir,
-    ).begin()
+    gt = GroundTruth(run_id=args.run, scenario="N04", target=TARGET,
+                     generator="flash_crowd_n04.py", phases=PHASES,
+                     default_label=0, out_dir=args.out_dir, source=args.src).begin()
+    stats = Stats()
+    http = PoissonHttp(args.src, stats).start()
+    start = time.monotonic()
     try:
-        send_udp_phases(
-            gt, DST_PORT, b"N04_FLASH_CROWD", src_ip=SRC,
-            flow_mode="per_packet",  # mỗi gói một phiên mới → giống nhiều người dùng thật
-            max_duration=600,
-        )
+        for name, b, e, rate, label in PHASES:
+            while time.monotonic() - start < b:
+                time.sleep(0.05)
+            http.rate = rate
+            ok0 = stats.http_ok + stats.http_fail
+            while time.monotonic() - start < e:
+                time.sleep(0.2)
+            sent = stats.http_ok + stats.http_fail - ok0
+            gt.total_sent += sent
+            print(f"PHASE={name} {b}-{e}s CONN_RATE={rate}/s LABEL={label} "
+                  f"CONN={sent} {stats.summary()}", flush=True)
     finally:
+        http.rate = 0
+        http.stop()
         gt.finish()
 
 

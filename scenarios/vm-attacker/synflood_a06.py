@@ -23,7 +23,7 @@ import urllib.error
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "common"))
-from groundtruth import GroundTruth, assert_target_allowed, now_iso  # noqa: E402
+from groundtruth import GroundTruth, add_src_arg, assert_target_allowed, now_iso  # noqa: E402
 
 TARGET = "192.168.200.12"
 TCP_PORT = 8080             # dịch vụ HTTP sẵn có trên vm-web
@@ -81,6 +81,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True, help="run_id, vd A06-R1")
     ap.add_argument("--out-dir", default=None)
+    add_src_arg(ap, "192.168.200.13")  # hping3 tự lấy IP theo route; --src chỉ để ghi nhận
     ap.add_argument("--yes", action="store_true",
                     help="xác nhận đã đọc phần an toàn và đang ở lab")
     args = ap.parse_args()
@@ -107,7 +108,7 @@ def main():
     gt = GroundTruth(
         run_id=args.run, scenario="A06", target=TARGET,
         generator="synflood_a06.py", phases=PHASES,
-        default_label=1, out_dir=args.out_dir,
+        default_label=1, out_dir=args.out_dir, source=args.src,
     ).begin()
 
     start = time.monotonic()

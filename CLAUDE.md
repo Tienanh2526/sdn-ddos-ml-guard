@@ -71,6 +71,18 @@ Project: `project-d0227366-e7f0-4e39-b78`, zone `asia-southeast1-a`.
 - Generator UDP: `send_udp_phases(..., flow_mode="per_packet")` (mặc định) — mỗi gói đổi
   cổng nguồn (dải 20000–29999) để mỗi gói là 1 flow mới.
 
+### ✅ Cập nhật 21/11/2026 — Thiết kế dữ liệu "khó đúng cách"
+
+- Lỗ hổng cũ: N04 (UDP 1 gói/flow từ client) và A04 (giống hệt, từ attacker) chỉ khác MÁY GỬI
+  → RF chỉ có thể thắng bằng cách học thuộc danh tính (rò rỉ nhãn).
+- Đã sửa: N04 = phiên HTTP thật; lưu lượng nền (`vm-client/background_mix.py`, HTTP + UDP có
+  echo từ `vm-web/udp_echo.py`) chạy suốt mọi lần thu; tráo vai `--src` (R4–R5); payload tấn
+  công kích thước ngẫu nhiên; bộ thu đo 2 chiều + đặc trưng hành vi (`dp_pkts_per_flow`,
+  `dp_reply_ratio`, `dp_dst_port_entropy`...). Chi tiết: `scenarios/README.md`, RUNBOOK 0.2–0.4.
+- Kiểm chứng GCP: tấn công vs flash crowd cùng ~số flow (41 vs 46 ≈ Packet-In) nhưng gói/flow
+  1,1 vs 5,8, reply 0,19 vs 1,01.
+- Trước mỗi buổi thu: `reactive_mode.sh status` (2 leaf) + `aiguard-udp-echo` active (vm-web).
+
 ## 4. Đã làm được gì (sản phẩm trong repo)
 
 **Dữ liệu (có sẵn từ trước, của nhóm):**

@@ -17,15 +17,37 @@ tấn công ≥ 40 pps. Một ngưỡng `pin_mean > 30` đã đạt F1 ≈ 0,987
 
 | Mã | Tên | Loại | Nhãn | Vai trò trong dataset |
 |---|---|---|---|---|
-| N04 | Flash crowd | normal | 0 | Packet-In **cao** nhưng hợp lệ → ngưỡng tĩnh báo nhầm |
+| N04 | Flash crowd | normal | 0 | Phiên HTTP thật, Packet-In **cao** (20–70) nhưng hợp lệ → ngưỡng tĩnh báo nhầm |
 | A04 | Low-rate | attack | 1 | Packet-In **thấp** (10–30 pps) → ngưỡng tĩnh bỏ sót |
-| A05 | Pulsing | attack | 1 | Bật/tắt ngắt quãng → kiểm tra xác nhận đa cửa sổ (2.6.1) |
-| A06 | SYN Flood | attack | 1 | Loại tấn công theo đề cương; sinh Packet-In + Flow-Mod |
-| A07 | Flow Burst | attack | 1 | Nhiều flow mới → làm `flow_mod_rate` khác 0 |
+| A05 | Pulsing | attack | 1 | Bật/tắt, 40–80 pps ngẫu nhiên mỗi đợt → kiểm tra xác nhận đa cửa sổ (2.6.1) |
+| A06 | SYN Flood | attack | 1 | Loại tấn công theo đề cương; SYN dở dang |
+| A07 | Flow Burst | attack | 1 | Nhiều flow mới, cổng đích rải rác |
 
-Ngoài ra bổ sung **đặc trưng mặt phẳng dữ liệu** (pps theo cổng leaf, số IP nguồn,
-tỉ lệ SYN) để so sánh Traffic-only vs Controller-aware (4.5.2) và xác định nguồn
-tấn công (2.6.2).
+### Nguyên tắc "khó đúng cách" (cập nhật 21/11)
+
+Dữ liệu khó KHÔNG có nghĩa là hai lớp giống hệt nhau (khi đó mô hình chỉ học thuộc máy gửi
+= rò rỉ nhãn). Dữ liệu tốt: **một đặc trưng đơn lẻ (Packet-In) không tách được, nhưng hành vi
+tách được** — như ngoài thực tế:
+
+| Hành vi | Tấn công (A04–A07) | Hợp lệ (N04 + lưu lượng nền) |
+|---|---|---|
+| Gói mỗi flow | ≈ 1 | 5–20 (HTTP), hàng trăm (phiên UDP) |
+| Chiều về (reply_ratio) | ≈ 0 (cổng đóng) | ≈ 1 (response, echo) |
+| SYN/ACK | SYN dở dang (A06) | bắt tay đủ |
+| Cổng đích | rải rác (A07) | tập trung 8080 / 45470 |
+| Thời điểm | máy phát đều | Poisson, tốc độ dao động |
+
+Biện pháp chống "học tắt":
+- **Lưu lượng nền** (`vm-client/background_mix.py`) chạy suốt MỌI lần thu: HTTP + phiên UDP có
+  echo (`vm-web/udp_echo.py`) → UDP không đồng nghĩa tấn công, cửa sổ tấn công luôn lẫn hợp lệ.
+- **Tráo vai** (`--src`): R4–R5 chạy tấn công từ vm-client, flash crowd từ vm-attacker.
+- **Payload tấn công kích thước ngẫu nhiên** 20–300 byte (không lộ qua kích thước gói).
+- Không dùng cột theo cổng (`rxpps_<port>`) làm đặc trưng mô hình.
+
+Đặc trưng mặt phẳng dữ liệu (`dataplane_collector.py`, leaf1, cả 2 chiều host↔leaf):
+`dp_flows, dp_pkts_per_flow, dp_reply_ratio, dp_syn_ratio, dp_dst_port_entropy,
+dp_mean_pkt_size, dp_udp_frac, dp_distinct_src` → so sánh Traffic-only vs Controller-aware
+(4.5.2) và xác định nguồn tấn công (2.6.2).
 
 ## Có cần đổi topo đã dựng không?
 

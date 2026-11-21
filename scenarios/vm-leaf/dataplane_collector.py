@@ -7,8 +7,13 @@ Bổ sung nhóm đặc trưng còn thiếu (features.json: data_plane_traffic) �
 
 Hai nguồn số liệu, ghi mỗi INTERVAL giây:
   1. `ovs-ofctl dump-ports`  -> pps/bps theo từng cổng OpenFlow (delta bộ đếm).
-  2. `tshark` trên ens4, CHỈ bắt gói VXLAN đi VÀO leaf từ các máy host (client/attacker/web),
-     đọc trường của GÓI BÊN TRONG (overlay) -> số IP nguồn, số flow mới (5-tuple), SYN, UDP/TCP.
+  2. `tshark` trên ens4, 2 luồng: gói VXLAN host->leaf (ingress) và leaf->host (egress, chiều
+     về), đọc trường của GÓI BÊN TRONG (overlay). Đặc trưng hành vi (xem features()):
+       dp_flows, dp_pkts_per_flow  — tấn công ≈ 1 gói/flow, phiên hợp lệ nhiều gói/flow
+       dp_reply_ratio              — egress/ingress: hợp lệ có chiều về, flood thì không
+       dp_syn_ratio                — SYN dở dang (SYN flood)
+       dp_dst_port_entropy         — cổng đích rải rác (flow burst / quét cổng)
+       dp_mean_pkt_size, dp_udp_frac, dp_distinct_src
 
 Vì sao lọc như vậy: mỗi host nối vào leaf bằng một tunnel VXLAN riêng (vx-client, vx-attacker,
 vx-web ...). Trên ens4 một gói xuất hiện 2 lần (host->leaf rồi leaf->spine) và mang 2 lớp IP
@@ -25,12 +30,14 @@ Các cột dp_* tổng hợp (không phụ thuộc cổng) mới là đặc trư
 import argparse
 import csv
 import json
+import math
 import os
 import re
 import subprocess
+import tempfile
 import threading
 import time
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -43,7 +50,7 @@ PORT_RE = re.compile(
 FABRIC_PREFIXES = ("vx-spine", "vx-leaf")
 
 # Thứ tự trường tshark (mọi trường lấy lớp TRONG CÙNG nhờ -E occurrence=l).
-TSHARK_FIELDS = ["frame.time_epoch", "ip.src", "ip.dst", "ip.proto",
+TSHARK_FIELDS = ["frame.time_epoch", "ip.src", "ip.dst", "ip.proto", "ip.len",
                  "tcp.srcport", "tcp.dstport", "udp.srcport", "udp.dstport",
                  "tcp.flags.syn", "tcp.flags.ack"]
 
@@ -84,17 +91,33 @@ def discover_vteps():
     return local, hosts
 
 
+def entropy(counter):
+    """Entropy Shannon (bit) của phân bố trong Counter."""
+    n = sum(counter.values())
+    if n == 0:
+        return 0.0
+    return max(0.0, -sum((c / n) * math.log2(c / n) for c in counter.values()))
+
+
+def _new_bucket():
+    return {"pkts": 0, "bytes": 0, "syn": 0, "udp": 0, "tcp": 0,
+            "srcs": set(), "flows": set(), "dports": Counter()}
+
+
 class PacketAggregator(threading.Thread):
-    """Đọc tshark liên tục, gom theo giây: gói, IP nguồn, flow (5-tuple), SYN, UDP, TCP."""
+    """Đọc tshark liên tục, gom theo giây (một chiều: ingress hoặc egress)."""
 
     def __init__(self, iface, bpf):
         super().__init__(daemon=True)
         self.iface, self.bpf = iface, bpf
         self.lock = threading.Lock()
-        self.sec = defaultdict(lambda: {
-            "pkts": 0, "syn": 0, "udp": 0, "tcp": 0, "srcs": set(), "flows": set(),
-        })
+        self.sec = defaultdict(_new_bucket)
         self.proc = None
+        self.errf = tempfile.TemporaryFile(mode="w+")   # stderr tshark (không dùng PIPE: đầy là treo)
+
+    def error_text(self):
+        self.errf.seek(0)
+        return self.errf.read()
 
     def run(self):
         cmd = ["tshark", "-i", self.iface, "-l", "-n", "-f", self.bpf,
@@ -102,12 +125,12 @@ class PacketAggregator(threading.Thread):
         for f in TSHARK_FIELDS:
             cmd += ["-e", f]
         self.proc = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
+            cmd, stdout=subprocess.PIPE, stderr=self.errf, text=True,
         )
         for line in self.proc.stdout:
             p = line.rstrip("\n").split("\t")
             p += [""] * (len(TSHARK_FIELDS) - len(p))
-            ts, src, dst, proto, tsp, tdp, usp, udp_, syn, ack = p[:10]
+            ts, src, dst, proto, iplen, tsp, tdp, usp, udp_, syn, ack = p[:11]
             try:
                 sec = int(float(ts))
             except ValueError:
@@ -117,9 +140,13 @@ class PacketAggregator(threading.Thread):
             with self.lock:
                 b = self.sec[sec]
                 b["pkts"] += 1
+                if iplen.isdigit():
+                    b["bytes"] += int(iplen)
                 if src:
                     b["srcs"].add(src)
                     b["flows"].add((src, dst, proto, sport, dport))
+                if dport:
+                    b["dports"][dport] += 1
                 if proto == "17":
                     b["udp"] += 1
                 elif proto == "6":
@@ -128,28 +155,48 @@ class PacketAggregator(threading.Thread):
                         b["syn"] += 1
 
     def drain(self, up_to_sec):
-        """Lấy và xóa các giây <= up_to_sec, trả về tổng hợp (số đếm tuyệt đối trong khoảng)."""
-        pkts = syn = udp = tcp = 0
-        srcs, flows = set(), set()
+        """Lấy và xóa các giây <= up_to_sec, trả về bucket gộp."""
+        tot = _new_bucket()
         with self.lock:
             for s in [s for s in self.sec if s <= up_to_sec]:
                 b = self.sec.pop(s)
-                pkts += b["pkts"]
-                syn += b["syn"]
-                udp += b["udp"]
-                tcp += b["tcp"]
-                srcs |= b["srcs"]
-                flows |= b["flows"]
-        return {
-            "dp_pkts": pkts, "dp_syn": syn, "dp_udp": udp, "dp_tcp": tcp,
-            "dp_distinct_src": len(srcs),
-            "dp_new_flows": len(flows),
-            "dp_syn_ratio": round(syn / tcp, 4) if tcp else 0.0,
-        }
+                for k in ("pkts", "bytes", "syn", "udp", "tcp"):
+                    tot[k] += b[k]
+                tot["srcs"] |= b["srcs"]
+                tot["flows"] |= b["flows"]
+                tot["dports"].update(b["dports"])
+        return tot
 
     def stop(self):
         if self.proc:
             self.proc.terminate()
+
+
+def features(ing, egr):
+    """Đặc trưng data-plane của 1 khoảng (số đếm tuyệt đối + tỉ lệ hành vi).
+
+    ing: gói host->leaf (đi vào fabric); egr: gói leaf->host (chiều về cho các host này).
+    Mọi đặc trưng đều TỔNG HỢP, không phụ thuộc host nào → dùng được cho mô hình.
+    """
+    pk, fl = ing["pkts"], len(ing["flows"])
+    return {
+        "dp_pkts": pk,
+        "dp_flows": fl,                                  # số 5-tuple hoạt động trong khoảng
+        "dp_distinct_src": len(ing["srcs"]),
+        "dp_syn": ing["syn"],
+        "dp_syn_ratio": round(ing["syn"] / ing["tcp"], 4) if ing["tcp"] else 0.0,
+        "dp_udp": ing["udp"],
+        "dp_tcp": ing["tcp"],
+        "dp_udp_frac": round(ing["udp"] / pk, 4) if pk else 0.0,
+        "dp_pkts_per_flow": round(pk / fl, 4) if fl else 0.0,
+        "dp_mean_pkt_size": round(ing["bytes"] / pk, 2) if pk else 0.0,
+        "dp_dst_port_entropy": round(entropy(ing["dports"]), 4),
+        "dp_reply_pkts": egr["pkts"],
+        "dp_reply_ratio": round(egr["pkts"] / pk, 4) if pk else 0.0,
+    }
+
+
+DP_FIELDS = list(features(_new_bucket(), _new_bucket()).keys())
 
 
 def main():
@@ -174,12 +221,19 @@ def main():
     vteps = args.host_vteps.split(",") if args.host_vteps else sorted(set(hosts.values()))
     if not local or not vteps:
         raise SystemExit(f"Không dò được VTEP (local={local}, hosts={hosts}) — dùng --host-vteps")
-    bpf = (f"udp dst port 4789 and dst host {local} and "
-           f"({' or '.join(f'src host {v}' for v in vteps)})")
+    src_or = " or ".join(f"src host {v}" for v in vteps)
+    dst_or = " or ".join(f"dst host {v}" for v in vteps)
+    bpf_in = f"udp dst port 4789 and dst host {local} and ({src_or})"
+    bpf_out = f"udp dst port 4789 and src host {local} and ({dst_or})"
 
-    agg = PacketAggregator(args.iface, bpf)
-    agg.start()
-    time.sleep(2)
+    agg_in = PacketAggregator(args.iface, bpf_in)
+    agg_out = PacketAggregator(args.iface, bpf_out)
+    agg_in.start()
+    agg_out.start()
+    time.sleep(3)
+    for a in (agg_in, agg_out):   # tshark chết (BPF sai, thiếu quyền...) -> dừng, không ghi số 0 giả
+        if a.proc is None or a.proc.poll() is not None:
+            raise SystemExit(f"TSHARK_FAILED bpf={a.bpf!r}\n{a.error_text()}")
 
     prev = dump_ports(args.bridge)
     prev_t = time.monotonic()
@@ -188,12 +242,12 @@ def main():
     fields = ["timestamp_utc"]
     for p in ports:
         fields += [f"rxpps_{p}", f"rxbps_{p}", f"txpps_{p}", f"txbps_{p}"]
-    fields += ["dp_pkts", "dp_distinct_src", "dp_new_flows", "dp_syn", "dp_syn_ratio",
-               "dp_udp", "dp_tcp"]
+    fields += DP_FIELDS
 
     print(f"BRIDGE={args.bridge} IFACE={args.iface} OUT={out}", flush=True)
     print(f"HOST_PORTS={hosts} LOCAL_VTEP={local}", flush=True)
-    print(f"BPF={bpf}", flush=True)
+    print(f"BPF_IN={bpf_in}", flush=True)
+    print(f"BPF_OUT={bpf_out}", flush=True)
     print(f"PORTS={ports}", flush=True)
 
     with out.open("w", newline="") as f:
@@ -220,17 +274,21 @@ def main():
                 row[f"txbps_{p}"] = round(txb, 2)
             prev, prev_t = cur, now
 
-            row.update(agg.drain(int(time.time()) - 1))
+            cut = int(time.time()) - 1
+            row.update(features(agg_in.drain(cut), agg_out.drain(cut)))
             w.writerow(row)
             f.flush()
             print(
                 f"{i+1}/{args.samples} pkts={row['dp_pkts']} "
-                f"src={row['dp_distinct_src']} flows={row['dp_new_flows']} "
-                f"syn_ratio={row['dp_syn_ratio']} udp={row['dp_udp']} tcp={row['dp_tcp']}",
+                f"flows={row['dp_flows']} ppf={row['dp_pkts_per_flow']} "
+                f"reply={row['dp_reply_ratio']} syn={row['dp_syn_ratio']} "
+                f"udp_frac={row['dp_udp_frac']} size={row['dp_mean_pkt_size']} "
+                f"dport_H={row['dp_dst_port_entropy']}",
                 flush=True,
             )
 
-    agg.stop()
+    agg_in.stop()
+    agg_out.stop()
     print(f"COMPLETE={out}", flush=True)
 
 
