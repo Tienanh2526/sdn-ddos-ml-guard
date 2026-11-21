@@ -97,13 +97,61 @@ class GroundTruth:
         return path
 
 
+class _FlowSender:
+    """Gửi datagram theo một trong hai chế độ flow.
+
+    per_packet: mỗi gói dùng một cổng nguồn mới (quay vòng trong SRC_PORT_RANGE)
+      → mỗi gói là một 5-tuple mới. Ở chế độ reactive của leaf (Pha B,
+      scenarios/vm-leaf/reactive_mode.sh) mỗi 5-tuple mới = 1 Packet-In, nên
+      Packet-In ≈ tốc độ gửi (cùng tỉ lệ 1:1 như dữ liệu A02/A03).
+      Dải 10000 cổng: ở 200 pps phải 50 s mới quay lại một cổng, lâu hơn nhiều
+      so với idle_timeout 10 s của flow đã học → không bị trùng flow.
+    single: một cổng nguồn cố định (một flow duy nhất) → ở chế độ reactive chỉ
+      sinh ~1 Packet-In. Dùng khi muốn mô phỏng flood một flow.
+    """
+
+    SRC_PORT_RANGE = (20000, 29999)
+
+    def __init__(self, src_ip, mode):
+        if mode not in ("per_packet", "single"):
+            raise ValueError(f"flow_mode không hợp lệ: {mode}")
+        self.src_ip, self.mode = src_ip, mode
+        self.port = self.SRC_PORT_RANGE[0]
+        self.sock = None
+        if mode == "single":
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.sock.bind((src_ip, 0))
+
+    def send(self, payload, dst):
+        if self.mode == "single":
+            self.sock.sendto(payload, dst)
+            return
+        lo, hi = self.SRC_PORT_RANGE
+        for _ in range(16):  # bỏ qua cổng đang bận
+            port = self.port
+            self.port = lo if self.port >= hi else self.port + 1
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            try:
+                s.bind((self.src_ip, port))
+                s.sendto(payload, dst)
+                return
+            except OSError:
+                continue
+            finally:
+                s.close()
+        raise RuntimeError("Không bind được cổng nguồn nào trong dải")
+
+    def close(self):
+        if self.sock:
+            self.sock.close()
+
+
 def send_udp_phases(gt, dst_port, payload, src_ip,
-                    rotate_src_ports=False, max_duration=None):
+                    flow_mode="per_packet", max_duration=None):
     """Gửi UDP theo bảng pha trong gt, có giới hạn tốc độ.
 
-    rotate_src_ports: nếu True, luân phiên nhiều cổng nguồn để mô phỏng nhiều
-      phiên kết nối (dùng cho flash crowd N04). Nếu False, một cổng nguồn cố định
-      (giống attack_a02.py).
+    flow_mode: "per_packet" (mặc định — mỗi gói một flow mới, xem _FlowSender)
+      hoặc "single" (một flow cố định, giống attack_a02.py gốc).
     max_duration: chặn trên tuyệt đối thời lượng (giây) như một lớp an toàn.
     """
     assert_target_allowed(gt.target)
@@ -112,13 +160,8 @@ def send_udp_phases(gt, dst_port, payload, src_ip,
     if max_duration is not None:
         total_planned = min(total_planned, max_duration)
 
-    # Tạo pool socket nguồn.
-    socks = []
-    n_ports = 8 if rotate_src_ports else 1
-    for _ in range(n_ports):
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.bind((src_ip, 0))  # cổng 0 = hệ điều hành tự cấp cổng nguồn
-        socks.append(s)
+    sender = _FlowSender(src_ip, flow_mode)
+    print(f"FLOW_MODE={flow_mode}", flush=True)
 
     start = time.monotonic()
     try:
@@ -138,13 +181,10 @@ def send_udp_phases(gt, dst_port, payload, src_ip,
                     time.sleep(0.05)
             else:
                 next_send = time.monotonic()
-                idx = 0
                 while time.monotonic() - start < phase_end:
                     now = time.monotonic()
                     if now >= next_send:
-                        sk = socks[idx % len(socks)]
-                        sk.sendto(payload, dst)
-                        idx += 1
+                        sender.send(payload, dst)
                         phase_sent += 1
                         gt.total_sent += 1
                         next_send += 1.0 / rate
@@ -157,5 +197,4 @@ def send_udp_phases(gt, dst_port, payload, src_ip,
                 flush=True,
             )
     finally:
-        for s in socks:
-            s.close()
+        sender.close()

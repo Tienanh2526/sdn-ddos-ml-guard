@@ -1,0 +1,2 @@
+# Script chạy trên VM Linux phải giữ LF (CRLF làm bash báo lỗi '\r').
+*.sh text eol=lf

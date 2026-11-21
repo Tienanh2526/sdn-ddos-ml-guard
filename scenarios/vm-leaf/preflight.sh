@@ -13,14 +13,13 @@ for b in $(sudo ovs-vsctl list-br 2>/dev/null); do
 done
 
 echo
-echo "=== 2. Rule table-miss (quyết định A06/A07 có sinh Packet-In/Flow-Mod không) ==="
-echo "Tìm flow priority thấp gửi lên CONTROLLER ở table 0. Nếu KHÔNG thấy 'CONTROLLER'"
-echo "nghĩa là switch không đẩy gói lạ lên controller -> cần bật reactive thì A07 mới chạy."
+echo "=== 2. Chế độ reactive (Pha B) — có rule gửi flow mới lên CONTROLLER không ==="
+echo "Cần thấy rule cookie 0xa1a1 có 'CONTROLLER'. Nếu KHÔNG: chạy"
+echo "  sudo bash ~/scenarios/vm-leaf/reactive_mode.sh apply"
+echo "(rule mất khi leaf reboot). Không có thì tấn công KHÔNG tạo Packet-In."
 for b in $(sudo ovs-vsctl list-br 2>/dev/null); do
-  echo "  bridge=$b table0:"
-  sudo ovs-ofctl -O OpenFlow13 dump-flows "$b" 2>/dev/null \
-    | grep -E 'table=0' | grep -Ei 'CONTROLLER|priority=0' | sed 's/^/    /' \
-    || echo "    (không thấy rule lên CONTROLLER)"
+  n=$(sudo ovs-ofctl -O OpenFlow13 dump-flows "$b" 'cookie=0xa1a1/-1' 2>/dev/null | grep -c CONTROLLER || true)
+  echo "  bridge=$b rule_reactive_CONTROLLER=$n $([ "$n" -gt 0 ] && echo OK || echo 'THIEU -> apply')"
 done
 
 echo

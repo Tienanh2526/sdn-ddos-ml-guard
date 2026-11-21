@@ -43,7 +43,7 @@ def main():
     try:
         send_udp_phases(
             gt, DST_PORT, b"N04_FLASH_CROWD", src_ip=SRC,
-            rotate_src_ports=True,   # nhiều phiên → giống nhiều người dùng thật
+            flow_mode="per_packet",  # mỗi gói một phiên mới → giống nhiều người dùng thật
             max_duration=600,
         )
     finally:

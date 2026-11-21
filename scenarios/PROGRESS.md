@@ -59,11 +59,11 @@ Chi tiết: memory `topology-proactive-finding`. Vì vậy các kịch bản A06
 - Pha A (XONG): pipeline huấn luyện `src/train.py` chạy trên A02/A03.
   → models/rf_w5.joblib, models/baseline_w5.json, reports/model_report.md, reports/figures/*.
   Kết quả: RF & ngưỡng tĩnh đều F1=1.000 (dữ liệu quá dễ — đã ghi rõ trong báo cáo).
-- Pha B (ĐANG LÀM): bật đường Packet-In reactive trên ODL để thu dữ liệu khó hơn.
-  - Đã làm điểm khôi phục: `scenarios/restore_point/vm-{leaf1,leaf2,spine1,spine2}-flows.txt`.
-  - Việc tiếp: cài/bật app reactive (odl-l2switch hoặc tương đương) có kiểm soát + hoàn tác,
-    kiểm tra client↔web vẫn thông, xác nhận attack → Packet-In tăng → controller chịu tải.
-    RỦI RO: có thể xung đột với flow proactive/ECMP → làm từng bước, hỏng là rollback.
+- Pha B (XONG 21/11): reactive mô phỏng trên leaf bằng `vm-leaf/reactive_mode.sh`
+  (flow mới → Packet-In, OVS learn idle 10 s, chuyển tiếp giữ group:20). Đính chính: controller
+  không chặn Packet-In (PoC 2 đầu 50/50) — không cần l2switch. Đã kiểm chứng ngữ nghĩa
+  reactive + client↔web 5/5. Generator UDP đổi sang `flow_mode="per_packet"` (450/450).
+  Rule mất khi leaf reboot → `reactive_mode.sh status` trước mỗi buổi thu.
 
 **Việc còn lại khác:**
 1. Nhóm (hoặc mình, sau Pha B) chạy các kịch bản theo RUNBOOK, lặp ≥5 lần/kịch bản.

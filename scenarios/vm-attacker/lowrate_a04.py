@@ -41,7 +41,7 @@ def main():
     try:
         send_udp_phases(
             gt, DST_PORT, b"A04_LOW_RATE", src_ip=SRC,
-            rotate_src_ports=False, max_duration=780,
+            flow_mode="per_packet", max_duration=780,
         )
     finally:
         gt.finish()

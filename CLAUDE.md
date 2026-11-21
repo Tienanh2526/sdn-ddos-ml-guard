@@ -2,7 +2,7 @@
 
 > Ghi cho: **bạn (phụ trách phần AI)**, các bạn cùng nhóm, và các phiên Claude Code sau.
 > Mục đích: đọc file này là nắm được dự án đang ở đâu, đã làm gì, còn gì phải làm.
-> Cập nhật lần cuối: 2026-11-20.
+> Cập nhật lần cuối: 2026-11-21.
 
 ---
 
@@ -49,8 +49,27 @@ Project: `project-d0227366-e7f0-4e39-b78`, zone `asia-southeast1-a`.
   bị cài đè thành proactive.
 
 **Hệ quả:** muốn phần "tấn công đè controller" (chương 2.1, 4.4) có dữ liệu thật thì phải
-**bật lại đường Packet-In reactive** ở controller. Đây là **Pha B** (xem mục 5).
-Chi tiết kỹ thuật: xem phần "topology-proactive-finding" trong bộ nhớ Claude.
+**bật lại đường Packet-In reactive**. Đây là **Pha B** (xem mục 5).
+
+### ✅ Cập nhật 21/11/2026 — Pha B ĐÃ GỠ XONG
+
+- **Đính chính:** controller KHÔNG chặn Packet-In. PoC đo 2 đầu (tcpdump trên leaf1 + controller):
+  rule `actions=CONTROLLER` trên leaf → ODL nhận đủ 50/50 Packet-In. Kết luận "chặn ở phía
+  controller" ngày 20/11 là sai (lỗi lọc khi đếm). Không cần cài l2switch, không đụng ODL.
+- Không khôi phục được cấu hình hồi A02/A03: toàn bộ lab reboot ~20/11, không còn dấu vết
+  trong lịch sử lệnh; flow proactive do `/usr/local/sbin/restore-sdn-flows.sh` (systemd
+  `restore-sdn-flows.service`) cài bằng `ovs-ofctl` mỗi lần boot.
+- **Giải pháp:** `scenarios/vm-leaf/reactive_mode.sh` (apply | rollback | status) — reactive
+  mô phỏng trên cổng host của leaf (leaf1: vx-client=4, vx-attacker=5; leaf2: vx-web=4):
+  gói đầu của mỗi flow mới (5-tuple) → Packet-In lên ODL, switch tự học flow (OVS `learn`,
+  table 1, idle 10 s), chuyển tiếp vẫn bằng `group:20` cũ. Cookie `0xa1a1` (rule) /
+  `0xa1a2` (flow học) → rollback sạch. ARP + flow proactive giữ nguyên.
+- Kiểm chứng: cùng 1 flow 100 gói → 1 Packet-In; 100 flow mới → 99; 1 request HTTP → 2;
+  generator `per_packet` 450 gói → 450 Packet-In (tỉ lệ 1.00 như A02/A03); HTTP 5/5, ping
+  ~2,3 ms không đổi; Flow-Mod = 0 (giới hạn: switch tự học, không phải ODL cài flow).
+- **Đang BẬT trên cả 2 leaf** (từ 21/11 17:37 UTC). **Mất khi leaf reboot** → chạy lại `apply`.
+- Generator UDP: `send_udp_phases(..., flow_mode="per_packet")` (mặc định) — mỗi gói đổi
+  cổng nguồn (dải 20000–29999) để mỗi gói là 1 flow mới.
 
 ## 4. Đã làm được gì (sản phẩm trong repo)
 
@@ -78,15 +97,11 @@ Chi tiết kỹ thuật: xem phần "topology-proactive-finding" trong bộ nh�
 ## 5. Kế hoạch 2 pha & việc còn lại
 
 - **Pha A (xong):** pipeline huấn luyện chạy trên A02/A03.
-- **Pha B (đang dang dở):** bật đường Packet-In reactive ở ODL để thu dữ liệu khó hơn.
-  - Đã làm điểm khôi phục. Mốc kết nối tốt (client→web HTTP 200).
-  - Full `odl-l2switch` **nguy hiểm** trên VXLAN mesh (loop-remover có thể sập mạng).
-  - Hướng an toàn đang cân nhắc: tìm đúng cách nhóm đã bật Packet-In hồi A02/A03 để khôi
-    phục, hoặc cài tối thiểu `odl-l2switch-arphandler` + table-miss có giới hạn + kiểm tra
-    + rollback. **Cần phối hợp với người dựng controller (kunthan231).**
+- **Pha B (XONG 21/11):** reactive mô phỏng bằng `scenarios/vm-leaf/reactive_mode.sh`
+  (xem mục 3). kunthan231 đã giao toàn quyền hạ tầng cho phần AI.
 
 **Việc còn lại:**
-1. Chốt Pha B (bật Packet-In reactive) — cần hỏi kunthan231 hồi A02/A03 bật kiểu gì.
+1. ~~Chốt Pha B~~ — xong. Trước mỗi buổi thu: `reactive_mode.sh status` trên 2 leaf.
 2. Chạy các kịch bản mới theo `scenarios/RUNBOOK.md`, lặp ≥5 lần/kịch bản.
 3. Thêm cột `dp_*` (data-plane) vào `window_features()` trong `src/build_dataset.py`.
 4. Viết module phát hiện + giảm thiểu thời gian thực (gọi RESTCONF cài flow drop/meter).

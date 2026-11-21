@@ -6,10 +6,12 @@ trung bình ± độ lệch (mục 4.1.1). Mọi thứ chạy trong VPC cô lậ
 ## 0. Chuẩn bị một lần
 
 ```bash
-# Chép thư mục scenarios/ lên các VM liên quan (từ máy có gcloud):
-gcloud compute scp --recurse scenarios vm-attacker:~/ --zone asia-southeast1-a --tunnel-through-iap
-gcloud compute scp --recurse scenarios vm-client:~/   --zone asia-southeast1-a --tunnel-through-iap
-gcloud compute scp --recurse scenarios vm-leaf1:~/    --zone asia-southeast1-a --tunnel-through-iap
+# Chép thư mục scenarios/ lên các VM liên quan (từ máy có gcloud).
+# Trên Windows (pscp) KHÔNG dùng được "~/" — phải ghi đường dẫn tuyệt đối /home/<user>/
+gcloud compute scp --recurse scenarios vm-attacker:/home/<user>/ --zone asia-southeast1-a --tunnel-through-iap
+gcloud compute scp --recurse scenarios vm-client:/home/<user>/   --zone asia-southeast1-a --tunnel-through-iap
+gcloud compute scp --recurse scenarios vm-leaf1:/home/<user>/    --zone asia-southeast1-a --tunnel-through-iap
+gcloud compute scp --recurse scenarios vm-leaf2:/home/<user>/    --zone asia-southeast1-a --tunnel-through-iap
 
 # Cài công cụ còn thiếu (xem preflight báo gì):
 #   vm-attacker: sudo apt-get install -y hping3
@@ -20,6 +22,28 @@ Chạy preflight trên leaf, ghi lại `--bridge` và `--iface` để dùng cho 
 ```bash
 bash ~/scenarios/vm-leaf/preflight.sh
 ```
+
+### 0.1 Bật chế độ REACTIVE trên 2 leaf (Pha B — BẮT BUỘC)
+
+Topo gốc là proactive thuần → tấn công không tạo Packet-In. `reactive_mode.sh` gửi **gói đầu
+của mỗi flow mới** từ cổng host lên controller (OVS learn, idle 10 s), vẫn chuyển tiếp bằng
+action proactive cũ. Rule **mất khi leaf reboot** → kiểm tra `status` trước mỗi buổi thu.
+
+```bash
+# trên vm-leaf2 rồi vm-leaf1
+sudo bash ~/scenarios/vm-leaf/reactive_mode.sh status     # có 5 rule/cổng host cookie 0xa1a1 là OK
+sudo bash ~/scenarios/vm-leaf/reactive_mode.sh apply      # nếu chưa có
+# kiểm tra client->web còn 200 (trên vm-client):
+curl -s -o /dev/null -w '%{http_code}\n' http://192.168.200.12:8080/
+# hoàn tác (về proactive thuần):
+sudo bash ~/scenarios/vm-leaf/reactive_mode.sh rollback
+```
+
+Ngữ nghĩa đã kiểm chứng (21/11): 100 gói cùng 1 flow → 1 Packet-In; 100 flow mới → 99–100;
+1 request HTTP → 2 (chiều đi ở leaf1 + chiều về ở leaf2); Flow-Mod = 0 (switch tự học).
+Generator UDP (N04/A04/A05) mặc định `flow_mode="per_packet"` (mỗi gói đổi cổng nguồn)
+→ Packet-In ≈ tốc độ gửi (đo được 450/450). A06 (hping3 tự tăng cổng nguồn) và A07
+(đổi cổng đích) vốn đã là flow mới mỗi gói.
 
 ## 1. Trình tự mỗi lần chạy (ví dụ A04-R1)
 
@@ -39,7 +63,7 @@ SDN_AUTH_STDIN=1 python3 ~/sdn-ai/telemetry/telemetry_collector_a03.py <<<"$ODL_
 **(b) vm-leaf1** — đặc trưng mặt phẳng dữ liệu (điền bridge/iface từ preflight):
 ```bash
 sudo python3 ~/scenarios/vm-leaf/dataplane_collector.py \
-  --bridge br-int --iface ens4 \
+  --bridge br-sdn --iface ens4 \
   --out ~/dataplane-A04-R1.csv --samples 450
 ```
 
@@ -121,7 +145,7 @@ dict(run_id="A04-R1", scenario_id="A04",
 # ... A04-R2..R5, N04-R1..R5, A05-*, A06-*, A07-* tương tự
 ```
 
-Chạy lại: `python -P src/build_dataset.py`. DB + báo cáo sinh lại từ đầu.
+Chạy lại: `.\.venv\Scripts\python.exe src\build_dataset.py`. DB + báo cáo sinh lại từ đầu.
 
 ## 5. Dùng đặc trưng mặt phẳng dữ liệu (data-plane)
 

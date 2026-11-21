@@ -9,14 +9,14 @@
 ## 📊 Tiến độ tổng thể
 
 Phần AI có 4 chặng: **Dữ liệu → Dataset → Mô hình → Phát hiện/Giảm thiểu**.
-Hiện đang ở cuối chặng 3 (mô hình đã chạy được), nhưng vướng một vấn đề hạ tầng
-(**Pha B** — mạng không đẩy Packet-In lên controller) cần gỡ để có dữ liệu tốt.
+Hiện đang ở cuối chặng 3 (mô hình đã chạy được). Vướng mắc hạ tầng **Pha B** (mạng không
+đẩy Packet-In lên controller) **đã gỡ xong 21/11** → sẵn sàng thu dữ liệu mới.
 
 ```
 [####################------] Chặng 1-2: dữ liệu + dataset   (gần xong)
 [######################----] Chặng 3: mô hình               (pipeline xong, chờ data tốt)
 [####----------------------] Chặng 4: phát hiện/giảm thiểu  (chưa làm)
-[######--------------------] Pha B: bật Packet-In reactive  (đang gỡ)
+[##########################] Pha B: bật Packet-In reactive  (XONG 21/11)
 ```
 
 ---
@@ -42,7 +42,7 @@ Lý do: dữ liệu hiện tại quá dễ → cần kịch bản chồng lấn 
 - [x] Viết bộ thu đặc trưng data-plane `dataplane_collector.py` + `preflight.sh`
 - [x] Viết thư viện gán nhãn `groundtruth.py` + `finalize_run.py`
 - [x] Viết hướng dẫn chạy `RUNBOOK.md`
-- [ ] **CHẠY** các kịch bản trên GCP, lặp ≥5 lần/kịch bản *(chờ Pha B xong)*
+- [ ] **CHẠY** các kịch bản trên GCP, lặp ≥5 lần/kịch bản
 - [ ] Chép dữ liệu mới về `data/raw/` và build lại dataset
 
 ## 3. Mô hình học máy (chặng 3) — Pha A
@@ -65,17 +65,23 @@ Lý do: dữ liệu hiện tại quá dễ → cần kịch bản chồng lấn 
 - [ ] Xác minh rule đã hiệu lực (`dump-flows`) + tự khôi phục khi hết tấn công
 - [ ] Đo độ trễ toàn chu trình (phát hiện → rule hiệu lực)
 
-## 5. ⚠️ Pha B — Bật Packet-In reactive (đang gỡ)
+## 5. ✅ Pha B — Bật Packet-In reactive (XONG 21/11)
 
-Vướng mắc cốt lõi: **mạng hiện tại proactive → tấn công không chạm controller (0 Packet-In)**.
-Phải gỡ cái này thì dữ liệu "bảo vệ controller" mới có nghĩa.
+Vướng mắc cũ: **mạng proactive → tấn công không chạm controller (0 Packet-In)**.
 
 - [x] Phát hiện & kiểm chứng vấn đề (bắn thử → controller nhận 0 Packet-In)
-- [x] Chụp điểm khôi phục mạng `scenarios/restore_point/`
-- [x] Đo mốc kết nối client→web (để đối chiếu khi rollback)
-- [ ] **Hỏi `kunthan231`: hồi A02/A03 bật Packet-In kiểu gì?** ← việc quan trọng nhất
-- [ ] Bật lại đường Packet-In reactive (khôi phục cấu hình cũ, hoặc cài tối thiểu an toàn)
-- [ ] Kiểm tra: client↔web vẫn thông + tấn công sinh Packet-In + CPU controller tăng
+- [x] Chụp điểm khôi phục mạng `scenarios/restore_point/` (+ backup tự động trên leaf
+      `/var/tmp/aiguard-reactive/` mỗi lần apply)
+- [x] Đo mốc kết nối client→web (HTTP 5/5, ping ~2,3 ms)
+- [x] kunthan231 giao toàn quyền hạ tầng. Cấu hình hồi A02/A03 không còn dấu vết (lab đã reboot)
+- [x] PoC 2 đầu: controller KHÔNG chặn Packet-In (50/50) → chỉ cần rule trên leaf
+- [x] Viết + bật `scenarios/vm-leaf/reactive_mode.sh` (reactive mô phỏng: flow mới → Packet-In,
+      OVS learn idle 10 s) trên leaf1 + leaf2
+- [x] Kiểm chứng: 1 flow → 1 Packet-In; 100 flow mới → 99; HTTP → 2/request;
+      client↔web vẫn 5/5; generator per_packet 450 gói → 450 Packet-In
+- [x] Generator UDP chuyển sang `flow_mode="per_packet"` (mỗi gói một flow mới)
+- [ ] Kiểm tra CPU controller tăng rõ khi tấn công mức cao (sẽ thấy trong lần thu đầu tiên)
+- [ ] ⚠️ Rule mất khi leaf reboot → nhớ `reactive_mode.sh status` trước mỗi buổi thu
 
 ## 6. Việc tổ chức / bàn giao
 
@@ -90,6 +96,7 @@ Phải gỡ cái này thì dữ liệu "bảo vệ controller" mới có nghĩa.
 
 ## 👉 Việc nên làm TIẾP THEO (ưu tiên)
 
-1. **Hỏi `kunthan231`** cách bật Packet-In hồi A02/A03 → gỡ Pha B.
-2. Pha B xong → chạy các kịch bản `scenarios/` để có dữ liệu khó hơn.
+1. ~~Gỡ Pha B~~ ✅ xong 21/11.
+2. Chạy các kịch bản `scenarios/` theo RUNBOOK để có dữ liệu khó hơn
+   (trước đó nên sửa lỗi bắt gói VXLAN trong `dataplane_collector.py`).
 3. Có dữ liệu mới → chạy lại `train.py` + làm module phát hiện/giảm thiểu (chặng 4).

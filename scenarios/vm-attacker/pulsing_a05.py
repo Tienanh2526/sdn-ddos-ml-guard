@@ -52,7 +52,7 @@ def main():
     try:
         send_udp_phases(
             gt, DST_PORT, b"A05_PULSING", src_ip=SRC,
-            rotate_src_ports=False, max_duration=total,
+            flow_mode="per_packet", max_duration=total,
         )
     finally:
         gt.finish()
