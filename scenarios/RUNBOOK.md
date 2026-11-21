@@ -60,10 +60,10 @@ A03_TELEMETRY_OUTPUT=~/sdn-ai/dataset/attack/A04/telemetry-$SESS.csv \
 SDN_AUTH_STDIN=1 python3 ~/sdn-ai/telemetry/telemetry_collector_a03.py <<<"$ODL_PASSWORD"
 ```
 
-**(b) vm-leaf1** — đặc trưng mặt phẳng dữ liệu (điền bridge/iface từ preflight):
+**(b) vm-leaf1** — đặc trưng mặt phẳng dữ liệu (mặc định br-sdn/ens4, VTEP host tự dò;
+chỉ đếm gói VXLAN host→leaf, đọc trường overlay — đã kiểm chứng 21/11):
 ```bash
 sudo python3 ~/scenarios/vm-leaf/dataplane_collector.py \
-  --bridge br-sdn --iface ens4 \
   --out ~/dataplane-A04-R1.csv --samples 450
 ```
 

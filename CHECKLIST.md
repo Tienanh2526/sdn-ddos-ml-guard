@@ -27,8 +27,11 @@ Hiện đang ở cuối chặng 3 (mô hình đã chạy được). Vướng m�
 - [x] `src/build_dataset.py`: ghép dữ liệu → dataset cửa sổ 10s + SQLite + báo cáo
 - [x] Báo cáo chất lượng dữ liệu `reports/data_quality_report.md`
 - [x] Từ điển dữ liệu `docs/data_dictionary.md`
-- [ ] Thêm cột đặc trưng **mặt phẳng dữ liệu** (`dp_*`: pps/cổng, số IP nguồn, tỉ lệ SYN)
-      vào `window_features()` trong `src/build_dataset.py` *(3 chỗ, chờ có dữ liệu mới)*
+- [x] Sửa `dataplane_collector.py`: chỉ bắt VXLAN host→leaf, đọc trường overlay (trước đây
+      đọc nhầm IP underlay, tỉ lệ SYN luôn 0); thêm `dp_new_flows`; tshark đã cài trên 2 leaf
+- [ ] Thêm cột đặc trưng **mặt phẳng dữ liệu** (`dp_*`: số gói, IP nguồn, flow mới, tỉ lệ SYN)
+      vào `window_features()` trong `src/build_dataset.py` *(3 chỗ, chờ có dữ liệu mới)*.
+      ⚠️ KHÔNG dùng cột theo cổng `rxpps_<port>` làm đặc trưng (gắn danh tính host → rò rỉ nhãn)
 
 ## 2. Kịch bản thu dữ liệu khó hơn (thư mục `scenarios/`)
 
