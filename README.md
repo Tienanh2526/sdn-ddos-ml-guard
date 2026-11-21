@@ -18,13 +18,20 @@ reports/data_quality_report.md  báo cáo chất lượng dữ liệu       (sin
 models/  notebooks/   (bước tiếp theo: huấn luyện)
 ```
 
-## Build lại dataset
+## Cài môi trường (venv)
 
 ```powershell
 cd D:\sdn-ai-ml
-pip install -r requirements.txt
-python -P src\build_dataset.py                 # cửa sổ 5 mẫu (10 s)
-python -P src\build_dataset.py --window 5 --window 3
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+## Build lại dataset & huấn luyện
+
+```powershell
+.\.venv\Scripts\python.exe src\build_dataset.py                 # cửa sổ 5 mẫu (10 s)
+.\.venv\Scripts\python.exe src\build_dataset.py --window 5 --window 3
+.\.venv\Scripts\python.exe src\train.py                         # huấn luyện + báo cáo model
 ```
 
 ## Thêm một lần chạy mới

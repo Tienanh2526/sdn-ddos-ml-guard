@@ -82,6 +82,7 @@ Phải gỡ cái này thì dữ liệu "bảo vệ controller" mới có nghĩa.
 - [x] Tạo `CLAUDE.md` (nhật ký dự án)
 - [x] Tạo `CHECKLIST.md` (file này)
 - [x] Khởi tạo git repo + commit đầu tiên
+- [x] Tạo môi trường ảo `.venv` + cài `requirements.txt` (chạy `train.py` OK trong venv)
 - [ ] Tạo repo GitHub **private** để sao lưu + chia sẻ nhóm *(cần tài khoản của bạn)*
 - [ ] (Khi viết lý thuyết) đối chiếu từng mục với đề cương các chương 2–4
 

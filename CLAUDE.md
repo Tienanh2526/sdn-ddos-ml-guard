@@ -94,8 +94,11 @@ Chi tiết kỹ thuật: xem phần "topology-proactive-finding" trong bộ nh�
 
 ## 6. Cách làm việc / quy ước kỹ thuật
 
-- **Chạy pipeline:** `cd d:\sdn-ai-ml` rồi `python -P src\build_dataset.py` /
-  `python -P src\train.py` (dùng gói Python trong user site, nên cần cờ `-P`).
+- **Môi trường: venv.** Lần đầu: `python -m venv .venv` rồi
+  `.\.venv\Scripts\python.exe -m pip install -r requirements.txt`. Thư mục `.venv` bị
+  `.gitignore` loại (mỗi người tự tạo lại từ `requirements.txt`).
+- **Chạy pipeline:** `cd d:\sdn-ai-ml` rồi `.\.venv\Scripts\python.exe src\build_dataset.py`
+  / `.\.venv\Scripts\python.exe src\train.py` (venv có sẵn gói, **không cần cờ `-P`**).
 - **gcloud** (đã cài, đã đăng nhập `anh2004zai`, chưa vào PATH):
   `C:\Users\NGOC TU\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd`
 - **SSH vào VM:** `gcloud compute ssh <vm> --zone asia-southeast1-a --tunnel-through-iap`.

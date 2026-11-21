@@ -24,7 +24,7 @@ Trên tập test:
 - Confusion [TN FP / FN TP]: [204 0 / 0 236]
 - Precision=1.000  Recall=1.000  F1=1.000  FPR=0.000
 - ROC-AUC=1.000  PR-AUC=1.000
-- Tốc độ suy luận: 0.108 ms/cửa sổ
+- Tốc độ suy luận: 0.106 ms/cửa sổ
 
 ## 4. So sánh (mục 4.5.1)
 
@@ -37,18 +37,18 @@ Trên tập test:
 
 | Đặc trưng | Importance |
 |---|---|
-| pin_last | 0.2347 |
-| pin_max | 0.1944 |
-| pin_mean | 0.1709 |
-| pin_min | 0.1321 |
-| cpu_mean | 0.0770 |
-| pin_std | 0.0764 |
-| cpu_max | 0.0488 |
-| cpu_last | 0.0374 |
-| pin_slope | 0.0128 |
-| api_mean | 0.0066 |
-| api_last | 0.0026 |
-| api_max | 0.0023 |
+| pin_last | 0.2279 |
+| pin_max | 0.1984 |
+| pin_mean | 0.1749 |
+| pin_min | 0.1289 |
+| cpu_mean | 0.0822 |
+| pin_std | 0.0749 |
+| cpu_max | 0.0472 |
+| cpu_last | 0.0360 |
+| pin_slope | 0.0126 |
+| api_mean | 0.0073 |
+| api_last | 0.0032 |
+| cpu_std | 0.0023 |
 
 Đã lưu 3 hình vào reports\figures
 
