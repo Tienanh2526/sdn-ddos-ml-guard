@@ -8,5 +8,7 @@ hưởng vì mọi thao tác đi qua IAP + IP nội bộ.
 param([string]$Zone = "asia-southeast1-a")
 $gcloud = "C:\Users\NGOC TU\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"
 $VMS = "vm-controller", "vm-spine1", "vm-spine2", "vm-leaf1", "vm-leaf2", "vm-web", "vm-client", "vm-attacker"
-& $gcloud compute instances stop @VMS --zone $Zone 2>&1 | Where-Object { "$_" -notmatch 'Invalid characters|At line|~~~|CategoryInfo|FullyQualified|NativeCommandError' }
-& $gcloud compute instances list --format="table(name,status)" 2>&1 | Where-Object { "$_" -notmatch 'Invalid characters|At line|~~~|CategoryInfo|FullyQualified|NativeCommandError' }
+# ForEach-Object { "$_" }: đổi dòng stderr của gcloud thành chữ thường (PS 5.1 tô đỏ như lỗi dù không phải lỗi)
+& $gcloud compute instances stop @VMS --zone $Zone 2>&1 | ForEach-Object { "$_" } | Where-Object { $_ -notmatch 'Invalid characters|At line|~~~|CategoryInfo|FullyQualified|NativeCommandError|^\s*$' }
+& $gcloud compute instances list --format="table(name,status)" 2>&1 | ForEach-Object { "$_" } | Where-Object { $_ -notmatch 'Invalid characters|At line|~~~|CategoryInfo|FullyQualified|NativeCommandError|^\s*$' }
+"TERMINATED = đã tắt (stop), ổ đĩa và dữ liệu vẫn giữ nguyên. Bật lại: .\scenarios\orchestrate\lab_up.ps1"
