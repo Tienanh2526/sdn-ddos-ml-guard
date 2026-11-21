@@ -24,7 +24,7 @@ Trên tập test:
 - Confusion [TN FP / FN TP]: [204 0 / 0 236]
 - Precision=1.000  Recall=1.000  F1=1.000  FPR=0.000
 - ROC-AUC=1.000  PR-AUC=1.000
-- Tốc độ suy luận: 0.106 ms/cửa sổ
+- Tốc độ suy luận: 0.278 ms/cửa sổ
 
 ## 4. So sánh (mục 4.5.1)
 

@@ -1,6 +1,6 @@
 # Báo cáo chất lượng dữ liệu – Dataset bảo vệ SDN Controller
 
-Sinh tự động bởi `src/build_dataset.py` lúc 2026-11-19 15:37 UTC. Nguồn: dữ liệu thô chép nguyên trạng từ vm-controller, vm-client, vm-attacker (19/11/2026). Cửa sổ trượt W = 5 mẫu (10 s), bước trượt 1 mẫu (2 s).
+Sinh tự động bởi `src/build_dataset.py` lúc 2026-11-21 18:01 UTC. Nguồn: dữ liệu thô chép nguyên trạng từ vm-controller, vm-client, vm-attacker (19/11/2026). Cửa sổ trượt W = 5 mẫu (10 s), bước trượt 1 mẫu (2 s).
 
 ## 1. Tổng quan các lần chạy
 
@@ -55,6 +55,7 @@ Không có giá trị thiếu ở các cột đo.
 
 ## 5. Đặc trưng hằng số / gần hằng số
 
+- Chưa có dữ liệu (lần chạy cũ không thu data-plane): `dp_pkts_mean, dp_pkts_max, dp_flows_mean, dp_flows_max, dp_src_mean, dp_syn_mean, dp_udp_frac_mean, dp_ppf_mean, dp_size_mean, dp_dport_h_mean, dp_reply_mean`
 - Hằng số trên toàn bộ cửa sổ có nhãn: `fmod_mean, fmod_max, api_err_cnt, ofconn_min`
 - Chỉ 2–3 giá trị: `flows_delta`
 - Ở mức mẫu: openflow_connections = [4], openflow_nodes = [4], api_http_status = [200], flow_mod_rate lớn nhất = 0.00.

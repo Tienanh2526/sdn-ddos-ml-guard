@@ -26,7 +26,18 @@
     "rss_delta",
     "api_err_cnt",
     "ofconn_min",
-    "flows_delta"
+    "flows_delta",
+    "dp_pkts_mean",
+    "dp_pkts_max",
+    "dp_flows_mean",
+    "dp_flows_max",
+    "dp_src_mean",
+    "dp_syn_mean",
+    "dp_udp_frac_mean",
+    "dp_ppf_mean",
+    "dp_size_mean",
+    "dp_dport_h_mean",
+    "dp_reply_mean"
   ],
   "groups": {
     "control_plane": [
@@ -55,10 +66,22 @@
     "topology": [
       "flows_delta"
     ],
-    "data_plane_traffic": []
+    "data_plane_traffic": [
+      "dp_pkts_mean",
+      "dp_pkts_max",
+      "dp_flows_mean",
+      "dp_flows_max",
+      "dp_src_mean",
+      "dp_syn_mean",
+      "dp_udp_frac_mean",
+      "dp_ppf_mean",
+      "dp_size_mean",
+      "dp_dport_h_mean",
+      "dp_reply_mean"
+    ]
   },
   "notes": {
-    "data_plane_traffic": "Chưa thu thập: cần port stats OVS (pps/bps theo cổng leaf), số IP nguồn, entropy IP/cổng.",
+    "data_plane_traffic": "Từ dataplane_collector.py (leaf1, VXLAN host<->leaf, trường overlay). NaN ở các lần chạy cũ. Không dùng cột theo cổng (rò rỉ danh tính).",
     "absolute_rss_flowcount": "Không dùng giá trị tuyệt đối (trôi theo phiên) - chỉ dùng delta."
   }
 }
