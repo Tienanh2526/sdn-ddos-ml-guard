@@ -78,7 +78,25 @@ Số flow (≈ Packet-In) của tấn công và flash crowd **chồng lấn** �
 Đặt ít nhất 1 lần chạy/kịch bản (gợi ý R5 — lần tráo vai) làm `split="test"`.
 **Lưu lượng nền LUÔN chạy trên vm-client** ở mọi lần (kể cả khi vm-client là máy tấn công).
 
-## 1. Trình tự mỗi lần chạy (ví dụ A04-R1)
+## ⚡ Cách nhanh: 1 lệnh cho cả lần chạy (khuyên dùng)
+
+`scenarios/orchestrate/run_scenario.ps1` (chạy trên máy Windows có gcloud) tự làm toàn bộ
+mục 1–3 bên dưới: hẹn giờ đồng bộ 5 VM, chờ, gom file, gán nhãn trên controller, tải về
+`data/raw/vm-controller/sdn-ai/dataset/<attack|normal>/<SCN>/<RUN>/`. `build_dataset.py` tự
+nhận các thư mục này (không cần sửa `RUNS`; R5 = test).
+
+```powershell
+cd D:\sdn-ai-ml
+# lần thường
+.\scenarios\orchestrate\run_scenario.ps1 -RunId A04-R1 -GenVm vm-attacker `
+  -GenCmd "python3 ~/scenarios/vm-attacker/lowrate_a04.py" -GenDuration 780
+# lần tráo vai
+.\scenarios\orchestrate\run_scenario.ps1 -RunId A04-R4 -GenVm vm-client `
+  -GenCmd "python3 ~/scenarios/vm-attacker/lowrate_a04.py --src 192.168.200.11" -GenDuration 780
+```
+Mật khẩu ODL: biến môi trường `ODL_PASSWORD` (mặc định `admin`). Mỗi lần ~17 phút.
+
+## 1. Trình tự mỗi lần chạy thủ công (ví dụ A04-R1)
 
 Mở song song các phiên SSH. **Bật telemetry + capture TRƯỚC, rồi lưu lượng nền, generator
 SAU CÙNG**, để cửa sổ baseline có dữ liệu.

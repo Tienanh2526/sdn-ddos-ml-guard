@@ -1,0 +1,22 @@
+﻿01:29:38 === A04-R1  gen=vm-attacker  dur=780s  capture=910s samples=455
+01:30:06 T0=1795285956 (UTC 18:32:36)
+01:30:35 Running as unit: aig-A04-R1-pcap.service
+01:30:35 Running as unit: aig-A04-R1-tel.service
+01:30:35 scheduled-controller
+01:30:41 Running as unit: aig-A04-R1-dp.service
+01:30:41 scheduled-leaf1
+01:30:48 Running as unit: aig-A04-R1-qos.service
+01:30:48 Running as unit: aig-A04-R1-bg.service
+01:30:48 scheduled-client
+01:31:15 Running as unit: aig-A04-R1-gen.service
+01:31:15 scheduled-generator
+01:31:23 Táº¥t cáº£ Ä‘Ã£ háº¹n giá». CÃ²n 73s tá»›i T0; káº¿t thÃºc thu sau ~958s
+01:47:28 PHASE=recovery 660-780s RATE=0/s LABEL=0 SENT=0 | A04_END= 2026-11-21T18:45:36.647627+00:00 | TOTAL_SENT= 10800 | GROUNDTRUTH= /home/anh2004zai_gmail_com/aiguard-runs/A04-R1/A04-R1.groundtruth.json
+01:49:04 === A04-R1 FINALIZE ===
+01:49:04 SOURCE_ROWS = 455
+01:49:04 SELECTED_ROWS = 385
+01:49:04 EXCLUDED = {'invalid_window': 1, 'phase_boundary': 68}
+01:49:04 LABELS = {0: 118, 1: 267}
+01:49:04 TOTAL_PACKET_IN = 16319
+01:49:04 TOTAL_FLOW_MOD = 0
+01:49:04 OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/A04-R1/A04-R1.csv

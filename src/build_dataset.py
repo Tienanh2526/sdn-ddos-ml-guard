@@ -74,7 +74,49 @@ SCENARIOS = [
          description="Lặp lại A02 + đo chất lượng HTTP từ client trong suốt kịch bản",
          src_host=HOSTS["attacker"], dst_host=HOSTS["web"], generator="vm-attacker/attack_a02.py + vm-client/monitor/http_qos_monitor_a03.py",
          rate_profile="40,60,80,100 pps x 120 s"),
+    # ---- Kịch bản mới (scenarios/, từ 21/11): lưu lượng nền luôn chạy, reactive mô phỏng, có data-plane
+    dict(scenario_id="N04", category="normal", attack_type=None, traffic_type="benign_flash_crowd",
+         description="Flash crowd HTTP thật 10->25->35->15 kết nối/s (Packet-In ~2x), Poisson, có response",
+         src_host=HOSTS["client"], dst_host=HOSTS["web"], generator="vm-client/flash_crowd_n04.py",
+         rate_profile="10,25,35,15 conn/s"),
+    dict(scenario_id="A04", category="attack", attack_type="udp_low_rate", traffic_type="udp_low_rate",
+         description="Tấn công tốc độ thấp 10->20->30 flow mới/s, 1 gói/flow, payload ngẫu nhiên (cổng 45461)",
+         src_host=HOSTS["attacker"], dst_host=HOSTS["web"], generator="vm-attacker/lowrate_a04.py",
+         rate_profile="10,20,30 pps x 180 s"),
+    dict(scenario_id="A05", category="attack", attack_type="udp_pulsing", traffic_type="udp_pulsing",
+         description="Tấn công ngắt quãng 40–80 pps (ngẫu nhiên mỗi đợt) bật/tắt 20s x 10 chu kỳ (cổng 45462)",
+         src_host=HOSTS["attacker"], dst_host=HOSTS["web"], generator="vm-attacker/pulsing_a05.py",
+         rate_profile="40-80 pps, 20s on/off"),
+    dict(scenario_id="A06", category="attack", attack_type="syn_flood", traffic_type="tcp_syn_flood",
+         description="SYN flood tới web:8080, 50->100->200 pps có giới hạn (hping3)",
+         src_host=HOSTS["attacker"], dst_host=HOSTS["web"], generator="vm-attacker/synflood_a06.py",
+         rate_profile="50,100,200 pps x 180 s"),
+    dict(scenario_id="A07", category="attack", attack_type="flow_burst", traffic_type="flow_burst",
+         description="Flow burst 50->100->200 flow mới/s (cổng đích quay vòng 20000-39999)",
+         src_host=HOSTS["attacker"], dst_host=HOSTS["web"], generator="vm-attacker/flowburst_a07.py",
+         rate_profile="50,100,200 newflow/s x 180 s"),
 ]
+
+
+def discover_new_runs() -> list[dict]:
+    """Tự nhận các lần chạy do scenarios/orchestrate/run_scenario.ps1 tải về.
+
+    Cấu trúc: data/raw/vm-controller/sdn-ai/dataset/<attack|normal>/<SCN>/<RUN>/<RUN>.csv
+    Split mặc định: R5 -> test (lần tráo vai, độc lập), còn lại -> train.
+    Ghi nguồn thật (tráo vai) từ groundtruth vào notes.
+    """
+    runs = []
+    for f in sorted((CTRL / "dataset").glob("*/*/*/*.csv")):
+        run_id = f.parent.name
+        if f.stem != run_id or "-R" not in run_id:
+            continue
+        gt = f.parent / f"{run_id}.groundtruth.json"
+        src = json.loads(gt.read_text()).get("source") if gt.exists() else None
+        runs.append(dict(run_id=run_id, scenario_id=run_id.split("-")[0], file=f, role="dataset",
+                         split="test" if run_id.endswith("-R5") else "train",
+                         notes=f"nguồn={src}" if src else ""))
+    return runs
+
 
 # --------------------------------------------------------------------------------------------
 # Danh mục lần chạy. role: dataset | pilot | calibration ; split mặc định: train | test | excluded
@@ -102,6 +144,7 @@ RUNS = [
     dict(run_id="A03-R1", scenario_id="A03", file=CTRL / "dataset/attack/A03/A03.csv", role="dataset", split="test",
          notes="Tập kiểm thử độc lập (lần chạy riêng)"),
 ]
+RUNS += discover_new_runs()
 COLLECTOR = "health collector (CPU/RSS/RESTCONF) + tcpdump OpenFlow :6653 -> tshark (type 10/14)"
 
 SAMPLE_METRICS = ["controller_cpu_pct", "controller_rss_mb", "api_latency_ms", "api_http_status",
