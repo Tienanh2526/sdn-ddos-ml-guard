@@ -6,3 +6,7 @@ venv/
 *.pcap
 models/*.joblib
 .runs-tmp/
+
+# Ghi chú cá nhân / nhật ký Claude — không đưa lên git
+CLAUDE.md
+CHECKLIST.md
