@@ -113,12 +113,14 @@ def main():
         ax.plot(b["t"], b[col], color=C_BASE, lw=2, label=f"Không giảm thiểu ({a.base})")
         ax.plot(m["t"], m[col], color=C_MIT, lw=2, label=f"Có module ({a.mit})")
         ax.set_ylabel(name, fontsize=8, color=INK2)
-        for e, lab in ((det, "phát hiện"), (l1, "cấp 1"), (l2, "cấp 2")):
+        for j, (e, lab) in enumerate(((det, "phát hiện"), (l1, "cấp 1"), (l2, "cấp 2 (drop)"))):
             if e:
                 ax.axvline(e["t"], color=INK2, lw=1, ls="--")
-                if ax is axes[0]:
-                    ax.text(e["t"], ax.get_ylim()[1], f" {lab}", fontsize=8, color=INK2, va="top")
-    axes[0].legend(loc="upper right", fontsize=8, frameon=False)
+                if ax is axes[0]:   # các mốc có thể cách nhau ~1 s -> so le độ cao để nhãn không đè nhau
+                    ax.text(e["t"], ax.get_ylim()[1] * (0.97 - 0.13 * j), f" {lab}", fontsize=8, color=INK2,
+                            va="top", backgroundcolor=SURFACE)
+    # chú giải ở khung thứ 2, góc trái (pha baseline, không có dữ liệu cao); khung 1 dành cho nhãn mốc
+    axes[1 if len(axes) > 1 else 0].legend(loc="upper left", fontsize=8, frameon=False)
     axes[0].set_title(f"Hiệu quả giảm thiểu — {a.mit} so với {a.base} (nền nhạt = pha tấn công)",
                       fontsize=10, color=INK, loc="left")
     axes[-1].set_xlabel("Thời gian từ lúc generator bắt đầu (s)", fontsize=9, color=INK2)

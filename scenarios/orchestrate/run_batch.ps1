@@ -16,12 +16,13 @@ $PLAN = @{
   "A07" = @("vm-attacker", "python3 ~/scenarios/vm-attacker/flowburst_a07.py",    780, "vm-client",   "192.168.200.11")
 }
 foreach ($run in $Runs) {
-  $scn, $rep = $run.Split("-"); $n = [int]$rep.TrimStart("R")
+  $scn, $rep = $run.Split("-"); $mit = $rep.StartsWith("M"); $n = [int]$rep.Substring(1)
   $p = $PLAN[$scn]; if (-not $p) { Write-Host "Bỏ qua $run (kịch bản lạ)"; continue }
   $vm, $cmd = $p[0], $p[1]
-  if ($n -ge 4) { $vm = $p[3]; $cmd = "$($p[1]) --src $($p[4])" }
-  Write-Host ("{0:HH:mm:ss} >>> BẮT ĐẦU {1} trên {2}" -f (Get-Date), $run, $vm)
-  try { & (Join-Path $here "run_scenario.ps1") -RunId $run -GenVm $vm -GenCmd $cmd -GenDuration $p[2] }
+  if (-not $mit -and $n -ge 4) { $vm = $p[3]; $cmd = "$($p[1]) --src $($p[4])" }
+  $extra = if ($mit) { @{ Detector = "mitigate"; AllowDrop = $true } } else { @{} }
+  Write-Host ("{0:HH:mm:ss} >>> BẮT ĐẦU {1} trên {2}{3}" -f (Get-Date), $run, $vm, $(if ($mit) { " + module giảm thiểu" } else { "" }))
+  try { & (Join-Path $here "run_scenario.ps1") -RunId $run -GenVm $vm -GenCmd $cmd -GenDuration $p[2] @extra }
   catch { Write-Host "!!! $run lỗi: $_" }
   Write-Host ("{0:HH:mm:ss} <<< XONG {1}" -f (Get-Date), $run)
 }
