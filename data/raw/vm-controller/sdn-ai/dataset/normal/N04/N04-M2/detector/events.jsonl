@@ -1,0 +1,3 @@
+{"ts": "2026-11-22T14:03:18.972777+00:00", "event": "start", "mode": "mitigate", "allow_drop": true, "threshold": 0.5, "k": 3, "n": 4, "features": 30, "fallback_features": 20, "odl_pid": 875, "out": "/home/anh2004zai_gmail_com/aiguard-runs/N04-M2/detector"}
+{"ts": "2026-11-22T14:03:31.018342+00:00", "event": "dp_feed", "ok": true, "age_s": 0.0, "model": "primary"}
+{"ts": "2026-11-22T14:15:29.164669+00:00", "event": "stop"}

@@ -1,0 +1,30 @@
+{"ts": "2026-11-22T13:06:15.206961+00:00", "event": "start", "mode": "mitigate", "allow_drop": true, "threshold": 0.5, "k": 3, "n": 4, "features": 30, "fallback_features": 20, "odl_pid": 875, "out": "/home/anh2004zai_gmail_com/aiguard-runs/A05-M2/detector"}
+{"ts": "2026-11-22T13:06:27.253353+00:00", "event": "dp_feed", "ok": true, "age_s": 0.1, "model": "primary"}
+{"ts": "2026-11-22T13:07:57.364866+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.91}
+{"ts": "2026-11-22T13:08:01.415182+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.926, "top_src": "192.168.200.13", "share": 0.97, "pin_from_src": 206}
+{"ts": "2026-11-22T13:08:01.415321+00:00", "event": "target", "ip": "192.168.200.13", "share": 0.97, "excess_pin": 206, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 2.0, "192.168.200.13": 2.5}}
+{"ts": "2026-11-22T13:08:03.957698+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 14.3, "on_switch_s": 2.53, "total_s": 2.54, "error": null}
+{"ts": "2026-11-22T13:08:20.085588+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:08:44.106199+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.538, "reason": "tái phát"}
+{"ts": "2026-11-22T13:08:49.141473+00:00", "event": "rule_install", "level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 201, "rest_ms": 7.6, "on_switch_s": 3.03, "total_s": 3.04, "error": null}
+{"ts": "2026-11-22T13:09:09.275528+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:09:29.288119+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.536, "reason": "tái phát"}
+{"ts": "2026-11-22T13:09:47.278086+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:10:05.283850+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.559, "reason": "tái phát"}
+{"ts": "2026-11-22T13:10:29.285631+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:10:43.291946+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.547, "reason": "tái phát"}
+{"ts": "2026-11-22T13:11:07.301842+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:11:25.281844+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.539, "reason": "tái phát"}
+{"ts": "2026-11-22T13:11:51.295060+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:12:05.287059+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.539, "reason": "tái phát"}
+{"ts": "2026-11-22T13:12:27.288897+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:12:45.297543+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.528, "reason": "tái phát"}
+{"ts": "2026-11-22T13:13:11.293639+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:13:29.301788+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.505, "reason": "tái phát"}
+{"ts": "2026-11-22T13:13:41.293042+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:14:05.299871+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.531, "reason": "tái phát"}
+{"ts": "2026-11-22T13:14:29.304419+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T13:15:01.312719+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công (rule khớp 0.0 gói/s)"}
+{"ts": "2026-11-22T13:15:01.322430+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 204, "why": "hết tấn công (rule khớp 0.0 gói/s)"}
+{"ts": "2026-11-22T13:15:01.322610+00:00", "event": "state", "frm": "RECOVERING", "to": "NORMAL"}
+{"ts": "2026-11-22T13:17:05.308132+00:00", "event": "stop"}

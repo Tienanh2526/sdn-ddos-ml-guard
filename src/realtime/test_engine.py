@@ -96,6 +96,30 @@ def test_secondary_legit_target_released():
     assert not odl.flows, f"phải gỡ hết sau khi tấn công dừng: {list(odl.flows)}"
 
 
+def test_collateral_legit_rise_does_not_block_escalation():
+    """A06/A07-M2: sau khi bypass .13, Packet-In của .11 tăng nhẹ do chính tấn công (retransmit) -> không được
+    gắn 'nghi nhắm sai' cho .13; .13 vẫn phải lên cấp 2 (với SYN flood chỉ drop mới cắt SYN-ACK trả về)."""
+    eng, odl, ev, clock = make()
+    run(eng, odl, clock, 120, 0.1, {LEGIT: 6})
+    run(eng, odl, clock, 10, 0.95, {LEGIT: 6, ATT: 200}, {ATT: 100})
+    assert eng.targets.get(ATT, {}).get("level") == 1, eng.targets
+    run(eng, odl, clock, 60, 0.95, {LEGIT: 20}, {ATT: 100})            # .11 tăng ~3x nền (hiệu ứng phụ)
+    assert not any(k == "escalation_blocked" and kw["ip"] == ATT for _, k, kw in ev), "không được chặn cấp 2 .13"
+    assert "aig-l2-" + ATT.replace(".", "-") in odl.flows, "kẻ tấn công thật phải lên cấp 2"
+    assert not any(c[1] == "aig-l2-" + LEGIT.replace(".", "-") for c in odl.calls)
+
+
+def test_wrong_primary_still_blocked_from_drop():
+    """A04-M2: nhắm nhầm .11 trước (tăng đột biến hợp lệ), sau đó kẻ tấn công mạnh hơn lộ ra -> .11 KHÔNG được drop."""
+    eng, odl, ev, clock = make()
+    run(eng, odl, clock, 120, 0.1, {LEGIT: 6})
+    run(eng, odl, clock, 10, 0.95, {LEGIT: 40})                         # quy kết .11 (nhầm)
+    assert LEGIT in eng.targets and not eng.targets[LEGIT]["l1_only"]
+    run(eng, odl, clock, 60, 0.95, {ATT: 150}, {ATT: 75})               # kẻ tấn công thật, bằng chứng lớn hơn hẳn
+    assert eng.targets[LEGIT]["doubt"], "nguồn chính phải bị nghi nhắm sai"
+    assert not any(c[1] == "aig-l2-" + LEGIT.replace(".", "-") for c in odl.calls), "không được drop người dùng"
+
+
 def test_no_action_on_normal():
     eng, odl, ev, clock = make()
     run(eng, odl, clock, 600, 0.1, {LEGIT: 60})
