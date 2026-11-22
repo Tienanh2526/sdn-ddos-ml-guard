@@ -1,0 +1,41 @@
+{
+  "run_id": "N04-M1",
+  "scenario": "N04",
+  "target": "192.168.200.12",
+  "source": "192.168.200.11",
+  "generator": "flash_crowd_n04.py",
+  "default_label": 0,
+  "start_utc": "2026-11-22T09:30:13.567491+00:00",
+  "end_utc": "2026-11-22T09:40:13.748687+00:00",
+  "total_sent": 13473,
+  "phases": [
+    {
+      "name": "warmup",
+      "begin_s": 0,
+      "end_s": 120,
+      "rate": 10,
+      "label": 0
+    },
+    {
+      "name": "surge1",
+      "begin_s": 120,
+      "end_s": 300,
+      "rate": 25,
+      "label": 0
+    },
+    {
+      "name": "surge2",
+      "begin_s": 300,
+      "end_s": 480,
+      "rate": 35,
+      "label": 0
+    },
+    {
+      "name": "cooldown",
+      "begin_s": 480,
+      "end_s": 600,
+      "rate": 15,
+      "label": 0
+    }
+  ]
+}

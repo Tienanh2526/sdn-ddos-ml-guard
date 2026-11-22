@@ -157,16 +157,36 @@ def load_module(path, name):
 # Bộ ra quyết định + giảm thiểu
 # ============================================================================================
 class Engine:
+    """Máy trạng thái NORMAL -> SUSPECT -> MITIGATING -> RECOVERING + quy kết nguồn + giảm thiểu 2 cấp.
+
+    QUY KẾT NGUỒN (bài học A04-M1, 22/11): lấy nguồn có tỉ lệ Packet-In cao nhất trong MỘT mẫu 2 s là sai với
+    tấn công tốc độ thấp — lưu lượng nền hợp lệ cũng sinh Packet-In cùng cỡ, mẫu nhỏ thì nhiễu -> đã chặn nhầm
+    người dùng .11. Cách làm hiện tại:
+      * mức nền Packet-In của TỪNG nguồn (EWMA, chỉ học khi NORMAL)
+      * bằng chứng = Packet-In VƯỢT mức nền, cộng dồn trong `attr_window` chu kỳ gần nhất (mặc định 10 s)
+      * chỉ nhắm khi đủ bằng chứng (>= min_evidence gói vượt nền, chiếm >= min_share phần vượt nền); chưa đủ
+        -> vẫn MITIGATING nhưng CHƯA cài rule, quy kết lại ở chu kỳ sau
+      * đang xử lý mà Packet-In vượt nền vẫn đến từ nguồn KHÁC -> nhắm thêm nguồn đó (đa nguồn), và các nguồn
+        đã nhắm trước bị gắn "nghi nhắm sai" -> KHÔNG bao giờ nâng lên cấp 2 (drop) => không chặn nhầm người dùng.
+    """
+
     def __init__(self, args, odl: ODL | None, log, clock=time.time):
         self.a, self.odl, self.log, self.clock = args, odl, log, clock
         self.state = "NORMAL"
         self.pos = collections.deque(maxlen=args.n)
         self.since = self.clock()
-        self.target = None            # IP nguồn đang bị xử lý
-        self.level = 0
+        self.targets = {}             # ip -> {"level": 1|2, "t1": thời điểm cấp 1, "doubt": bool}
         self.rules = []               # (node, flow_id)
-        self.level1_t = None
         self.clear_cycles = 0
+        self.hist = collections.deque(maxlen=getattr(args, "attr_window", 5))   # Counter Packet-In/nguồn mỗi chu kỳ
+        self.base = collections.defaultdict(float)                               # EWMA Packet-In/chu kỳ mỗi nguồn
+        self.n_learn = {}                                                        # số mẫu đã học mỗi nguồn
+        self.alpha = getattr(args, "base_alpha", 0.05)
+        self.min_evidence = getattr(args, "min_evidence", 15)
+
+    @property
+    def target(self):
+        return next(iter(self.targets), None)
 
     def _set(self, st, **kw):
         self.log("state", frm=self.state, to=st, **kw)
@@ -174,7 +194,7 @@ class Engine:
 
     def _install(self, flow, node, level):
         if self.odl is None:
-            return
+            return False
         t0 = self.clock()
         st, ms, body = self.odl.put_flow(node, flow)
         ok = st in (200, 201, 204)
@@ -184,54 +204,113 @@ class Engine:
                  error=None if ok else body.get("error"))
         if ok:
             self.rules.append((node, flow["id"]))
+        return ok
 
     def _remove_all(self, why):
         for node, fid in self.rules:
             st, ms = self.odl.delete_flow(node, fid)
             self.log("rule_remove", node=node, flow_id=fid, http=st, why=why)
         self.rules.clear()
-        self.level, self.target, self.level1_t = 0, None, None
+        self.targets.clear()
 
-    def attribute(self, src: collections.Counter):
-        cand = {ip: c for ip, c in src.items() if ip not in PROTECTED and ip in HOSTS}
-        tot = sum(cand.values())
-        if not tot:
+    # ------------------------------------------------------------------ quy kết nguồn
+    def observe(self, src, learn):
+        self.hist.append(collections.Counter({ip: c for ip, c in src.items() if ip in HOSTS and ip not in PROTECTED}))
+        if learn:   # chỉ học mức nền khi hệ thống bình thường
+            for ip in set(self.base) | set(src):
+                if ip in HOSTS and ip not in PROTECTED:
+                    # n mẫu đầu: trung bình tích lũy (ước lượng không chệch khi tấn công tới sớm); sau đó EWMA
+                    n = self.n_learn[ip] = self.n_learn.get(ip, 0) + 1
+                    w = max(self.alpha, 1.0 / n)
+                    self.base[ip] += w * (src.get(ip, 0) - self.base[ip])
+
+    def attribute(self, src=None, exclude=()):
+        """-> (ip, share_of_excess, excess_count). Chưa đủ bằng chứng -> (None, share, excess).
+        `src` (Counter 1 chu kỳ) chỉ dùng khi chưa có lịch sử — để in log."""
+        hist = self.hist if self.hist else ([collections.Counter(src)] if src else [])
+        win = collections.Counter()
+        for c in hist:
+            win.update(c)
+        nwin = max(1, len(hist))
+        excess, signif = {}, {}
+        for ip in win:
+            if ip in exclude or ip not in HOSTS or ip in PROTECTED:
+                continue
+            exp = self.base.get(ip, 0.0) * nwin          # kỳ vọng nếu nguồn vẫn như lúc bình thường
+            e = win[ip] - exp
+            if e <= 0:
+                continue
+            excess[ip] = e
+            # Kiểm định: tăng >= 2 lần mức nền VÀ vượt kỳ vọng > 4 độ lệch chuẩn Poisson. Không có điều này,
+            # khi chỉ còn 1 ứng viên (share = 100%) dao động ngẫu nhiên của nguồn hợp lệ sớm muộn cũng vượt
+            # ngưỡng tuyệt đối -> nhắm nhầm (replay đã tái hiện).
+            signif[ip] = (e >= self.min_evidence and win[ip] >= 2 * exp and e >= 4 * max(1.0, exp) ** 0.5)
+        if not excess:
             return None, 0.0, 0
-        ip, c = max(cand.items(), key=lambda x: x[1])
-        return ip, c / tot, c
+        ip, e = max(excess.items(), key=lambda x: x[1])
+        share = e / sum(excess.values())
+        if not signif[ip] or share < self.a.min_share:
+            return None, share, int(e)
+        return ip, share, int(e)
 
+    def _target_l1(self, ip, share, ev, primary=True):
+        """primary = quy kết lúc xác nhận tấn công (được phép lên cấp 2). Nguồn nhắm BỔ SUNG trong lúc đang
+        xử lý chỉ cấp 1 (chuyển tiếp thẳng: controller được bảo vệ, dịch vụ không bị cắt) — khi không chắc
+        chắn thì chọn hành động không gây hại."""
+        node, in_port, uplink = HOSTS[ip]
+        for t in self.targets.values():      # đã nhắm nguồn khác mà bão vẫn đến từ ip -> nghi nhắm sai nguồn cũ
+            t["doubt"] = True
+        self.targets[ip] = {"level": 1, "t1": self.clock(), "doubt": False, "l1_only": not primary}
+        self.log("target", ip=ip, share=round(share, 2), excess_pin=ev, primary=primary,
+                 base_pin_per_cycle={k: round(v, 2) for k, v in self.base.items()})
+        self._install(bypass_flow("aig-l1-" + ip.replace(".", "-"), node, in_port, ip, uplink,
+                                  idle_timeout=self.a.rule_idle, hard_timeout=self.a.rule_hard), node, 1)
+        return f"L1 bypass {ip}"
+
+    # ------------------------------------------------------------------ một chu kỳ
     def step(self, prob, src_counter):
         a = self.a
         pos = prob >= a.threshold
         self.pos.append(int(pos))
         confirmed = sum(self.pos) >= a.k
+        self.observe(src_counter, learn=(self.state == "NORMAL" and not pos))
         action = ""
+        mitigate = a.mode == "mitigate"
         if self.state == "NORMAL":
             if pos:
                 self._set("SUSPECT", prob=round(prob, 3))
         elif self.state == "SUSPECT":
             if confirmed:
-                ip, share, cnt = self.attribute(src_counter)
-                self._set("MITIGATING", prob=round(prob, 3), top_src=ip, share=round(share, 2), pin_from_src=cnt)
-                if a.mode == "mitigate" and ip and share >= a.min_share:
-                    node, in_port, uplink = HOSTS[ip]
-                    self.target = ip
-                    self._install(bypass_flow("aig-l1-" + ip.replace(".", "-"), node, in_port, ip, uplink,
-                                              idle_timeout=a.rule_idle, hard_timeout=a.rule_hard), node, 1)
-                    self.level, self.level1_t = 1, self.clock()
-                    action = f"L1 bypass {ip}"
+                ip, share, ev = self.attribute()
+                self._set("MITIGATING", prob=round(prob, 3), top_src=ip, share=round(share, 2), pin_from_src=ev)
+                if mitigate and ip:
+                    action = self._target_l1(ip, share, ev)
             elif sum(self.pos) == 0:
                 self._set("NORMAL")
         elif self.state == "MITIGATING":
             if pos:
                 self.clear_cycles = 0
-                if (a.mode == "mitigate" and a.allow_drop and self.level == 1 and self.target
-                        and self.clock() - self.level1_t >= a.escalate_after):
-                    node, in_port, _ = HOSTS[self.target]
-                    self._install(drop_flow("aig-l2-" + self.target.replace(".", "-"), node, in_port,
-                                            self.target, TARGET, idle_timeout=a.rule_idle, hard_timeout=a.rule_hard), node, 2)
-                    self.level = 2
-                    action = f"L2 drop {self.target}"
+                # quy kết (lại): Packet-In vượt nền từ nguồn CHƯA xử lý -> nhắm thêm
+                if mitigate:
+                    ip, share, ev = self.attribute(exclude=tuple(self.targets))
+                    if ip:
+                        action = self._target_l1(ip, share, ev, primary=not self.targets)
+                # cấp 2 chỉ cho nguồn quy kết chính, không bị nghi nhắm sai
+                if mitigate and a.allow_drop:
+                    for ip, t in self.targets.items():
+                        if t["level"] != 1 or t["l1_only"]:
+                            continue
+                        if t["doubt"]:
+                            if not t.get("doubt_logged"):
+                                self.log("escalation_blocked", ip=ip,
+                                         why="nghi nhắm sai: Packet-In vượt nền đến từ nguồn khác")
+                                t["doubt_logged"] = True
+                        elif self.clock() - t["t1"] >= a.escalate_after:
+                            node, in_port, _ = HOSTS[ip]
+                            self._install(drop_flow("aig-l2-" + ip.replace(".", "-"), node, in_port, ip, TARGET,
+                                                    idle_timeout=a.rule_idle, hard_timeout=a.rule_hard), node, 2)
+                            t["level"] = 2
+                            action = (action + "; " if action else "") + f"L2 drop {ip}"
             else:
                 self.clear_cycles += 1
                 if self.clear_cycles >= a.clear_cycles:
@@ -259,6 +338,9 @@ def main():
     ap.add_argument("--k", type=int, default=None); ap.add_argument("--n", type=int, default=None)
     ap.add_argument("--min-share", type=float, default=0.5, help="tỉ lệ Packet-In tối thiểu của nguồn bị xử lý")
     ap.add_argument("--escalate-after", type=float, default=20.0)
+    ap.add_argument("--attr-window", type=int, default=5, help="số chu kỳ cộng dồn bằng chứng quy kết (5 x 2 s)")
+    ap.add_argument("--min-evidence", type=int, default=15, help="số Packet-In VƯỢT mức nền tối thiểu để nhắm 1 nguồn")
+    ap.add_argument("--base-alpha", type=float, default=0.05, help="hệ số EWMA mức nền Packet-In mỗi nguồn")
     ap.add_argument("--clear-cycles", type=int, default=5, help="số chu kỳ âm liên tiếp để coi là hết tấn công")
     ap.add_argument("--recover-s", type=float, default=30.0)
     ap.add_argument("--rule-idle", type=int, default=60, help="rule tự gỡ sau N giây không còn gói khớp")
@@ -335,7 +417,10 @@ def main():
                 sample[c] = float(row[c]) if row and row.get(c) not in (None, "") else np.nan
             buf.append(sample); seq += 1
             prob, pos, confirmed, action, score_ms = np.nan, "", "", "", np.nan
-            top, share, _ = eng.attribute(src)
+            # chỉ để ghi log: nguồn chiếm nhiều Packet-In nhất trong chu kỳ này (quy kết thật nằm trong Engine)
+            raw = {ip: c for ip, c in src.items() if ip in HOSTS and ip not in PROTECTED}
+            top = max(raw, key=raw.get) if raw else None
+            share = raw[top] / sum(raw.values()) if raw else 0.0
             now_ok = row is not None
             if now_ok != dp_ok and seq > W:
                 log("dp_feed", ok=now_ok, age_s=round(age, 1),

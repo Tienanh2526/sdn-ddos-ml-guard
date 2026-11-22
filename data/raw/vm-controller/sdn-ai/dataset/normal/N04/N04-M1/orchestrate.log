@@ -1,0 +1,25 @@
+﻿16:27:14 === N04-M1  gen=vm-client  dur=600s  capture=730s samples=365
+16:27:44 T0=1795339813 (UTC 09:30:13)
+16:27:50 Module thời gian thực: mitigate --allow-drop
+16:28:18 Running as unit: aig-N04-M1-pcap.service
+16:28:18 Running as unit: aig-N04-M1-tel.service
+16:28:18 Running as unit: aig-N04-M1-det.service
+16:28:18 scheduled-controller
+16:28:26 Running as unit: aig-N04-M1-dp.service
+16:28:26 scheduled-leaf1
+16:28:33 Running as unit: aig-N04-M1-qos.service
+16:28:33 Running as unit: aig-N04-M1-bg.service
+16:28:33 scheduled-client
+16:29:01 Running as unit: aig-N04-M1-gen.service
+16:29:01 scheduled-generator
+16:29:29 Tất cả đã hẹn giờ. Còn 44s tới T0; kết thúc thu sau ~749s
+16:42:07 PHASE=cooldown 480-600s CONN_RATE=15/s LABEL=0 CONN=1765 HTTP_OK=13473 HTTP_FAIL=0 HTTP_P50_MS=5.7 UDP_SESSIONS=0 UDP_SENT=0 UDP_ECHO=0 | N04_END= 2026-11-22T09:40:13.748687+00:00 | TOTAL_SENT= 13473 | GROUNDTRUTH= /home/anh2004zai_gmail_com/aiguard-runs/N04-M1/N04-M1.groundtruth.json
+16:44:05 === N04-M1 FINALIZE ===
+16:44:05 SOURCE_ROWS = 365
+16:44:05 SELECTED_ROWS = 296
+16:44:05 EXCLUDED = {'phase_boundary': 67, 'invalid_window': 1}
+16:44:05 LABELS = {0: 296}
+16:44:05 TOTAL_PACKET_IN = 67736
+16:44:05 TOTAL_FLOW_MOD = 0
+16:44:05 OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/N04-M1/N04-M1.csv
+16:44:52 

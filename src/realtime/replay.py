@@ -82,6 +82,11 @@ def main():
                      lambda kind, **kw: events.append((clock["t"], kind, kw)), clock=lambda: clock["t"])
         buf = collections.deque(maxlen=W)
         attacker = "192.168.200.11" if r.endswith(("-R4", "-R5")) else "192.168.200.13"
+        legit = "192.168.200.13" if attacker == "192.168.200.11" else "192.168.200.11"
+        # Packet-In theo nguồn (mẫu chỉ có tổng): nền hợp lệ ~ Poisson(mức nền của lần chạy), tấn công = phần
+        # vượt nền; nguồn đã bị cấp 1 -> 0 Packet-In. Tái hiện tình huống A04-M1 (tấn công yếu ~ cỡ nền).
+        rng = np.random.default_rng(abs(hash(r)) % 2**32)
+        bg = float(g.loc[g["label"] == 0, "packet_in_rate"].median() or 3.0)
         first_att = first_mit = None
         mit_in_normal = 0
         prev_state = "NORMAL"
@@ -96,7 +101,12 @@ def main():
                 continue
             p = float(model.predict_proba(x)[0, 1])
             lab = row["label"]
-            src = collections.Counter({attacker: 50} if lab == 1 else {"192.168.200.11": 3})
+            pin = float(row["packet_in_rate"]) if pd.notna(row["packet_in_rate"]) else bg
+            src = collections.Counter({legit: int(rng.poisson(min(bg, pin) * 2))})
+            if lab == 1:
+                src[attacker] = int(rng.poisson(max(0.0, pin - bg) * 2))
+            for ip in eng.targets:
+                src[ip] = 0
             eng.step(p, src)
             if lab == 1 and first_att is None:
                 first_att = clock["t"]
@@ -113,6 +123,8 @@ def main():
         summary.append(dict(run=r, transitions=sum(1 for e in events if e[1] == "state"),
                             delay_s=round(delay, 1) if not np.isnan(delay) else None,
                             mitigate_on_normal=mit_in_normal, rules_put=len(puts), rules_deleted=len(dels),
+                            rules_on_legit=sum(1 for c in puts if legit.replace(".", "-") in c[2]),
+                            drops_on_legit=sum(1 for c in puts if c[2].startswith("aig-l2-") and legit.replace(".", "-") in c[2]),
                             final_state=eng.state))
         for t, kind, kw in events:
             if kind in ("state", "rule_install", "rule_remove"):
