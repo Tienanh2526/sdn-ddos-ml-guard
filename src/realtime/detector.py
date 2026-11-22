@@ -189,17 +189,18 @@ class Engine:
         """Tốc độ gói khớp các rule (gói/s) kể từ mốc chụp trước; lần đầu chỉ chụp mốc, trả None."""
         if self.odl is None or not self.rules or not hasattr(self.odl, "flow_packets"):
             return None
-        tot = 0
-        for node, fid in self.rules:
-            c = self.odl.flow_packets(node, fid)
-            if c is None:
-                return None
-            tot += c
+        # Từng rule riêng: rule cấp 1 có thể đã bị switch xóa do idle-timeout (sau khi cấp 2 drop ở priority
+        # cao hơn hứng hết gói, A04-M3) -> đọc trả None; rule đó bỏ qua chứ không làm hỏng cả phép đo.
+        counts = {fid: self.odl.flow_packets(node, fid) for node, fid in self.rules}
+        counts = {k: v for k, v in counts.items() if v is not None}
         now = self.clock()
-        snap, self._hit_snap = self._hit_snap, (now, tot)
-        if snap is None or now - snap[0] <= 0:
+        snap, self._hit_snap = self._hit_snap, (now, counts)
+        if snap is None or now - snap[0] <= 0 or not counts:
             return None
-        return max(0, tot - snap[1]) / (now - snap[0])
+        common = [k for k in counts if k in snap[1]]
+        if not common:
+            return None
+        return sum(max(0, counts[k] - snap[1][k]) for k in common) / (now - snap[0])
 
     @property
     def target(self):

@@ -1,0 +1,8 @@
+=== A04-M3 FINALIZE ===
+SOURCE_ROWS = 455
+SELECTED_ROWS = 385
+EXCLUDED = {'phase_boundary': 69}
+LABELS = {0: 118, 1: 267}
+TOTAL_PACKET_IN = 5313
+TOTAL_FLOW_MOD = 10
+OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/A04-M3/A04-M3.csv

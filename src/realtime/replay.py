@@ -45,7 +45,12 @@ class FakeODL:
         return 0.6
 
     def flow_packets(self, node, fid, table=0):
-        return int(self.pkts)            # replay cập nhật self.pkts theo nhãn (nguồn còn gửi hay không)
+        # Như switch thật (A04-M3): có rule cấp 2 (drop, priority cao hơn) thì rule cấp 1 không còn gói khớp và
+        # bị idle-timeout xóa -> đọc thống kê trả None. Rule còn lại trả bộ đếm theo nhãn (nguồn còn gửi hay không).
+        if fid.startswith("aig-l1-") and any(c[0] == "PUT" and c[2] == fid.replace("aig-l1-", "aig-l2-")
+                                              for c in self.calls):
+            return None
+        return int(self.pkts)
 
     def delete_flow(self, node, fid, table=0):
         self.calls.append(("DELETE", node, fid))
