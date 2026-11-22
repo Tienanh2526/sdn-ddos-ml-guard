@@ -1,6 +1,6 @@
 # Báo cáo chất lượng dữ liệu – Dataset bảo vệ SDN Controller
 
-Sinh tự động bởi `src/build_dataset.py` lúc 2026-11-22 08:06 UTC. Nguồn: dữ liệu thô chép nguyên trạng từ vm-controller, vm-client, vm-attacker (19/11/2026). Cửa sổ trượt W = 5 mẫu (10 s), bước trượt 1 mẫu (2 s).
+Sinh tự động bởi `src/build_dataset.py` lúc 2026-11-22 18:34 UTC. Nguồn: dữ liệu thô chép nguyên trạng từ vm-controller, vm-client, vm-attacker (19/11/2026). Cửa sổ trượt W = 5 mẫu (10 s), bước trượt 1 mẫu (2 s).
 
 ## 1. Tổng quan các lần chạy
 
@@ -19,32 +19,42 @@ Sinh tự động bởi `src/build_dataset.py` lúc 2026-11-22 08:06 UTC. Nguồ
 | A04-R1 | A04 | attack | dataset | train | 2026-11-21 18:32 | 777 | 385 | 385 | 118 | 267 |
 | A04-R2 | A04 | attack | dataset | train | 2026-11-22 05:12 | 777 | 385 | 385 | 118 | 267 |
 | A04-R3 | A04 | attack | dataset | train | 2026-11-22 06:48 | 775 | 384 | 384 | 118 | 266 |
+| A04-R4 | A04 | attack | dataset | train | 2026-11-22 15:35 | 777 | 385 | 385 | 118 | 267 |
+| A04-R5 | A04 | attack | dataset | test | 2026-11-22 17:20 | 775 | 384 | 384 | 118 | 266 |
 | A05-R1 | A05 | attack | dataset | train | 2026-11-22 03:50 | 514 | 237 | 237 | 148 | 89 |
 | A05-R2 | A05 | attack | dataset | train | 2026-11-22 05:33 | 514 | 237 | 237 | 149 | 88 |
 | A05-R3 | A05 | attack | dataset | train | 2026-11-22 07:08 | 516 | 238 | 238 | 148 | 90 |
+| A05-R4 | A05 | attack | dataset | train | 2026-11-22 15:59 | 516 | 238 | 238 | 148 | 90 |
+| A05-R5 | A05 | attack | dataset | test | 2026-11-22 17:40 | 516 | 238 | 238 | 148 | 90 |
 | A06-R1 | A06 | attack | dataset | train | 2026-11-22 04:06 | 775 | 384 | 384 | 118 | 266 |
 | A06-R2 | A06 | attack | dataset | train | 2026-11-22 05:49 | 777 | 385 | 385 | 118 | 267 |
 | A06-R3 | A06 | attack | dataset | train | 2026-11-22 07:25 | 777 | 385 | 385 | 118 | 267 |
+| A06-R4 | A06 | attack | dataset | train | 2026-11-22 16:16 | 777 | 385 | 385 | 118 | 267 |
+| A06-R5 | A06 | attack | dataset | test | 2026-11-22 17:56 | 777 | 385 | 385 | 119 | 266 |
 | A07-R1 | A07 | attack | dataset | train | 2026-11-22 04:28 | 775 | 384 | 384 | 118 | 266 |
 | A07-R2 | A07 | attack | dataset | train | 2026-11-22 06:10 | 777 | 385 | 385 | 118 | 267 |
 | A07-R3 | A07 | attack | dataset | train | 2026-11-22 07:46 | 775 | 384 | 384 | 117 | 267 |
+| A07-R4 | A07 | attack | dataset | train | 2026-11-22 16:38 | 775 | 384 | 384 | 117 | 267 |
+| A07-R5 | A07 | attack | dataset | test | 2026-11-22 18:16 | 777 | 385 | 385 | 118 | 267 |
 | N04-R1 | N04 | normal | dataset | train | 2026-11-22 03:31 | 595 | 295 | 295 | 295 | 0 |
 | N04-R2 | N04 | normal | dataset | train | 2026-11-22 04:53 | 597 | 296 | 296 | 296 | 0 |
 | N04-R3 | N04 | normal | dataset | train | 2026-11-22 06:31 | 597 | 296 | 296 | 296 | 0 |
+| N04-R4 | N04 | normal | dataset | train | 2026-11-22 15:14 | 595 | 295 | 295 | 295 | 0 |
+| N04-R5 | N04 | normal | dataset | test | 2026-11-22 17:01 | 597 | 296 | 296 | 296 | 0 |
 
-Tổng: **7154 mẫu**, 7147 mẫu hợp lệ; 3820 mẫu nhãn 0, 3148 mẫu nhãn 1. Mẫu đầu mỗi lần chạy không hợp lệ vì chưa có khoảng để tính tốc độ.
+Tổng: **10529 mẫu**, 10522 mẫu hợp lệ; 5415 mẫu nhãn 0, 4928 mẫu nhãn 1. Mẫu đầu mỗi lần chạy không hợp lệ vì chưa có khoảng để tính tốc độ.
 
 ## 2. Cửa sổ thời gian (W = 5)
 
 | Split | Nhãn | Số cửa sổ |
 |---|---|---|
 | excluded | không nhãn | 167 |
-| test | 0 (bình thường) | 204 |
-| test | 1 (tấn công) | 236 |
-| train | 0 (bình thường) | 3528 |
-| train | 1 (tấn công) | 2912 |
+| test | 0 (bình thường) | 983 |
+| test | 1 (tấn công) | 1125 |
+| train | 0 (bình thường) | 4304 |
+| train | 1 (tấn công) | 3803 |
 
-- Cửa sổ chứa cả mẫu thường lẫn mẫu tấn công (vắt qua thời điểm bắt đầu/kết thúc tấn công): **334** / 6880. Ít vì dữ liệu gốc đã bỏ các mẫu nằm vắt qua ranh giới pha.
+- Cửa sổ chứa cả mẫu thường lẫn mẫu tấn công (vắt qua thời điểm bắt đầu/kết thúc tấn công): **542** / 10215. Ít vì dữ liệu gốc đã bỏ các mẫu nằm vắt qua ranh giới pha.
 - Nhãn của cửa sổ = nhãn của mẫu cuối cùng (trạng thái tại thời điểm ra quyết định).
 - Split theo **lần chạy**, không xáo trộn từng cửa sổ, để tránh rò rỉ giữa các cửa sổ chồng lấn.
 
@@ -65,18 +75,28 @@ Tổng: **7154 mẫu**, 7147 mẫu hợp lệ; 3820 mẫu nhãn 0, 3148 mẫu nh
 | A04-R1 | 2.00 | 4.01 | 4 | 1 |
 | A04-R2 | 2.00 | 4.01 | 4 | 1 |
 | A04-R3 | 2.00 | 4.01 | 4 | 1 |
+| A04-R4 | 2.00 | 4.04 | 4 | 1 |
+| A04-R5 | 2.00 | 4.01 | 4 | 1 |
 | A05-R1 | 2.00 | 4.02 | 21 | 1 |
 | A05-R2 | 2.00 | 4.03 | 21 | 1 |
 | A05-R3 | 2.00 | 4.03 | 21 | 1 |
+| A05-R4 | 2.00 | 4.04 | 21 | 1 |
+| A05-R5 | 2.00 | 4.02 | 21 | 1 |
 | A06-R1 | 2.00 | 4.04 | 4 | 1 |
 | A06-R2 | 2.00 | 4.01 | 4 | 1 |
 | A06-R3 | 2.00 | 4.08 | 4 | 1 |
+| A06-R4 | 2.00 | 4.05 | 4 | 1 |
+| A06-R5 | 2.00 | 4.10 | 4 | 1 |
 | A07-R1 | 2.00 | 4.01 | 4 | 1 |
 | A07-R2 | 2.00 | 4.01 | 4 | 1 |
 | A07-R3 | 2.00 | 4.03 | 4 | 1 |
+| A07-R4 | 2.00 | 4.02 | 4 | 1 |
+| A07-R5 | 2.00 | 4.02 | 4 | 1 |
 | N04-R1 | 2.00 | 4.02 | 3 | 1 |
 | N04-R2 | 2.00 | 4.00 | 3 | 1 |
 | N04-R3 | 2.00 | 4.02 | 3 | 1 |
+| N04-R4 | 2.00 | 4.02 | 3 | 1 |
+| N04-R5 | 2.00 | 4.01 | 3 | 1 |
 
 ## 4. Giá trị thiếu (trên mẫu hợp lệ)
 
@@ -121,6 +141,16 @@ Không có giá trị thiếu ở các cột đo.
 | A04-R3 | P1 | 10.00 | 88 | 17.03 | 9.97 | 50.74 | 1.70 |
 | A04-R3 | P2 | 20.00 | 89 | 24.63 | 10.82 | 57.72 | 1.23 |
 | A04-R3 | P3 | 30.00 | 89 | 38.08 | 13.06 | 69.85 | 1.27 |
+| A04-R4 | baseline | 0.00 | 59 | 5.66 | 7.84 | 40.57 |  |
+| A04-R4 | recovery | 0.00 | 59 | 3.21 | 7.54 | 37.92 |  |
+| A04-R4 | P1 | 10.00 | 89 | 14.09 | 8.98 | 48.78 | 1.41 |
+| A04-R4 | P2 | 20.00 | 89 | 23.30 | 10.37 | 57.81 | 1.17 |
+| A04-R4 | P3 | 30.00 | 89 | 35.38 | 12.27 | 69.33 | 1.18 |
+| A04-R5 | baseline | 0.00 | 59 | 4.45 | 7.72 | 37.86 |  |
+| A04-R5 | recovery | 0.00 | 59 | 5.02 | 8.10 | 40.74 |  |
+| A04-R5 | P1 | 10.00 | 89 | 17.94 | 9.53 | 52.74 | 1.79 |
+| A04-R5 | P2 | 20.00 | 88 | 28.26 | 11.19 | 62.10 | 1.41 |
+| A04-R5 | P3 | 30.00 | 89 | 40.32 | 13.01 | 74.75 | 1.34 |
 | A05-R1 | baseline | 0.00 | 29 | 5.06 | 8.63 | 39.55 |  |
 | A05-R1 | off1 | 0.00 | 9 | 2.23 | 10.32 | 61.27 |  |
 | A05-R1 | off2 | 0.00 | 9 | 4.51 | 9.99 | 53.66 |  |
@@ -187,6 +217,50 @@ Không có giá trị thiếu ở các cột đo.
 | A05-R3 | on10 | 63.00 | 9 | 66.67 | 15.43 | 83.62 | 1.06 |
 | A05-R3 | on3 | 73.00 | 9 | 76.40 | 16.43 | 93.78 | 1.05 |
 | A05-R3 | on5 | 78.00 | 9 | 86.16 | 17.59 | 99.78 | 1.10 |
+| A05-R4 | baseline | 0.00 | 29 | 2.15 | 7.15 | 35.20 |  |
+| A05-R4 | off1 | 0.00 | 9 | 2.72 | 8.49 | 48.58 |  |
+| A05-R4 | off2 | 0.00 | 9 | 3.24 | 8.93 | 49.11 |  |
+| A05-R4 | off3 | 0.00 | 9 | 2.67 | 8.60 | 48.38 |  |
+| A05-R4 | off4 | 0.00 | 9 | 2.12 | 8.38 | 47.30 |  |
+| A05-R4 | off5 | 0.00 | 9 | 2.34 | 8.60 | 54.14 |  |
+| A05-R4 | off6 | 0.00 | 9 | 2.39 | 8.66 | 47.87 |  |
+| A05-R4 | off7 | 0.00 | 9 | 4.24 | 9.94 | 57.83 |  |
+| A05-R4 | off8 | 0.00 | 9 | 4.85 | 9.05 | 52.94 |  |
+| A05-R4 | off9 | 0.00 | 9 | 4.61 | 8.88 | 53.53 |  |
+| A05-R4 | off10 | 0.00 | 9 | 3.85 | 9.16 | 49.13 |  |
+| A05-R4 | recovery | 0.00 | 29 | 3.10 | 7.41 | 36.11 |  |
+| A05-R4 | on3 | 44.00 | 9 | 47.61 | 13.04 | 72.78 | 1.08 |
+| A05-R4 | on4 | 45.00 | 9 | 48.05 | 13.27 | 69.99 | 1.07 |
+| A05-R4 | on6 | 46.00 | 9 | 49.43 | 13.21 | 69.80 | 1.07 |
+| A05-R4 | on10 | 46.00 | 9 | 50.66 | 13.87 | 78.63 | 1.10 |
+| A05-R4 | on1 | 50.00 | 9 | 52.75 | 13.27 | 74.27 | 1.06 |
+| A05-R4 | on2 | 52.00 | 9 | 56.21 | 13.38 | 76.14 | 1.08 |
+| A05-R4 | on9 | 60.00 | 9 | 65.65 | 15.32 | 93.31 | 1.09 |
+| A05-R4 | on8 | 71.00 | 9 | 75.04 | 16.54 | 96.42 | 1.06 |
+| A05-R4 | on5 | 74.00 | 9 | 77.71 | 17.04 | 103.85 | 1.05 |
+| A05-R4 | on7 | 74.00 | 9 | 77.75 | 16.65 | 97.28 | 1.05 |
+| A05-R5 | baseline | 0.00 | 29 | 6.65 | 7.73 | 40.77 |  |
+| A05-R5 | off1 | 0.00 | 9 | 8.56 | 10.88 | 65.65 |  |
+| A05-R5 | off2 | 0.00 | 9 | 3.85 | 10.27 | 58.84 |  |
+| A05-R5 | off3 | 0.00 | 9 | 7.24 | 10.16 | 61.01 |  |
+| A05-R5 | off4 | 0.00 | 9 | 10.77 | 10.33 | 60.06 |  |
+| A05-R5 | off5 | 0.00 | 9 | 7.53 | 9.82 | 57.19 |  |
+| A05-R5 | off6 | 0.00 | 9 | 6.90 | 9.88 | 57.43 |  |
+| A05-R5 | off7 | 0.00 | 9 | 5.52 | 9.99 | 58.82 |  |
+| A05-R5 | off8 | 0.00 | 9 | 5.85 | 9.44 | 50.62 |  |
+| A05-R5 | off9 | 0.00 | 9 | 5.47 | 9.66 | 60.73 |  |
+| A05-R5 | off10 | 0.00 | 9 | 7.13 | 9.38 | 56.04 |  |
+| A05-R5 | recovery | 0.00 | 29 | 6.67 | 8.09 | 40.78 |  |
+| A05-R5 | on8 | 41.00 | 9 | 49.50 | 13.21 | 73.56 | 1.21 |
+| A05-R5 | on5 | 54.00 | 9 | 65.24 | 15.26 | 86.07 | 1.21 |
+| A05-R5 | on10 | 55.00 | 9 | 61.71 | 14.93 | 80.82 | 1.12 |
+| A05-R5 | on6 | 57.00 | 9 | 68.59 | 15.38 | 88.04 | 1.20 |
+| A05-R5 | on4 | 58.00 | 9 | 71.78 | 16.10 | 92.60 | 1.24 |
+| A05-R5 | on7 | 61.00 | 9 | 70.63 | 16.76 | 91.79 | 1.16 |
+| A05-R5 | on9 | 65.00 | 9 | 73.57 | 16.77 | 87.91 | 1.13 |
+| A05-R5 | on3 | 68.00 | 9 | 78.70 | 17.15 | 91.78 | 1.16 |
+| A05-R5 | on2 | 71.00 | 9 | 78.19 | 18.09 | 99.98 | 1.10 |
+| A05-R5 | on1 | 75.00 | 9 | 88.73 | 18.98 | 103.15 | 1.18 |
 | A06-R1 | baseline | 0.00 | 59 | 6.35 | 8.41 | 40.67 |  |
 | A06-R1 | recovery | 0.00 | 59 | 64.31 | 15.86 | 104.80 |  |
 | A06-R1 | P1 | 50.00 | 88 | 158.43 | 26.43 | 148.09 | 3.17 |
@@ -202,6 +276,16 @@ Không có giá trị thiếu ở các cột đo.
 | A06-R3 | P1 | 50.00 | 89 | 156.37 | 25.60 | 144.57 | 3.13 |
 | A06-R3 | P2 | 100.00 | 89 | 300.59 | 40.29 | 244.95 | 3.01 |
 | A06-R3 | P3 | 200.00 | 89 | 572.27 | 62.93 | 461.73 | 2.86 |
+| A06-R4 | baseline | 0.00 | 59 | 2.99 | 7.24 | 36.39 |  |
+| A06-R4 | recovery | 0.00 | 59 | 4.61 | 9.07 | 51.25 |  |
+| A06-R4 | P1 | 50.00 | 89 | 128.61 | 22.82 | 135.68 | 2.57 |
+| A06-R4 | P2 | 100.00 | 89 | 277.13 | 39.12 | 247.86 | 2.77 |
+| A06-R4 | P3 | 200.00 | 89 | 589.69 | 66.45 | 489.03 | 2.95 |
+| A06-R5 | baseline | 0.00 | 59 | 6.58 | 8.27 | 40.54 |  |
+| A06-R5 | recovery | 0.00 | 60 | 4.28 | 8.51 | 46.16 |  |
+| A06-R5 | P1 | 50.00 | 89 | 123.95 | 22.63 | 131.57 | 2.48 |
+| A06-R5 | P2 | 100.00 | 89 | 275.43 | 41.09 | 254.44 | 2.75 |
+| A06-R5 | P3 | 200.00 | 88 | 566.37 | 62.63 | 484.54 | 2.83 |
 | A07-R1 | baseline | 0.00 | 59 | 6.21 | 7.78 | 40.05 |  |
 | A07-R1 | recovery | 0.00 | 59 | 2.52 | 8.30 | 45.67 |  |
 | A07-R1 | P1 | 50.00 | 88 | 59.96 | 16.13 | 91.62 | 1.20 |
@@ -217,6 +301,16 @@ Không có giá trị thiếu ở các cột đo.
 | A07-R3 | P1 | 50.00 | 89 | 62.50 | 15.95 | 91.73 | 1.25 |
 | A07-R3 | P2 | 100.00 | 89 | 109.99 | 23.45 | 144.54 | 1.10 |
 | A07-R3 | P3 | 200.00 | 89 | 209.66 | 32.79 | 242.53 | 1.05 |
+| A07-R4 | baseline | 0.00 | 58 | 5.37 | 7.63 | 38.84 |  |
+| A07-R4 | recovery | 0.00 | 59 | 4.32 | 8.65 | 46.39 |  |
+| A07-R4 | P1 | 50.00 | 89 | 63.74 | 15.91 | 95.56 | 1.27 |
+| A07-R4 | P2 | 100.00 | 89 | 109.40 | 22.89 | 148.90 | 1.09 |
+| A07-R4 | P3 | 200.00 | 89 | 207.47 | 33.36 | 255.73 | 1.04 |
+| A07-R5 | baseline | 0.00 | 59 | 4.88 | 7.55 | 37.66 |  |
+| A07-R5 | recovery | 0.00 | 59 | 7.19 | 8.98 | 51.07 |  |
+| A07-R5 | P1 | 50.00 | 89 | 56.72 | 15.60 | 92.77 | 1.13 |
+| A07-R5 | P2 | 100.00 | 89 | 110.15 | 23.05 | 150.68 | 1.10 |
+| A07-R5 | P3 | 200.00 | 89 | 219.02 | 35.04 | 263.27 | 1.10 |
 | N03-R1 | normal | 2.00 | 1 | 2.25 | 117.97 | 71.32 | 1.12 |
 | N03-R1 | normal | 5.00 | 99 | 5.00 | 11.00 | 35.11 | 1.00 |
 | N03-R1 | normal | 10.00 | 99 | 10.00 | 8.93 | 32.47 | 1.00 |
@@ -234,6 +328,14 @@ Không có giá trị thiếu ở các cột đo.
 | N04-R3 | cooldown | 15.00 | 59 | 60.86 | 13.78 | 71.74 | 4.06 |
 | N04-R3 | surge1 | 25.00 | 89 | 106.32 | 16.70 | 86.31 | 4.25 |
 | N04-R3 | surge2 | 35.00 | 89 | 182.89 | 21.90 | 110.16 | 5.23 |
+| N04-R4 | warmup | 10.00 | 59 | 34.06 | 10.60 | 57.96 | 3.41 |
+| N04-R4 | cooldown | 15.00 | 58 | 61.39 | 13.38 | 75.27 | 4.09 |
+| N04-R4 | surge1 | 25.00 | 89 | 112.89 | 16.91 | 94.17 | 4.52 |
+| N04-R4 | surge2 | 35.00 | 89 | 186.19 | 22.16 | 116.85 | 5.32 |
+| N04-R5 | warmup | 10.00 | 59 | 34.21 | 10.99 | 60.18 | 3.42 |
+| N04-R5 | cooldown | 15.00 | 59 | 57.07 | 13.57 | 73.30 | 3.80 |
+| N04-R5 | surge1 | 25.00 | 89 | 125.86 | 18.48 | 96.92 | 5.03 |
+| N04-R5 | surge2 | 35.00 | 89 | 188.53 | 22.97 | 119.95 | 5.39 |
 
 Tỉ lệ Đo/Sinh ≈ 1 nghĩa là mốc thời gian gán nhãn khớp với lưu lượng thực tế.
 
@@ -254,64 +356,74 @@ Tỉ lệ Đo/Sinh ≈ 1 nghĩa là mốc thời gian gán nhãn khớp với l�
 | A04-R1 | 1626.65 | 88 | 429 | 11.74 | 33.45 | 58.73 |
 | A04-R2 | 1796.53 | 69 | 449 | 10.70 | 96.94 | 53.59 |
 | A04-R3 | 1807.47 | 66 | 445 | 10.28 | 31.47 | 53.22 |
+| A04-R4 | 2425.36 | 68 | 403 | 9.67 | 21.98 | 52.70 |
+| A04-R5 | 2427.70 | 64 | 433 | 10.22 | 20.98 | 55.86 |
 | A05-R1 | 1618.33 | 62 | 910 | 12.77 | 33.47 | 65.10 |
 | A05-R2 | 1800.34 | 70 | 876 | 11.69 | 38.46 | 63.73 |
 | A05-R3 | 1809.72 | 66 | 884 | 11.02 | 25.97 | 60.99 |
+| A05-R4 | 2425.35 | 62 | 811 | 10.63 | 24.48 | 59.41 |
+| A05-R5 | 2427.60 | 82 | 883 | 11.85 | 26.47 | 65.98 |
 | A06-R1 | 1673.13 | 76 | 4032 | 34.68 | 152.87 | 222.14 |
 | A06-R2 | 1805.94 | 74 | 4073 | 33.42 | 143.39 | 217.98 |
 | A06-R3 | 1848.12 | 75 | 4058 | 33.25 | 155.37 | 217.56 |
+| A06-R4 | 2426.07 | 64 | 4038 | 32.18 | 222.90 | 215.14 |
+| A06-R5 | 2427.62 | 74 | 4028 | 31.64 | 165.32 | 213.39 |
 | A07-R1 | 1789.84 | 60 | 2125 | 19.51 | 117.39 | 124.96 |
 | A07-R2 | 1806.55 | 78 | 2160 | 19.52 | 85.37 | 125.22 |
 | A07-R3 | 1996.57 | 64 | 2129 | 19.22 | 44.46 | 123.27 |
+| A07-R4 | 2427.80 | 71 | 2117 | 19.21 | 48.46 | 128.92 |
+| A07-R5 | 2427.54 | 78 | 2182 | 19.57 | 51.95 | 130.74 |
 | N04-R1 | 1615.72 | 120 | 875 | 22.74 | 78.95 | 93.72 |
 | N04-R2 | 1794.75 | 163 | 823 | 16.91 | 33.47 | 85.68 |
 | N04-R3 | 1806.81 | 81 | 879 | 16.44 | 29.97 | 84.49 |
+| N04-R4 | 2425.37 | 135 | 853 | 16.54 | 39.47 | 90.05 |
+| N04-R5 | 2427.72 | 100 | 867 | 17.36 | 31.97 | 91.82 |
 
 - RAM (RSS) tuyệt đối và tổng số flow thay đổi theo **phiên chạy/ngày**, không theo tấn công. Nếu dùng giá trị tuyệt đối, mô hình có thể học thuộc "ngày nào" thay vì "có tấn công không". Vì vậy dataset chỉ dùng **độ biến thiên trong cửa sổ** (`rss_delta`, `flows_delta`).
-- CPU có **đỉnh đơn lẻ ngay cả khi bình thường** (81 mẫu nhãn 0 vượt 30%; cao nhất: N03-R1 mẫu 0: 118%, A06-R3 mẫu 327: 86%, A06-R2 mẫu 328: 84%). Ngưỡng tĩnh đặt trên CPU từng mẫu sẽ báo động giả → nên dùng giá trị trung bình/cửa sổ (`cpu_mean`).
+- CPU có **đỉnh đơn lẻ ngay cả khi bình thường** (95 mẫu nhãn 0 vượt 30%; cao nhất: N03-R1 mẫu 0: 118%, A06-R3 mẫu 327: 86%, A06-R2 mẫu 328: 84%). Ngưỡng tĩnh đặt trên CPU từng mẫu sẽ báo động giả → nên dùng giá trị trung bình/cửa sổ (`cpu_mean`).
 
 ## 8. Khả năng phân tách của từng đặc trưng (ROC-AUC đơn biến, cửa sổ có nhãn)
 
 | Đặc trưng | Nhóm | AUC đơn biến | Chiều |
 |---|---|---|---|
-| dp_src_mean | data_plane_traffic | 0.980 | tấn công cao hơn |
-| dp_reply_mean | data_plane_traffic | 0.968 | tấn công thấp hơn |
-| dp_ppf_mean | data_plane_traffic | 0.956 | tấn công thấp hơn |
+| dp_reply_mean | data_plane_traffic | 0.967 | tấn công thấp hơn |
+| dp_ppf_mean | data_plane_traffic | 0.950 | tấn công thấp hơn |
 | dp_flows_mean | data_plane_traffic | 0.889 | tấn công cao hơn |
-| dp_flows_max | data_plane_traffic | 0.876 | tấn công cao hơn |
-| pin_last | control_plane | 0.865 | tấn công cao hơn |
-| pin_min | control_plane | 0.858 | tấn công cao hơn |
-| pin_mean | control_plane | 0.847 | tấn công cao hơn |
-| cpu_mean | controller_resource | 0.836 | tấn công cao hơn |
-| cpu_last | controller_resource | 0.833 | tấn công cao hơn |
-| pin_max | control_plane | 0.833 | tấn công cao hơn |
-| cpu_max | controller_resource | 0.808 | tấn công cao hơn |
-| api_last | controller_resource | 0.806 | tấn công cao hơn |
-| api_max | controller_resource | 0.794 | tấn công cao hơn |
-| api_mean | controller_resource | 0.791 | tấn công cao hơn |
-| dp_dport_h_mean | data_plane_traffic | 0.787 | tấn công cao hơn |
-| cpu_std | controller_resource | 0.750 | tấn công cao hơn |
-| api_std | controller_resource | 0.728 | tấn công cao hơn |
-| dp_udp_frac_mean | data_plane_traffic | 0.713 | tấn công cao hơn |
-| dp_pkts_mean | data_plane_traffic | 0.694 | tấn công cao hơn |
-| dp_pkts_max | data_plane_traffic | 0.672 | tấn công cao hơn |
-| pin_std | control_plane | 0.650 | tấn công cao hơn |
-| dp_syn_mean | data_plane_traffic | 0.649 | tấn công cao hơn |
-| flows_delta | topology | 0.605 | tấn công cao hơn |
-| dp_size_mean | data_plane_traffic | 0.590 | tấn công cao hơn |
+| dp_flows_max | data_plane_traffic | 0.877 | tấn công cao hơn |
+| pin_last | control_plane | 0.844 | tấn công cao hơn |
+| pin_min | control_plane | 0.835 | tấn công cao hơn |
+| pin_mean | control_plane | 0.825 | tấn công cao hơn |
+| cpu_mean | controller_resource | 0.821 | tấn công cao hơn |
+| cpu_last | controller_resource | 0.820 | tấn công cao hơn |
+| api_last | controller_resource | 0.814 | tấn công cao hơn |
+| pin_max | control_plane | 0.810 | tấn công cao hơn |
+| cpu_max | controller_resource | 0.798 | tấn công cao hơn |
+| api_max | controller_resource | 0.796 | tấn công cao hơn |
+| api_mean | controller_resource | 0.795 | tấn công cao hơn |
+| dp_dport_h_mean | data_plane_traffic | 0.780 | tấn công cao hơn |
+| cpu_std | controller_resource | 0.741 | tấn công cao hơn |
+| api_std | controller_resource | 0.723 | tấn công cao hơn |
+| dp_udp_frac_mean | data_plane_traffic | 0.720 | tấn công cao hơn |
+| dp_src_mean | data_plane_traffic | 0.713 | tấn công cao hơn |
+| dp_pkts_mean | data_plane_traffic | 0.697 | tấn công cao hơn |
+| dp_pkts_max | data_plane_traffic | 0.676 | tấn công cao hơn |
+| dp_syn_mean | data_plane_traffic | 0.657 | tấn công cao hơn |
+| pin_std | control_plane | 0.616 | tấn công cao hơn |
+| flows_delta | topology | 0.611 | tấn công cao hơn |
+| dp_size_mean | data_plane_traffic | 0.602 | tấn công cao hơn |
 | pin_slope | control_plane | 0.568 | tấn công cao hơn |
-| rss_delta | controller_resource | 0.524 | tấn công thấp hơn |
+| rss_delta | controller_resource | 0.525 | tấn công thấp hơn |
 
-- Packet-In lớn nhất khi **bình thường**: **628.95 pps**; nhỏ nhất khi **tấn công**: **10.95 pps** → hai lớp có vùng chồng lấn.
+- Packet-In lớn nhất khi **bình thường**: **628.95 pps**; nhỏ nhất khi **tấn công**: **1.00 pps** → hai lớp có vùng chồng lấn.
 
-- Đặc trưng tài nguyên controller tốt nhất: `cpu_mean` (AUC 0.836) – tấn công hiện tại quá nhẹ để làm controller quá tải rõ rệt.
+- Đặc trưng tài nguyên controller tốt nhất: `cpu_mean` (AUC 0.821) – tấn công hiện tại quá nhẹ để làm controller quá tải rõ rệt.
 
 ## 9. Kết luận và việc cần làm với dữ liệu
 
 **Dùng được ngay** để dựng đường ống huấn luyện/đánh giá (schema, nhãn theo mốc thời gian, split theo lần chạy, HTTP QoS cho A03). **Chưa đủ** cho kết luận của chương 4, vì:
 
 1. **Quá dễ:** Packet-In một mình tách hoàn toàn hai lớp → Random Forest sẽ không hơn ngưỡng tĩnh (mục 4.5.1). Cần kịch bản **chồng lấn**: tấn công tốc độ thấp 10–40 pps, lưu lượng hợp lệ đột biến (flash crowd) 30–80 pps, tấn công dao động/ngắt quãng (pulsing).
-2. **Quá ít lần lặp:** 14 lần chạy tấn công chính thức, mỗi kịch bản 1 lần. Cần ≥ 5 lần/kịch bản (run_id `A02-R1..R5`) để báo cáo trung bình ± độ lệch (mục 4.1.1, 4.4.1).
+2. **Quá ít lần lặp:** 22 lần chạy tấn công chính thức, mỗi kịch bản 1 lần. Cần ≥ 5 lần/kịch bản (run_id `A02-R1..R5`) để báo cáo trung bình ± độ lệch (mục 4.1.1, 4.4.1).
 3. **Tập kiểm thử A03 không có Packet-In hợp lệ** → tỉ lệ báo động giả (FPR) đo được sẽ lạc quan. Cần thêm ít nhất 1 lần chạy N03 riêng cho test.
 4. **Thiếu loại tấn công:** chưa có SYN Flood, Flow Burst (flow_mod_rate luôn 0) như đề cương (mục 2.2.2).
 5. **Chưa có đặc trưng mặt phẳng dữ liệu** (port stats OVS, số IP nguồn, entropy) → chưa so sánh được Traffic-only và Controller-aware (mục 4.5.2) và chưa xác định được nguồn tấn công (mục 2.6.2).
