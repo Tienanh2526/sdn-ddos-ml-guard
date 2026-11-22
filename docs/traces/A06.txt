@@ -1,0 +1,88 @@
+# Đường đi gói đại diện — A06  (leaf1 -> spine1 -> leaf2), sinh bởi scenarios/vm-leaf/trace_paths.sh
+
+===== A06 SYN flood: TCP SYN tới web:8080, cổng nguồn đổi mỗi gói
+===== switch: vm-leaf1  (2026-11-22T03:40:27Z)
+
+----- [leaf1] gói ĐẦU của flow mới (vào từ vx-attacker=port 5)
+flow: in_port=5,tcp,nw_src=192.168.200.13,nw_dst=192.168.200.12,tcp_src=15003,tcp_dst=8080,tcp_flags=0x002 -generate
+   0. ip,in_port=5, priority 600, cookie 0xa1a1
+      load:0->NXM_NX_REG0[0]
+      resubmit(,1)
+       1. No match.
+              drop
+      resubmit(,2)
+   2. tcp,reg0=0,in_port=5, priority 100, cookie 0xa1a1
+      learn(table=1,idle_timeout=10,priority=100,cookie=0xa1a2,eth_type=0x800,NXM_OF_IN_PORT[],NXM_OF_IP_SRC[],NXM_OF_IP_DST[],nw_proto=6,NXM_OF_TCP_SRC[],NXM_OF_TCP_DST[],load:0x1->NXM_NX_REG0[0])
+       -> table=1 tcp,in_port=5,nw_src=192.168.200.13,nw_dst=192.168.200.12,tp_src=15003,tp_dst=8080 priority=100 cookie=0xa1a2 idle=10 actions=load:0x1->NXM_NX_REG0[0]
+      CONTROLLER:128
+      group:20
+       -> using bucket 0
+      bucket 0
+              output:2
+               -> output to kernel tunnel
+  Final flow: unchanged
+  Megaflow: recirc_id=0,eth,tcp,in_port=5,dl_src=00:00:00:00:00:00,dl_dst=00:00:00:00:00:00,nw_src=192.168.200.13,nw_dst=192.168.200.12,nw_ecn=0,nw_frag=no,tp_src=15003,tp_dst=8080
+  Datapath actions: userspace(pid=4294967295,controller(reason=1,dont_send=0,continuation=0,recirc_id=14099,rule_cookie=0xa1a1,controller_id=0,max_len=128)),set(tunnel(tun_id=0x3e9,src=10.10.0.21,dst=10.10.0.11,ttl=64,tp_dst=4789,flags(df|key))),1
+
+----- [leaf1] gói TIẾP THEO cùng flow (đã học)
+flow: in_port=5,tcp,nw_src=192.168.200.13,nw_dst=192.168.200.12,tcp_src=15003,tcp_dst=8080,tcp_flags=0x002 
+   0. ip,in_port=5, priority 600, cookie 0xa1a1
+      load:0->NXM_NX_REG0[0]
+      resubmit(,1)
+       1. tcp,in_port=5,nw_src=192.168.200.13,nw_dst=192.168.200.12,tp_src=15003,tp_dst=8080, priority 100, cookie 0xa1a2
+              load:0x1->NXM_NX_REG0[0]
+      resubmit(,2)
+   2. ip,reg0=0x1,in_port=5, priority 200, cookie 0xa1a1
+      group:20
+       -> using bucket 0
+      bucket 0
+              output:2
+               -> output to kernel tunnel
+  Final flow: tcp,reg0=0x1,in_port=5,vlan_tci=0x0000,dl_src=00:00:00:00:00:00,dl_dst=00:00:00:00:00:00,nw_src=192.168.200.13,nw_dst=192.168.200.12,nw_tos=0,nw_ecn=0,nw_ttl=0,nw_frag=no,tp_src=15003,tp_dst=8080,tcp_flags=syn
+  Megaflow: recirc_id=0,eth,tcp,in_port=5,dl_src=00:00:00:00:00:00,dl_dst=00:00:00:00:00:00,nw_src=192.168.200.13,nw_dst=192.168.200.12,nw_ecn=0,nw_frag=no,tp_src=15003,tp_dst=8080
+  Datapath actions: set(tunnel(tun_id=0x3e9,src=10.10.0.21,dst=10.10.0.11,ttl=64,tp_dst=4789,flags(df|key))),1
+
+===== A06 SYN flood: TCP SYN tới web:8080, cổng nguồn đổi mỗi gói
+===== switch: vm-spine1  (2026-11-22T03:40:45Z)
+
+----- [spine1] trung chuyển leaf1 -> leaf2 (vào từ vx-leaf1=port 1)
+flow: in_port=1,tcp,nw_src=192.168.200.13,nw_dst=192.168.200.12,tcp_src=15003,tcp_dst=8080,tcp_flags=0x002 
+   0. in_port=1, priority 300, cookie 0x2001
+      output:2
+       -> output to kernel tunnel
+  Final flow: unchanged
+  Megaflow: recirc_id=0,eth,tcp,in_port=1,dl_src=00:00:00:00:00:00,dl_dst=00:00:00:00:00:00,nw_src=128.0.0.0/1,nw_dst=128.0.0.0/1,nw_ecn=0,nw_frag=no
+  Datapath actions: set(tunnel(tun_id=0x3e9,src=10.10.0.11,dst=10.10.0.22,ttl=64,tp_dst=4789,flags(df|key))),1
+
+===== A06 SYN flood: TCP SYN tới web:8080, cổng nguồn đổi mỗi gói
+===== switch: vm-leaf2  (2026-11-22T03:41:03Z)
+
+----- [leaf2] giao tới web (vào từ vx-spine1=port 2)
+flow: in_port=2,tcp,nw_src=192.168.200.13,nw_dst=192.168.200.12,tcp_src=15003,tcp_dst=8080,tcp_flags=0x002 
+   0. ip,in_port=2,nw_dst=192.168.200.12, priority 450, cookie 0x5002
+      output:4
+       -> output to kernel tunnel
+  Final flow: unchanged
+  Megaflow: recirc_id=0,eth,tcp,in_port=2,dl_src=00:00:00:00:00:00,dl_dst=00:00:00:00:00:00,nw_src=128.0.0.0/1,nw_dst=192.168.200.12,nw_ecn=0,nw_frag=no
+  Datapath actions: set(tunnel(tun_id=0x7d2,src=10.10.0.22,dst=10.10.0.31,ttl=64,tp_dst=4789,flags(df|key))),1
+
+----- [leaf2] CHIỀU VỀ web -> 192.168.200.13, gói đầu (vào từ vx-web=port 4)
+flow: in_port=4,tcp,nw_src=192.168.200.12,nw_dst=192.168.200.13,tcp_src=8080,tcp_dst=15003 -generate
+   0. ip,in_port=4, priority 600, cookie 0xa1a1
+      load:0->NXM_NX_REG0[0]
+      resubmit(,1)
+       1. No match.
+              drop
+      resubmit(,2)
+   2. tcp,reg0=0,in_port=4, priority 100, cookie 0xa1a1
+      learn(table=1,idle_timeout=10,priority=100,cookie=0xa1a2,eth_type=0x800,NXM_OF_IN_PORT[],NXM_OF_IP_SRC[],NXM_OF_IP_DST[],nw_proto=6,NXM_OF_TCP_SRC[],NXM_OF_TCP_DST[],load:0x1->NXM_NX_REG0[0])
+       -> table=1 tcp,in_port=4,nw_src=192.168.200.12,nw_dst=192.168.200.13,tp_src=8080,tp_dst=15003 priority=100 cookie=0xa1a2 idle=10 actions=load:0x1->NXM_NX_REG0[0]
+      CONTROLLER:128
+      group:20
+       -> using bucket 0
+      bucket 0
+              output:2
+               -> output to kernel tunnel
+  Final flow: unchanged
+  Megaflow: recirc_id=0,eth,tcp,in_port=4,dl_src=00:00:00:00:00:00,dl_dst=00:00:00:00:00:00,nw_src=192.168.200.12,nw_dst=192.168.200.13,nw_ecn=0,nw_frag=no,tp_src=8080,tp_dst=15003
+  Datapath actions: userspace(pid=4294967295,controller(reason=1,dont_send=0,continuation=0,recirc_id=14748,rule_cookie=0xa1a1,controller_id=0,max_len=128)),set(tunnel(tun_id=0x3e9,src=10.10.0.22,dst=10.10.0.11,ttl=64,tp_dst=4789,flags(df|key))),1
