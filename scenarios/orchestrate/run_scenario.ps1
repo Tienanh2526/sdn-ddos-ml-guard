@@ -23,7 +23,11 @@ param(
   [string]$Zone = "asia-southeast1-a",
   [string]$User = "anh2004zai_gmail_com",
   [int]$Lead = 40,      # giây thu trước generator
-  [int]$Tail = 90       # giây thu sau generator
+  [int]$Tail = 90,      # giây thu sau generator
+  # Chạy kèm module thời gian thực trên vm-controller (cần deploy_detector.ps1 trước):
+  #   none = không ; detect = chỉ phát hiện ; mitigate = phát hiện + cấp 1 ; thêm -AllowDrop cho cấp 2
+  [ValidateSet("none", "detect", "mitigate")][string]$Detector = "none",
+  [switch]$AllowDrop
 )
 $ErrorActionPreference = "Continue"   # PS 5.1: stderr của gcloud bị coi là lỗi nếu để Stop
 $gcloud = "C:\Users\NGOC TU\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"
@@ -81,17 +85,28 @@ $T0 = $now + 150
 Log "T0=$T0 (UTC $([DateTimeOffset]::FromUnixTimeSeconds($T0).UtcDateTime.ToString('HH:mm:ss')))"
 $at = { param($off) "sleep `$(( $T0 + $off - `$(date +%s) ))" }
 
+# --- module thời gian thực (tùy chọn): leaf1 đẩy đặc trưng data-plane sang controller:47000
+$pushArg = ""; $detLine = ""
+if ($Detector -ne "none") {
+  $pushArg = "--push 10.10.0.10:47000"
+  $dropArg = if ($AllowDrop) { "--allow-drop" } else { "" }
+  # chạy bằng root (tshark cần quyền bắt gói); bật cùng lúc với telemetry, dừng khi hết thời gian thu
+  $detLine = "sudo systemd-run --unit=aig-$RunId-det --collect bash -c '$(& $at (-$Lead)); cd $H/aiguard-app/realtime && $H/aiguard-venv/bin/python detector.py --model $H/aiguard-app/models/detector_rf.joblib --telemetry-module $H/aiguard-tools/telemetry_collector_a03.py --mode $Detector $dropArg --password $odlPw --duration $cap --out-dir $R/detector > $R/detector.log 2>&1'"
+  Log "Module thời gian thực: $Detector $dropArg"
+}
+
 # --- controller: pcap + telemetry
 Remote "vm-controller" @"
 mkdir -p $R; sudo mkdir -p /var/tmp/aiguard-runs/$RunId
 sudo systemd-run --unit=aig-$RunId-pcap --collect bash -c '$(& $at (-$Lead)); timeout --signal=INT $cap tcpdump -Z root -i ens4 -nn -s0 -w /var/tmp/aiguard-runs/$RunId/openflow.pcap "tcp port 6653"'
 sudo systemd-run --unit=aig-$RunId-tel --collect --uid=$User bash -c '$(& $at (-$Lead)); SDN_SAMPLES=$samples SDN_INTERVAL=2 A03_TELEMETRY_OUTPUT=$R/telemetry.csv SDN_AUTH_STDIN=1 python3 $H/aiguard-tools/telemetry_collector_a03.py <<< "$odlPw" > $R/telemetry.log 2>&1'
+$detLine
 echo scheduled-controller
 "@ | ForEach-Object { Log $_ }
 # --- leaf1: data-plane
 Remote "vm-leaf1" @"
 mkdir -p $R
-sudo systemd-run --unit=aig-$RunId-dp --collect bash -c '$(& $at (-$Lead)); python3 $H/scenarios/vm-leaf/dataplane_collector.py --out $R/dataplane.csv --samples $samples > $R/dataplane.log 2>&1'
+sudo systemd-run --unit=aig-$RunId-dp --collect bash -c '$(& $at (-$Lead)); python3 $H/scenarios/vm-leaf/dataplane_collector.py --out $R/dataplane.csv --samples $samples $pushArg > $R/dataplane.log 2>&1'
 echo scheduled-leaf1
 "@ | ForEach-Object { Log $_ }
 # --- client: QoS + background
@@ -136,6 +151,11 @@ New-Item -ItemType Directory -Force $dest | Out-Null
 foreach ($f in "$RunId.csv", "telemetry.csv", "telemetry.log", "finalize.log") { Pull "vm-controller" "$R/$f" $dest | Out-Null }
 foreach ($f in "$RunId.groundtruth.json", "dataplane.csv", "dataplane.log", "http.csv", "http.log", "background.log", "generator.log") {
   $l = Join-Path $work $f; if (Test-Path $l) { Copy-Item $l $dest -Force }
+}
+if ($Detector -ne "none") {
+  $dd = Join-Path $dest "detector"; New-Item -ItemType Directory -Force $dd | Out-Null
+  foreach ($f in "detector/events.jsonl", "detector/decisions.csv", "detector.log") { Pull "vm-controller" "$R/$f" $dd | Out-Null }
+  Log ((Get-Content (Join-Path $dd "events.jsonl") -ErrorAction SilentlyContinue | Select-String '"state"|rule_' | Select-Object -First 8) -join " || ")
 }
 Copy-Item (Join-Path $work "orchestrate.log") $dest -Force
 Log "DONE -> $dest"
