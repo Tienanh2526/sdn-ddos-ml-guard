@@ -181,8 +181,25 @@ class Engine:
         self.hist = collections.deque(maxlen=getattr(args, "attr_window", 5))   # Counter Packet-In/nguồn mỗi chu kỳ
         self.base = collections.defaultdict(float)                               # EWMA Packet-In/chu kỳ mỗi nguồn
         self.n_learn = {}                                                        # số mẫu đã học mỗi nguồn
+        self._hit_snap = None                                                    # (thời điểm, tổng gói khớp rule)
         self.alpha = getattr(args, "base_alpha", 0.05)
         self.min_evidence = getattr(args, "min_evidence", 15)
+
+    def _rule_hit_pps(self):
+        """Tốc độ gói khớp các rule (gói/s) kể từ mốc chụp trước; lần đầu chỉ chụp mốc, trả None."""
+        if self.odl is None or not self.rules or not hasattr(self.odl, "flow_packets"):
+            return None
+        tot = 0
+        for node, fid in self.rules:
+            c = self.odl.flow_packets(node, fid)
+            if c is None:
+                return None
+            tot += c
+        now = self.clock()
+        snap, self._hit_snap = self._hit_snap, (now, tot)
+        if snap is None or now - snap[0] <= 0:
+            return None
+        return max(0, tot - snap[1]) / (now - snap[0])
 
     @property
     def target(self):
@@ -217,8 +234,10 @@ class Engine:
     def observe(self, src, learn):
         self.hist.append(collections.Counter({ip: c for ip, c in src.items() if ip in HOSTS and ip not in PROTECTED}))
         if learn:   # chỉ học mức nền khi hệ thống bình thường
-            for ip in set(self.base) | set(src):
-                if ip in HOSTS and ip not in PROTECTED:
+            # MỌI máy đã biết, kể cả máy im lặng (0 Packet-In) — nếu chỉ học khi máy xuất hiện thì máy tấn công
+            # (im lặng lúc bình thường) có mức nền = tốc độ tấn công ở lần xuất hiện đầu (lỗi A04-M2: base .13 = 5,0)
+            for ip in HOSTS:
+                if ip not in PROTECTED:
                     # n mẫu đầu: trung bình tích lũy (ước lượng không chệch khi tấn công tới sớm); sau đó EWMA
                     n = self.n_learn[ip] = self.n_learn.get(ip, 0) + 1
                     w = max(self.alpha, 1.0 / n)
@@ -320,10 +339,23 @@ class Engine:
                 self._set("MITIGATING", prob=round(prob, 3), reason="tái phát")
                 self.clear_cycles = 0
             elif self.clock() - self.since >= a.recover_s:
-                if self.rules:
-                    self._remove_all("hết tấn công")
-                    action = "remove rules"
-                self._set("NORMAL")
+                # Phản hồi từ rule: mô hình thấy "bình thường" có thể chỉ vì rule đang làm tốt việc (hết Packet-In)
+                # chứ nguồn vẫn đang gửi (A04-M2: gỡ -> tấn công quay lại -> cài lại, ~1 phút/lần). Đọc bộ đếm gói
+                # của rule trên switch: nguồn bị nhắm còn gửi >= hit_pps -> GIỮ rule, kiểm tra lại sau recover_s.
+                pps = self._rule_hit_pps()
+                if pps is not None and pps >= getattr(a, "hit_pps", 2.0):
+                    self.log("hold", why="rule vẫn bị khớp — nguồn còn gửi", hit_pps=round(pps, 1))
+                    self.since = self.clock()
+                    action = "hold rules"
+                else:
+                    if self.rules:
+                        self._remove_all("hết tấn công" + (f" (rule khớp {pps:.1f} gói/s)" if pps is not None else ""))
+                        action = "remove rules"
+                    self._set("NORMAL")
+        if self.state == "RECOVERING" and self.rules and self._hit_snap is None:
+            self._rule_hit_pps()   # chụp mốc bộ đếm ngay khi vào RECOVERING
+        elif self.state != "RECOVERING":
+            self._hit_snap = None
         return confirmed, action
 
 
@@ -341,6 +373,8 @@ def main():
     ap.add_argument("--attr-window", type=int, default=5, help="số chu kỳ cộng dồn bằng chứng quy kết (5 x 2 s)")
     ap.add_argument("--min-evidence", type=int, default=15, help="số Packet-In VƯỢT mức nền tối thiểu để nhắm 1 nguồn")
     ap.add_argument("--base-alpha", type=float, default=0.05, help="hệ số EWMA mức nền Packet-In mỗi nguồn")
+    ap.add_argument("--hit-pps", type=float, default=2.0,
+                    help="rule còn bị khớp >= mức này (gói/s) thì chưa gỡ dù mô hình thấy bình thường")
     ap.add_argument("--clear-cycles", type=int, default=5, help="số chu kỳ âm liên tiếp để coi là hết tấn công")
     ap.add_argument("--recover-s", type=float, default=30.0)
     ap.add_argument("--rule-idle", type=int, default=60, help="rule tự gỡ sau N giây không còn gói khớp")

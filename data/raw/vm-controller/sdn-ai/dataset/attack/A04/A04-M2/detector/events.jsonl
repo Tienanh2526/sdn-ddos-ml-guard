@@ -1,0 +1,59 @@
+{"ts": "2026-11-22T11:11:35.107884+00:00", "event": "start", "mode": "mitigate", "allow_drop": true, "threshold": 0.5, "k": 3, "n": 4, "features": 30, "fallback_features": 20, "odl_pid": 875, "out": "/home/anh2004zai_gmail_com/aiguard-runs/A04-M2/detector"}
+{"ts": "2026-11-22T11:11:47.151523+00:00", "event": "dp_feed", "ok": true, "age_s": 0.4, "model": "primary"}
+{"ts": "2026-11-22T11:14:23.267809+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.518}
+{"ts": "2026-11-22T11:14:27.281048+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.561, "top_src": null, "share": 0.92, "pin_from_src": 6}
+{"ts": "2026-11-22T11:15:47.282796+00:00", "event": "target", "ip": "192.168.200.11", "share": 1.0, "excess_pin": 16, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 2.1, "192.168.200.13": 5.0}}
+{"ts": "2026-11-22T11:15:50.853762+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 201, "rest_ms": 29.1, "on_switch_s": 3.54, "total_s": 3.57, "error": null}
+{"ts": "2026-11-22T11:15:53.015849+00:00", "event": "target", "ip": "192.168.200.13", "share": 1.0, "excess_pin": 25, "primary": false, "base_pin_per_cycle": {"192.168.200.11": 2.1, "192.168.200.13": 5.0}}
+{"ts": "2026-11-22T11:15:56.562049+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 10.5, "on_switch_s": 3.54, "total_s": 3.55, "error": null}
+{"ts": "2026-11-22T11:15:56.562198+00:00", "event": "escalation_blocked", "ip": "192.168.200.11", "why": "nghi nhắm sai: Packet-In vượt nền đến từ nguồn khác"}
+{"ts": "2026-11-22T11:16:06.692996+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:16:36.716310+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:16:36.724904+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:16:36.725068+00:00", "event": "state", "frm": "RECOVERING", "to": "NORMAL"}
+{"ts": "2026-11-22T11:16:38.698115+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.501}
+{"ts": "2026-11-22T11:16:42.703329+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.546, "top_src": null, "share": 1.0, "pin_from_src": 5}
+{"ts": "2026-11-22T11:16:52.724189+00:00", "event": "target", "ip": "192.168.200.13", "share": 1.0, "excess_pin": 26, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 2.1, "192.168.200.13": 5.0}}
+{"ts": "2026-11-22T11:16:54.251610+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 10.2, "on_switch_s": 1.52, "total_s": 1.53, "error": null}
+{"ts": "2026-11-22T11:17:12.696024+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:17:30.706839+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.522, "reason": "tái phát"}
+{"ts": "2026-11-22T11:17:40.713980+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:18:12.786233+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:18:12.786375+00:00", "event": "state", "frm": "RECOVERING", "to": "NORMAL"}
+{"ts": "2026-11-22T11:18:16.717120+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.704}
+{"ts": "2026-11-22T11:18:18.715789+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.758, "top_src": null, "share": 1.0, "pin_from_src": 25}
+{"ts": "2026-11-22T11:18:20.717750+00:00", "event": "target", "ip": "192.168.200.13", "share": 1.0, "excess_pin": 49, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.99, "192.168.200.13": 8.2}}
+{"ts": "2026-11-22T11:18:21.742290+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 10.3, "on_switch_s": 1.01, "total_s": 1.02, "error": null}
+{"ts": "2026-11-22T11:18:38.703899+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:19:08.735933+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:19:08.736084+00:00", "event": "state", "frm": "RECOVERING", "to": "NORMAL"}
+{"ts": "2026-11-22T11:19:10.717158+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.559}
+{"ts": "2026-11-22T11:19:12.710968+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.75, "top_src": null, "share": 0.0, "pin_from_src": 0}
+{"ts": "2026-11-22T11:19:18.732260+00:00", "event": "target", "ip": "192.168.200.13", "share": 0.98, "excess_pin": 57, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.99, "192.168.200.13": 8.2}}
+{"ts": "2026-11-22T11:19:22.279874+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 12.7, "on_switch_s": 3.53, "total_s": 3.55, "error": null}
+{"ts": "2026-11-22T11:19:46.454418+00:00", "event": "rule_install", "level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 201, "rest_ms": 7.4, "on_switch_s": 2.02, "total_s": 2.03, "error": null}
+{"ts": "2026-11-22T11:19:58.585539+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:20:28.593519+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:20:28.601929+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:20:28.602086+00:00", "event": "state", "frm": "RECOVERING", "to": "NORMAL"}
+{"ts": "2026-11-22T11:20:30.601224+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.711}
+{"ts": "2026-11-22T11:20:34.605027+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.794, "top_src": null, "share": 1.0, "pin_from_src": 32}
+{"ts": "2026-11-22T11:20:36.621552+00:00", "event": "target", "ip": "192.168.200.13", "share": 1.0, "excess_pin": 59, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.99, "192.168.200.13": 8.2}}
+{"ts": "2026-11-22T11:20:37.641654+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 7.6, "on_switch_s": 1.01, "total_s": 1.02, "error": null}
+{"ts": "2026-11-22T11:20:54.588901+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:21:24.596008+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:21:24.596165+00:00", "event": "state", "frm": "RECOVERING", "to": "NORMAL"}
+{"ts": "2026-11-22T11:21:26.604267+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.813}
+{"ts": "2026-11-22T11:21:30.680590+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.921, "top_src": "192.168.200.13", "share": 1.0, "pin_from_src": 60}
+{"ts": "2026-11-22T11:21:30.680798+00:00", "event": "target", "ip": "192.168.200.13", "share": 1.0, "excess_pin": 60, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.99, "192.168.200.13": 8.2}}
+{"ts": "2026-11-22T11:21:32.207854+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 9.5, "on_switch_s": 1.52, "total_s": 1.53, "error": null}
+{"ts": "2026-11-22T11:22:00.603162+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:22:24.599396+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.5, "reason": "tái phát"}
+{"ts": "2026-11-22T11:22:29.622349+00:00", "event": "rule_install", "level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 201, "rest_ms": 8.1, "on_switch_s": 1.01, "total_s": 1.02, "error": null}
+{"ts": "2026-11-22T11:22:38.596544+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:23:04.611394+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.507, "reason": "tái phát"}
+{"ts": "2026-11-22T11:23:26.610079+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-22T11:23:58.609041+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:23:58.616754+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 204, "why": "hết tấn công"}
+{"ts": "2026-11-22T11:23:58.616915+00:00", "event": "state", "frm": "RECOVERING", "to": "NORMAL"}
+{"ts": "2026-11-22T11:26:46.616839+00:00", "event": "stop"}

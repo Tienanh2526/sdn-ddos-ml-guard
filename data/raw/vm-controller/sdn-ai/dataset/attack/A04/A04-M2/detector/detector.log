@@ -1,0 +1,512 @@
+11:11:35 start {"mode": "mitigate", "allow_drop": true, "threshold": 0.5, "k": 3, "n": 4, "features": 30, "fallback_features": 20, "odl_pid": 875, "out": "/home/anh2004zai_gmail_com/aiguard-runs/A04-M2/detector"}
+11:11:37 NORMAL     p=nan pin=   0.0 cpu=  7.5 api=35.67 top=None(0.00) - 
+11:11:39 NORMAL     p=nan pin=   0.0 cpu=  5.5 api=32.7 top=None(0.00) - 
+11:11:41 NORMAL     p=nan pin=   0.0 cpu= 10.0 api=32.96 top=None(0.00) - 
+11:11:43 NORMAL     p=nan pin=   0.0 cpu=  8.5 api=33.15 top=None(0.00) - 
+11:11:45 NORMAL     p=0.01 pin=   1.0 cpu=  6.5 api=33.03 top=192.168.200.11(1.00) primary 
+11:11:47 dp_feed {"ok": true, "age_s": 0.4, "model": "primary"}
+11:11:47 NORMAL     p=0.01 pin=   4.0 cpu= 10.5 api=33.04 top=192.168.200.11(1.00) primary 
+11:11:49 NORMAL     p=0.01 pin=   2.0 cpu=  9.5 api=94.35 top=192.168.200.11(1.00) primary 
+11:11:51 NORMAL     p=0.01 pin=   1.0 cpu=  6.5 api=34.28 top=192.168.200.11(1.00) primary 
+11:11:53 NORMAL     p=0.01 pin=   1.5 cpu= 11.5 api=35.83 top=192.168.200.11(1.00) primary 
+11:11:55 NORMAL     p=0.03 pin=   3.0 cpu=  9.5 api=38.08 top=192.168.200.11(1.00) primary 
+11:11:57 NORMAL     p=0.00 pin=   1.0 cpu=  8.5 api=38.69 top=192.168.200.11(1.00) primary 
+11:11:59 NORMAL     p=0.04 pin=   1.5 cpu= 11.5 api=36.63 top=192.168.200.11(1.00) primary 
+11:12:01 NORMAL     p=0.10 pin=   4.5 cpu=  9.5 api=36.7 top=192.168.200.11(1.00) primary 
+11:12:03 NORMAL     p=0.09 pin=   2.0 cpu=  6.0 api=37.33 top=192.168.200.11(1.00) primary 
+11:12:05 NORMAL     p=0.10 pin=   2.0 cpu= 11.5 api=38.81 top=192.168.200.11(1.00) primary 
+11:12:07 NORMAL     p=0.08 pin=   1.0 cpu= 10.0 api=37.56 top=192.168.200.11(1.00) primary 
+11:12:09 NORMAL     p=0.00 pin=   3.0 cpu=  6.5 api=36.14 top=192.168.200.11(1.00) primary 
+11:12:11 NORMAL     p=0.00 pin=   9.0 cpu= 11.0 api=37.69 top=192.168.200.11(1.00) primary 
+11:12:13 NORMAL     p=0.00 pin=   4.0 cpu=  9.5 api=37.12 top=192.168.200.11(1.00) primary 
+11:12:15 NORMAL     p=0.00 pin=   1.0 cpu=  6.5 api=41.75 top=192.168.200.11(1.00) primary 
+11:12:17 NORMAL     p=0.01 pin=   3.0 cpu= 11.5 api=50.57 top=192.168.200.11(1.00) primary 
+11:12:19 NORMAL     p=0.00 pin=   3.0 cpu= 12.0 api=43.96 top=192.168.200.11(1.00) primary 
+11:12:21 NORMAL     p=0.00 pin=   5.0 cpu=  7.0 api=37.89 top=192.168.200.11(1.00) primary 
+11:12:23 NORMAL     p=0.00 pin=   4.5 cpu= 11.5 api=43.44 top=192.168.200.11(1.00) primary 
+11:12:25 NORMAL     p=0.00 pin=   4.5 cpu= 10.0 api=38.62 top=192.168.200.11(1.00) primary 
+11:12:27 NORMAL     p=0.00 pin=   1.0 cpu=  7.0 api=39.53 top=192.168.200.11(1.00) primary 
+11:12:29 NORMAL     p=0.00 pin=   4.0 cpu= 10.5 api=40.52 top=192.168.200.11(1.00) primary 
+11:12:31 NORMAL     p=0.00 pin=   2.0 cpu= 11.5 api=38.77 top=192.168.200.11(1.00) primary 
+11:12:33 NORMAL     p=0.00 pin=   1.0 cpu=  6.0 api=37.58 top=192.168.200.11(1.00) primary 
+11:12:35 NORMAL     p=0.00 pin=   2.0 cpu= 10.0 api=45.93 top=192.168.200.11(1.00) primary 
+11:12:37 NORMAL     p=0.01 pin=   3.0 cpu= 11.0 api=51.36 top=192.168.200.11(1.00) primary 
+11:12:39 NORMAL     p=0.00 pin=   1.0 cpu=  8.5 api=36.61 top=192.168.200.11(1.00) primary 
+11:12:41 NORMAL     p=0.00 pin=   3.0 cpu= 10.0 api=35.49 top=192.168.200.11(1.00) primary 
+11:12:43 NORMAL     p=0.00 pin=   1.0 cpu= 11.5 api=37.14 top=192.168.200.11(1.00) primary 
+11:12:45 NORMAL     p=0.00 pin=   1.0 cpu=  6.0 api=35.94 top=192.168.200.11(1.00) primary 
+11:12:47 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=36.31 top=192.168.200.11(1.00) primary 
+11:12:49 NORMAL     p=0.00 pin=   1.0 cpu= 13.5 api=36.74 top=192.168.200.11(1.00) primary 
+11:12:51 NORMAL     p=0.00 pin=   4.0 cpu=  7.0 api=38.47 top=192.168.200.11(1.00) primary 
+11:12:53 NORMAL     p=0.01 pin=   3.0 cpu= 10.5 api=38.51 top=192.168.200.11(1.00) primary 
+11:12:55 NORMAL     p=0.00 pin=   2.0 cpu= 11.0 api=38.19 top=192.168.200.11(1.00) primary 
+11:12:57 NORMAL     p=0.00 pin=   2.0 cpu=  6.0 api=39.18 top=192.168.200.11(1.00) primary 
+11:12:59 NORMAL     p=0.00 pin=   3.0 cpu= 13.0 api=38.01 top=192.168.200.11(1.00) primary 
+11:13:01 NORMAL     p=0.01 pin=   1.0 cpu= 11.0 api=36.84 top=192.168.200.11(1.00) primary 
+11:13:03 NORMAL     p=0.00 pin=   7.5 cpu=  6.5 api=36.72 top=192.168.200.11(1.00) primary 
+11:13:05 NORMAL     p=0.00 pin=   3.5 cpu= 10.5 api=37.02 top=192.168.200.11(1.00) primary 
+11:13:07 NORMAL     p=0.00 pin=   2.0 cpu= 11.0 api=36.4 top=192.168.200.11(1.00) primary 
+11:13:09 NORMAL     p=0.00 pin=   2.0 cpu=  6.0 api=36.44 top=192.168.200.11(1.00) primary 
+11:13:11 NORMAL     p=0.00 pin=   1.0 cpu=  9.5 api=37.22 top=192.168.200.11(1.00) primary 
+11:13:13 NORMAL     p=0.00 pin=   3.0 cpu= 11.5 api=36.59 top=192.168.200.11(1.00) primary 
+11:13:15 NORMAL     p=0.00 pin=   3.5 cpu=  6.0 api=40.57 top=192.168.200.11(1.00) primary 
+11:13:17 NORMAL     p=0.00 pin=   2.0 cpu= 10.0 api=36.03 top=192.168.200.11(1.00) primary 
+11:13:19 NORMAL     p=0.00 pin=   6.0 cpu= 11.0 api=45.84 top=192.168.200.11(1.00) primary 
+11:13:21 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=38.54 top=192.168.200.11(1.00) primary 
+11:13:23 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=40.65 top=192.168.200.11(1.00) primary 
+11:13:25 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=36.99 top=192.168.200.11(1.00) primary 
+11:13:27 NORMAL     p=0.00 pin=   1.0 cpu=  8.0 api=37.14 top=192.168.200.11(1.00) primary 
+11:13:29 NORMAL     p=0.00 pin=   1.0 cpu= 10.5 api=38.32 top=192.168.200.11(1.00) primary 
+11:13:31 NORMAL     p=0.00 pin=   1.0 cpu=  9.0 api=35.41 top=192.168.200.11(1.00) primary 
+11:13:33 NORMAL     p=0.01 pin=   1.0 cpu=  8.0 api=37.47 top=192.168.200.11(1.00) primary 
+11:13:35 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=37.3 top=192.168.200.11(1.00) primary 
+11:13:37 NORMAL     p=0.00 pin=   1.0 cpu=  8.5 api=35.43 top=192.168.200.11(1.00) primary 
+11:13:39 NORMAL     p=0.00 pin=   1.0 cpu=  8.5 api=33.39 top=192.168.200.11(1.00) primary 
+11:13:41 NORMAL     p=0.00 pin=   2.0 cpu= 11.5 api=34.69 top=192.168.200.11(1.00) primary 
+11:13:43 NORMAL     p=0.00 pin=   1.0 cpu=  8.0 api=98.15 top=192.168.200.11(1.00) primary 
+11:13:45 NORMAL     p=0.00 pin=   1.0 cpu=  9.5 api=35.45 top=192.168.200.11(1.00) primary 
+11:13:47 NORMAL     p=0.00 pin=   3.0 cpu= 10.0 api=35.1 top=192.168.200.11(1.00) primary 
+11:13:49 NORMAL     p=0.00 pin=   2.0 cpu=  7.0 api=42.23 top=192.168.200.11(1.00) primary 
+11:13:51 NORMAL     p=0.00 pin=   3.0 cpu= 10.0 api=36.96 top=192.168.200.11(1.00) primary 
+11:13:53 NORMAL     p=0.00 pin=   1.0 cpu= 10.5 api=36.25 top=192.168.200.11(1.00) primary 
+11:13:55 NORMAL     p=0.00 pin=   1.0 cpu=  7.0 api=36.01 top=192.168.200.11(1.00) primary 
+11:13:57 NORMAL     p=0.00 pin=   2.0 cpu= 10.5 api=34.83 top=192.168.200.11(1.00) primary 
+11:13:59 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=35.56 top=192.168.200.11(1.00) primary 
+11:14:01 NORMAL     p=0.00 pin=   2.0 cpu=  7.0 api=35.64 top=192.168.200.11(1.00) primary 
+11:14:03 NORMAL     p=0.00 pin=   3.0 cpu= 13.0 api=35.15 top=192.168.200.11(1.00) primary 
+11:14:05 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=36.31 top=192.168.200.11(1.00) primary 
+11:14:07 NORMAL     p=0.00 pin=   3.0 cpu=  7.5 api=36.65 top=192.168.200.11(1.00) primary 
+11:14:09 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=38.2 top=192.168.200.11(1.00) primary 
+11:14:11 NORMAL     p=0.00 pin=   1.0 cpu= 10.5 api=38.17 top=192.168.200.11(1.00) primary 
+11:14:13 NORMAL     p=0.00 pin=   2.0 cpu=  7.0 api=37.17 top=192.168.200.11(1.00) primary 
+11:14:15 NORMAL     p=0.00 pin=   3.0 cpu= 11.0 api=37.8 top=192.168.200.13(0.80) primary 
+11:14:17 NORMAL     p=0.10 pin=   4.5 cpu= 10.0 api=39.26 top=192.168.200.13(0.71) primary 
+11:14:19 NORMAL     p=0.38 pin=   3.5 cpu=  9.0 api=40.52 top=192.168.200.13(0.83) primary 
+11:14:21 NORMAL     p=0.46 pin=   6.0 cpu= 11.0 api=44.45 top=192.168.200.13(0.67) primary 
+11:14:23 state {"frm": "NORMAL", "to": "SUSPECT", "prob": 0.518}
+11:14:23 SUSPECT    p=0.52 pin=   6.0 cpu= 14.5 api=48.17 top=192.168.200.13(0.67) primary 
+11:14:25 SUSPECT    p=0.56 pin=   6.5 cpu=  9.5 api=46.48 top=192.168.200.13(0.70) primary 
+11:14:27 state {"frm": "SUSPECT", "to": "MITIGATING", "prob": 0.561, "top_src": null, "share": 0.92, "pin_from_src": 6}
+11:14:27 MITIGATING p=0.56 pin=   4.5 cpu= 12.5 api=53.36 top=192.168.200.13(0.88) primary 
+11:14:29 MITIGATING p=0.56 pin=   7.0 cpu= 12.0 api=50.1 top=192.168.200.13(0.73) primary 
+11:14:31 MITIGATING p=0.53 pin=   7.5 cpu=  9.5 api=47.69 top=192.168.200.13(0.67) primary 
+11:14:33 MITIGATING p=0.53 pin=   7.5 cpu= 12.0 api=47.73 top=192.168.200.13(0.67) primary 
+11:14:35 MITIGATING p=0.53 pin=   4.0 cpu= 12.0 api=45.58 top=192.168.200.13(0.67) primary 
+11:14:37 MITIGATING p=0.54 pin=   3.0 cpu=  7.5 api=49.4 top=192.168.200.13(0.80) primary 
+11:14:39 MITIGATING p=0.52 pin=   4.0 cpu= 14.0 api=61.04 top=192.168.200.13(0.83) primary 
+11:14:41 MITIGATING p=0.53 pin=   3.5 cpu= 13.5 api=50.63 top=192.168.200.13(0.83) primary 
+11:14:43 MITIGATING p=0.54 pin=   8.5 cpu=  8.5 api=51.49 top=192.168.200.13(0.50) primary 
+11:14:45 MITIGATING p=0.51 pin=   4.0 cpu= 13.0 api=45.08 top=192.168.200.13(0.86) primary 
+11:14:47 MITIGATING p=0.51 pin=   5.0 cpu= 12.0 api=45.01 top=192.168.200.13(0.78) primary 
+11:14:49 MITIGATING p=0.52 pin=   6.5 cpu=  8.0 api=48.8 top=192.168.200.13(0.70) primary 
+11:14:51 MITIGATING p=0.68 pin=  11.0 cpu= 13.5 api=46.95 top=192.168.200.11(0.53) primary 
+11:14:53 MITIGATING p=0.58 pin=   9.0 cpu= 11.5 api=48.02 top=192.168.200.13(0.57) primary 
+11:14:55 MITIGATING p=0.55 pin=   7.5 cpu=  8.0 api=47.75 top=192.168.200.13(0.75) primary 
+11:14:57 MITIGATING p=0.55 pin=   3.0 cpu= 15.5 api=47.97 top=192.168.200.13(0.80) primary 
+11:14:59 MITIGATING p=0.53 pin=   4.0 cpu= 12.0 api=114.35 top=192.168.200.13(0.67) primary 
+11:15:01 MITIGATING p=0.52 pin=   3.5 cpu=  8.5 api=48.74 top=192.168.200.13(0.83) primary 
+11:15:03 MITIGATING p=0.55 pin=   9.5 cpu= 13.5 api=48.2 top=192.168.200.11(0.62) primary 
+11:15:05 MITIGATING p=0.54 pin=   4.0 cpu= 12.0 api=47.26 top=192.168.200.13(0.86) primary 
+11:15:07 MITIGATING p=0.55 pin=   8.5 cpu=  8.5 api=47.55 top=192.168.200.11(0.54) primary 
+11:15:09 MITIGATING p=0.56 pin=   5.5 cpu= 13.5 api=47.11 top=192.168.200.13(0.78) primary 
+11:15:11 MITIGATING p=0.57 pin=   8.5 cpu= 11.5 api=46.67 top=192.168.200.13(0.58) primary 
+11:15:13 MITIGATING p=0.54 pin=   6.0 cpu= 11.0 api=49.04 top=192.168.200.13(0.80) primary 
+11:15:15 MITIGATING p=0.54 pin=   5.0 cpu= 13.0 api=48.27 top=192.168.200.13(0.89) primary 
+11:15:17 MITIGATING p=0.59 pin=   9.5 cpu= 12.0 api=48.53 top=192.168.200.13(0.64) primary 
+11:15:19 MITIGATING p=0.54 pin=   4.0 cpu=  8.0 api=45.97 top=192.168.200.13(0.67) primary 
+11:15:21 MITIGATING p=0.57 pin=   9.5 cpu= 14.0 api=53.02 top=192.168.200.11(0.58) primary 
+11:15:23 MITIGATING p=0.53 pin=   4.0 cpu= 10.0 api=53.13 top=192.168.200.13(0.71) primary 
+11:15:25 MITIGATING p=0.54 pin=   5.0 cpu= 10.5 api=45.64 top=192.168.200.13(0.67) primary 
+11:15:27 MITIGATING p=0.52 pin=   5.0 cpu= 13.5 api=46.76 top=192.168.200.13(0.75) primary 
+11:15:29 MITIGATING p=0.50 pin=   5.5 cpu=  9.0 api=72.5 top=192.168.200.13(0.78) primary 
+11:15:31 MITIGATING p=0.52 pin=   8.5 cpu= 14.0 api=46.37 top=192.168.200.13(0.50) primary 
+11:15:33 MITIGATING p=0.53 pin=   6.0 cpu= 13.0 api=48.08 top=192.168.200.13(0.80) primary 
+11:15:35 MITIGATING p=0.68 pin=  11.0 cpu= 10.0 api=50.76 top=192.168.200.11(0.50) primary 
+11:15:37 MITIGATING p=0.54 pin=   6.0 cpu= 11.5 api=48.58 top=192.168.200.13(0.80) primary 
+11:15:39 MITIGATING p=0.55 pin=   5.0 cpu= 13.5 api=52.77 top=192.168.200.13(0.57) primary 
+11:15:41 MITIGATING p=0.55 pin=   7.0 cpu=  9.5 api=52.31 top=192.168.200.11(0.60) primary 
+11:15:43 MITIGATING p=0.56 pin=   5.5 cpu= 11.5 api=49.95 top=192.168.200.13(0.62) primary 
+11:15:45 MITIGATING p=0.61 pin=  10.5 cpu= 17.0 api=46.77 top=192.168.200.11(0.69) primary 
+11:15:47 target {"ip": "192.168.200.11", "share": 1.0, "excess_pin": 16, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 2.1, "192.168.200.13": 5.0}}
+11:15:50 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 201, "rest_ms": 29.1, "on_switch_s": 3.54, "total_s": 3.57, "error": null}
+11:15:47 MITIGATING p=0.56 pin=   7.0 cpu=  9.5 api=49.65 top=192.168.200.13(0.60) primary L1 bypass 192.168.200.11
+11:15:50 MITIGATING p=0.56 pin=   6.4 cpu= 14.0 api=47.64 top=192.168.200.13(1.00) primary 
+11:15:53 target {"ip": "192.168.200.13", "share": 1.0, "excess_pin": 25, "primary": false, "base_pin_per_cycle": {"192.168.200.11": 2.1, "192.168.200.13": 5.0}}
+11:15:56 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 10.5, "on_switch_s": 3.54, "total_s": 3.55, "error": null}
+11:15:56 escalation_blocked {"ip": "192.168.200.11", "why": "nghi nhắm sai: Packet-In vượt nền đến từ nguồn khác"}
+11:15:52 MITIGATING p=0.55 pin=   6.5 cpu=  9.5 api=62.84 top=192.168.200.13(1.00) primary L1 bypass 192.168.200.13
+11:15:56 MITIGATING p=0.51 pin=   1.6 cpu= 13.5 api=42.98 top=None(0.00) primary 
+11:15:58 MITIGATING p=0.50 pin=   2.5 cpu=  8.0 api=42.41 top=None(0.00) primary 
+11:16:00 MITIGATING p=0.48 pin=   0.0 cpu= 10.0 api=97.23 top=None(0.00) primary 
+11:16:02 MITIGATING p=0.45 pin=   0.0 cpu=  9.5 api=52.43 top=None(0.00) primary 
+11:16:04 MITIGATING p=0.45 pin=   1.0 cpu= 10.0 api=34.88 top=None(0.00) primary 
+11:16:06 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:16:06 RECOVERING p=0.47 pin=   0.0 cpu=  9.0 api=33.11 top=None(0.00) primary 
+11:16:08 RECOVERING p=0.45 pin=   1.0 cpu=  9.0 api=35.18 top=None(0.00) primary 
+11:16:10 RECOVERING p=0.45 pin=   0.5 cpu=  6.0 api=36.47 top=None(0.00) primary 
+11:16:12 RECOVERING p=0.46 pin=   2.0 cpu= 11.5 api=35.23 top=None(0.00) primary 
+11:16:14 RECOVERING p=0.46 pin=   1.0 cpu=  8.5 api=33.31 top=None(0.00) primary 
+11:16:16 RECOVERING p=0.45 pin=   0.5 cpu=  7.0 api=34.1 top=None(0.00) primary 
+11:16:18 RECOVERING p=0.46 pin=   0.0 cpu= 10.0 api=33.69 top=None(0.00) primary 
+11:16:20 RECOVERING p=0.49 pin=   1.5 cpu=  8.0 api=39.37 top=None(0.00) primary 
+11:16:22 RECOVERING p=0.46 pin=   2.0 cpu=  8.0 api=33.33 top=None(0.00) primary 
+11:16:24 RECOVERING p=0.46 pin=   2.0 cpu= 10.5 api=35.94 top=None(0.00) primary 
+11:16:26 RECOVERING p=0.49 pin=   0.0 cpu= 10.5 api=37.87 top=None(0.00) primary 
+11:16:28 RECOVERING p=0.46 pin=   0.0 cpu=  8.0 api=33.21 top=None(0.00) primary 
+11:16:30 RECOVERING p=0.47 pin=   1.0 cpu= 10.5 api=33.49 top=None(0.00) primary 
+11:16:32 RECOVERING p=0.47 pin=   0.5 cpu=  8.0 api=33.42 top=None(0.00) primary 
+11:16:34 RECOVERING p=0.47 pin=   1.0 cpu=  7.5 api=32.78 top=None(0.00) primary 
+11:16:36 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 204, "why": "hết tấn công"}
+11:16:36 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+11:16:36 state {"frm": "RECOVERING", "to": "NORMAL"}
+11:16:36 NORMAL     p=0.49 pin=   1.5 cpu= 10.5 api=37.18 top=None(0.00) primary remove rules
+11:16:38 state {"frm": "NORMAL", "to": "SUSPECT", "prob": 0.501}
+11:16:38 SUSPECT    p=0.50 pin=   8.5 cpu= 10.5 api=36.1 top=192.168.200.13(0.87) primary 
+11:16:40 SUSPECT    p=0.51 pin=   6.0 cpu=  9.5 api=37.14 top=192.168.200.13(0.80) primary 
+11:16:42 state {"frm": "SUSPECT", "to": "MITIGATING", "prob": 0.546, "top_src": null, "share": 1.0, "pin_from_src": 5}
+11:16:42 MITIGATING p=0.55 pin=   4.5 cpu= 11.5 api=40.3 top=192.168.200.13(1.00) primary 
+11:16:44 MITIGATING p=0.56 pin=   6.5 cpu=  9.0 api=40.99 top=192.168.200.13(0.82) primary 
+11:16:46 MITIGATING p=0.56 pin=   5.0 cpu= 12.5 api=44.69 top=192.168.200.13(1.00) primary 
+11:16:48 MITIGATING p=0.56 pin=   6.0 cpu= 13.0 api=48.27 top=192.168.200.13(0.91) primary 
+11:16:50 MITIGATING p=0.56 pin=   5.5 cpu=  9.5 api=47.53 top=192.168.200.13(1.00) primary 
+11:16:52 target {"ip": "192.168.200.13", "share": 1.0, "excess_pin": 26, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 2.1, "192.168.200.13": 5.0}}
+11:16:54 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 10.2, "on_switch_s": 1.52, "total_s": 1.53, "error": null}
+11:16:52 MITIGATING p=0.55 pin=   6.5 cpu= 11.0 api=46.65 top=192.168.200.13(0.92) primary L1 bypass 192.168.200.13
+11:16:54 MITIGATING p=0.54 pin=   3.0 cpu= 17.0 api=43.99 top=192.168.200.11(1.00) primary 
+11:16:56 MITIGATING p=0.55 pin=   1.0 cpu=  8.5 api=46.3 top=192.168.200.11(1.00) primary 
+11:16:58 MITIGATING p=0.51 pin=   3.0 cpu=  8.5 api=43.06 top=192.168.200.11(1.00) primary 
+11:17:00 MITIGATING p=0.51 pin=   1.0 cpu= 12.0 api=42.79 top=192.168.200.11(1.00) primary 
+11:17:02 MITIGATING p=0.50 pin=   1.0 cpu=  8.0 api=39.8 top=192.168.200.11(1.00) primary 
+11:17:04 MITIGATING p=0.50 pin=   2.0 cpu= 10.5 api=38.56 top=192.168.200.11(1.00) primary 
+11:17:06 MITIGATING p=0.48 pin=   1.0 cpu= 11.0 api=35.0 top=192.168.200.11(1.00) primary 
+11:17:08 MITIGATING p=0.49 pin=   2.0 cpu=  8.0 api=36.1 top=192.168.200.11(1.00) primary 
+11:17:10 MITIGATING p=0.49 pin=   0.0 cpu=  8.0 api=35.53 top=None(0.00) primary 
+11:17:12 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:17:12 RECOVERING p=0.47 pin=   1.0 cpu= 10.5 api=35.77 top=192.168.200.11(1.00) primary 
+11:17:14 RECOVERING p=0.50 pin=   0.0 cpu=  8.0 api=34.77 top=None(0.00) primary 
+11:17:16 RECOVERING p=0.46 pin=   0.0 cpu=  7.5 api=34.83 top=None(0.00) primary 
+11:17:18 RECOVERING p=0.49 pin=   1.0 cpu= 10.5 api=34.59 top=192.168.200.11(1.00) primary 
+11:17:20 RECOVERING p=0.48 pin=   2.0 cpu=  7.5 api=39.05 top=192.168.200.11(1.00) primary 
+11:17:22 RECOVERING p=0.49 pin=   0.0 cpu=  8.5 api=37.49 top=None(0.00) primary 
+11:17:24 RECOVERING p=0.55 pin=   1.0 cpu= 10.5 api=48.75 top=192.168.200.11(1.00) primary 
+11:17:26 RECOVERING p=0.52 pin=   1.0 cpu= 10.0 api=37.95 top=192.168.200.11(1.00) primary 
+11:17:28 RECOVERING p=0.50 pin=   3.0 cpu=  7.5 api=35.09 top=192.168.200.11(1.00) primary 
+11:17:30 state {"frm": "RECOVERING", "to": "MITIGATING", "prob": 0.522, "reason": "tái phát"}
+11:17:30 MITIGATING p=0.52 pin=   1.0 cpu= 11.0 api=38.12 top=192.168.200.11(1.00) primary 
+11:17:32 MITIGATING p=0.50 pin=   1.0 cpu=  8.0 api=35.1 top=192.168.200.11(1.00) primary 
+11:17:34 MITIGATING p=0.48 pin=   1.0 cpu=  8.0 api=35.26 top=192.168.200.11(1.00) primary 
+11:17:36 MITIGATING p=0.48 pin=   0.0 cpu= 10.0 api=35.15 top=None(0.00) primary 
+11:17:38 MITIGATING p=0.45 pin=   1.0 cpu=  7.5 api=34.35 top=192.168.200.11(1.00) primary 
+11:17:40 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:17:40 RECOVERING p=0.44 pin=   1.0 cpu=  8.0 api=35.03 top=192.168.200.11(1.00) primary 
+11:17:42 RECOVERING p=0.47 pin=   2.0 cpu= 10.0 api=38.62 top=192.168.200.11(1.00) primary 
+11:17:44 RECOVERING p=0.47 pin=   0.0 cpu=  9.0 api=38.74 top=None(0.00) primary 
+11:17:46 RECOVERING p=0.52 pin=   1.0 cpu=  8.5 api=48.8 top=192.168.200.11(1.00) primary 
+11:17:48 RECOVERING p=0.46 pin=   0.0 cpu= 12.0 api=33.26 top=None(0.00) primary 
+11:17:50 RECOVERING p=0.47 pin=   2.0 cpu=  7.0 api=37.57 top=192.168.200.11(1.00) primary 
+11:17:52 RECOVERING p=0.46 pin=   2.0 cpu=  9.5 api=34.35 top=192.168.200.11(1.00) primary 
+11:17:54 RECOVERING p=0.46 pin=   0.0 cpu=  9.5 api=35.71 top=None(0.00) primary 
+11:17:56 RECOVERING p=0.45 pin=   2.0 cpu=  7.5 api=34.77 top=192.168.200.11(1.00) primary 
+11:17:58 RECOVERING p=0.50 pin=   0.0 cpu=  9.5 api=37.8 top=None(0.00) primary 
+11:18:00 RECOVERING p=0.49 pin=   0.0 cpu=  9.5 api=35.18 top=None(0.00) primary 
+11:18:02 RECOVERING p=0.48 pin=   0.0 cpu=  7.5 api=35.42 top=None(0.00) primary 
+11:18:04 RECOVERING p=0.47 pin=   1.0 cpu=  9.5 api=35.88 top=192.168.200.11(1.00) primary 
+11:18:06 RECOVERING p=0.46 pin=   3.0 cpu= 10.0 api=33.78 top=192.168.200.11(1.00) primary 
+11:18:08 RECOVERING p=0.52 pin=   1.0 cpu=  7.5 api=52.72 top=192.168.200.11(1.00) primary 
+11:18:10 RECOVERING p=0.45 pin=   0.0 cpu= 12.0 api=34.76 top=None(0.00) primary 
+11:18:12 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+11:18:12 state {"frm": "RECOVERING", "to": "NORMAL"}
+11:18:12 NORMAL     p=0.51 pin=   0.0 cpu=  9.5 api=101.47 top=None(0.00) primary remove rules
+11:18:14 NORMAL     p=0.50 pin=  10.5 cpu=  9.5 api=34.06 top=192.168.200.13(1.00) primary 
+11:18:16 state {"frm": "NORMAL", "to": "SUSPECT", "prob": 0.704}
+11:18:16 SUSPECT    p=0.70 pin=  14.0 cpu= 11.0 api=38.24 top=192.168.200.13(0.81) primary 
+11:18:18 state {"frm": "SUSPECT", "to": "MITIGATING", "prob": 0.758, "top_src": null, "share": 1.0, "pin_from_src": 25}
+11:18:18 MITIGATING p=0.76 pin=  12.5 cpu= 12.5 api=46.43 top=192.168.200.13(0.96) primary 
+11:18:20 target {"ip": "192.168.200.13", "share": 1.0, "excess_pin": 49, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.99, "192.168.200.13": 8.2}}
+11:18:21 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 10.3, "on_switch_s": 1.01, "total_s": 1.02, "error": null}
+11:18:20 MITIGATING p=0.85 pin=  15.0 cpu=  9.0 api=48.47 top=192.168.200.13(0.86) primary L1 bypass 192.168.200.13
+11:18:22 MITIGATING p=0.67 pin=   2.0 cpu= 19.5 api=49.44 top=192.168.200.11(1.00) primary 
+11:18:24 MITIGATING p=0.62 pin=   3.0 cpu= 12.0 api=47.29 top=192.168.200.11(1.00) primary 
+11:18:26 MITIGATING p=0.59 pin=   3.0 cpu=  8.5 api=62.91 top=192.168.200.11(1.00) primary 
+11:18:28 MITIGATING p=0.56 pin=   0.0 cpu= 12.5 api=40.42 top=None(0.00) primary 
+11:18:30 MITIGATING p=0.39 pin=   1.0 cpu= 10.5 api=34.98 top=192.168.200.11(1.00) primary 
+11:18:32 MITIGATING p=0.39 pin=   1.0 cpu=  7.0 api=36.27 top=192.168.200.11(1.00) primary 
+11:18:34 MITIGATING p=0.41 pin=   1.0 cpu=  9.0 api=37.95 top=192.168.200.11(1.00) primary 
+11:18:36 MITIGATING p=0.44 pin=   0.0 cpu=  9.5 api=35.63 top=None(0.00) primary 
+11:18:38 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:18:38 RECOVERING p=0.44 pin=   1.0 cpu=  7.5 api=34.01 top=192.168.200.11(1.00) primary 
+11:18:40 RECOVERING p=0.45 pin=   1.0 cpu=  9.5 api=37.3 top=192.168.200.11(1.00) primary 
+11:18:42 RECOVERING p=0.45 pin=   3.0 cpu=  9.5 api=33.41 top=192.168.200.11(1.00) primary 
+11:18:44 RECOVERING p=0.44 pin=   0.0 cpu=  7.0 api=33.31 top=None(0.00) primary 
+11:18:46 RECOVERING p=0.45 pin=   3.0 cpu=  9.5 api=33.43 top=192.168.200.11(1.00) primary 
+11:18:48 RECOVERING p=0.46 pin=   2.0 cpu= 12.0 api=34.83 top=192.168.200.11(1.00) primary 
+11:18:50 RECOVERING p=0.45 pin=   2.0 cpu=  7.0 api=34.31 top=192.168.200.11(1.00) primary 
+11:18:52 RECOVERING p=0.45 pin=   0.0 cpu= 10.0 api=35.57 top=None(0.00) primary 
+11:18:54 RECOVERING p=0.50 pin=   2.0 cpu=  7.5 api=43.56 top=192.168.200.11(1.00) primary 
+11:18:56 RECOVERING p=0.47 pin=   1.0 cpu=  9.5 api=36.96 top=192.168.200.11(1.00) primary 
+11:18:58 RECOVERING p=0.46 pin=   2.0 cpu= 10.0 api=35.66 top=192.168.200.11(1.00) primary 
+11:19:00 RECOVERING p=0.46 pin=   4.0 cpu=  8.0 api=36.62 top=192.168.200.11(1.00) primary 
+11:19:02 RECOVERING p=0.46 pin=   0.0 cpu=  9.0 api=36.58 top=None(0.00) primary 
+11:19:04 RECOVERING p=0.50 pin=   1.0 cpu= 10.0 api=36.92 top=192.168.200.11(1.00) primary 
+11:19:06 RECOVERING p=0.48 pin=   0.0 cpu=  7.5 api=36.54 top=None(0.00) primary 
+11:19:08 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+11:19:08 state {"frm": "RECOVERING", "to": "NORMAL"}
+11:19:08 NORMAL     p=0.55 pin=   2.0 cpu= 10.0 api=50.61 top=192.168.200.11(1.00) primary remove rules
+11:19:10 state {"frm": "NORMAL", "to": "SUSPECT", "prob": 0.559}
+11:19:10 SUSPECT    p=0.56 pin=  10.0 cpu= 13.5 api=36.76 top=192.168.200.13(0.95) primary 
+11:19:12 state {"frm": "SUSPECT", "to": "MITIGATING", "prob": 0.75, "top_src": null, "share": 0.0, "pin_from_src": 0}
+11:19:12 MITIGATING p=0.75 pin=  12.5 cpu=  9.5 api=39.14 top=192.168.200.13(0.83) primary 
+11:19:14 MITIGATING p=0.77 pin=  12.0 cpu= 12.0 api=42.84 top=192.168.200.13(0.91) primary 
+11:19:16 MITIGATING p=0.79 pin=  11.0 cpu= 12.5 api=51.02 top=192.168.200.13(0.95) primary 
+11:19:18 target {"ip": "192.168.200.13", "share": 0.98, "excess_pin": 57, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.99, "192.168.200.13": 8.2}}
+11:19:22 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 12.7, "on_switch_s": 3.53, "total_s": 3.55, "error": null}
+11:19:18 MITIGATING p=1.00 pin=  13.5 cpu= 10.5 api=52.83 top=192.168.200.13(0.88) primary L1 bypass 192.168.200.13
+11:19:22 MITIGATING p=0.66 pin=   4.9 cpu= 15.1 api=56.57 top=192.168.200.11(1.00) primary 
+11:19:24 MITIGATING p=0.62 pin=   4.0 cpu= 15.5 api=51.26 top=192.168.200.11(1.00) primary 
+11:19:26 MITIGATING p=0.59 pin=   2.0 cpu= 12.5 api=47.58 top=192.168.200.11(1.00) primary 
+11:19:28 MITIGATING p=0.57 pin=   3.0 cpu= 12.0 api=41.63 top=192.168.200.11(1.00) primary 
+11:19:30 MITIGATING p=0.51 pin=   1.0 cpu=  8.0 api=46.03 top=192.168.200.11(1.00) primary 
+11:19:32 MITIGATING p=0.46 pin=   4.0 cpu=  9.5 api=39.98 top=192.168.200.11(1.00) primary 
+11:19:34 MITIGATING p=0.51 pin=   1.0 cpu= 11.5 api=39.37 top=192.168.200.11(1.00) primary 
+11:19:36 MITIGATING p=0.51 pin=   4.0 cpu=  8.0 api=38.5 top=192.168.200.11(1.00) primary 
+11:19:38 MITIGATING p=0.53 pin=   2.0 cpu=  8.0 api=42.1 top=192.168.200.11(1.00) primary 
+11:19:40 MITIGATING p=0.46 pin=   0.0 cpu= 11.5 api=36.44 top=None(0.00) primary 
+11:19:42 MITIGATING p=0.46 pin=   1.0 cpu=  7.5 api=35.56 top=192.168.200.11(1.00) primary 
+11:19:46 rule_install {"level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 201, "rest_ms": 7.4, "on_switch_s": 2.02, "total_s": 2.03, "error": null}
+11:19:44 MITIGATING p=0.52 pin=   1.0 cpu=  8.5 api=47.72 top=192.168.200.11(1.00) primary L2 drop 192.168.200.13
+11:19:46 MITIGATING p=0.48 pin=   1.8 cpu= 14.7 api=38.71 top=192.168.200.11(1.00) primary 
+11:19:48 MITIGATING p=0.50 pin=   0.0 cpu=  7.5 api=96.07 top=None(0.00) primary 
+11:19:50 MITIGATING p=0.45 pin=   0.0 cpu=  8.0 api=36.8 top=None(0.00) primary 
+11:19:52 MITIGATING p=0.44 pin=   3.0 cpu= 11.5 api=36.3 top=192.168.200.11(1.00) primary 
+11:19:54 MITIGATING p=0.43 pin=   3.0 cpu=  8.5 api=35.13 top=192.168.200.11(1.00) primary 
+11:19:56 MITIGATING p=0.44 pin=   0.0 cpu=  7.5 api=36.53 top=None(0.00) primary 
+11:19:58 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:19:58 RECOVERING p=0.45 pin=   1.0 cpu= 11.0 api=35.65 top=192.168.200.11(1.00) primary 
+11:20:00 RECOVERING p=0.46 pin=   7.5 cpu=  8.0 api=35.84 top=192.168.200.11(1.00) primary 
+11:20:02 RECOVERING p=0.44 pin=   3.0 cpu=  8.5 api=35.72 top=192.168.200.11(1.00) primary 
+11:20:04 RECOVERING p=0.53 pin=   1.0 cpu= 10.5 api=51.06 top=192.168.200.11(1.00) primary 
+11:20:06 RECOVERING p=0.48 pin=   1.0 cpu= 10.5 api=37.77 top=192.168.200.11(1.00) primary 
+11:20:08 RECOVERING p=0.47 pin=   1.0 cpu=  7.5 api=37.7 top=192.168.200.11(1.00) primary 
+11:20:10 RECOVERING p=0.47 pin=   0.0 cpu= 11.0 api=35.09 top=None(0.00) primary 
+11:20:12 RECOVERING p=0.46 pin=   0.0 cpu=  7.5 api=34.28 top=None(0.00) primary 
+11:20:14 RECOVERING p=0.44 pin=   0.0 cpu=  7.5 api=35.67 top=None(0.00) primary 
+11:20:16 RECOVERING p=0.48 pin=   3.0 cpu= 11.0 api=36.17 top=192.168.200.11(1.00) primary 
+11:20:18 RECOVERING p=0.48 pin=   2.0 cpu=  7.5 api=35.88 top=192.168.200.11(1.00) primary 
+11:20:20 RECOVERING p=0.48 pin=   0.0 cpu=  8.0 api=36.55 top=None(0.00) primary 
+11:20:22 RECOVERING p=0.48 pin=   0.0 cpu= 10.5 api=35.23 top=None(0.00) primary 
+11:20:24 RECOVERING p=0.52 pin=   0.0 cpu=  6.5 api=40.47 top=None(0.00) primary 
+11:20:26 RECOVERING p=0.49 pin=   1.0 cpu= 12.0 api=34.09 top=192.168.200.11(1.00) primary 
+11:20:28 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+11:20:28 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 204, "why": "hết tấn công"}
+11:20:28 state {"frm": "RECOVERING", "to": "NORMAL"}
+11:20:28 NORMAL     p=0.49 pin=   0.0 cpu=  9.5 api=34.76 top=None(0.00) primary remove rules
+11:20:30 state {"frm": "NORMAL", "to": "SUSPECT", "prob": 0.711}
+11:20:30 SUSPECT    p=0.71 pin=  12.5 cpu= 10.0 api=34.26 top=192.168.200.13(0.96) primary 
+11:20:32 SUSPECT    p=0.77 pin=  12.0 cpu= 12.0 api=42.23 top=192.168.200.13(1.00) primary 
+11:20:34 state {"frm": "SUSPECT", "to": "MITIGATING", "prob": 0.794, "top_src": null, "share": 1.0, "pin_from_src": 32}
+11:20:34 MITIGATING p=0.79 pin=  13.0 cpu= 14.5 api=52.57 top=192.168.200.13(1.00) primary 
+11:20:36 target {"ip": "192.168.200.13", "share": 1.0, "excess_pin": 59, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.99, "192.168.200.13": 8.2}}
+11:20:37 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 7.6, "on_switch_s": 1.01, "total_s": 1.02, "error": null}
+11:20:36 MITIGATING p=0.90 pin=  15.5 cpu= 10.0 api=58.52 top=192.168.200.13(0.90) primary L1 bypass 192.168.200.13
+11:20:38 MITIGATING p=0.70 pin=   1.0 cpu= 15.5 api=58.73 top=192.168.200.11(1.00) primary 
+11:20:40 MITIGATING p=0.65 pin=   1.0 cpu= 14.5 api=53.69 top=192.168.200.11(1.00) primary 
+11:20:42 MITIGATING p=0.63 pin=   1.0 cpu= 10.0 api=52.12 top=192.168.200.11(1.00) primary 
+11:20:44 MITIGATING p=0.60 pin=   1.0 cpu= 11.5 api=44.87 top=192.168.200.11(1.00) primary 
+11:20:46 MITIGATING p=0.42 pin=   0.0 cpu= 11.0 api=36.04 top=None(0.00) primary 
+11:20:48 MITIGATING p=0.40 pin=   0.0 cpu=  6.0 api=36.21 top=None(0.00) primary 
+11:20:50 MITIGATING p=0.41 pin=   0.0 cpu=  9.5 api=34.48 top=None(0.00) primary 
+11:20:52 MITIGATING p=0.44 pin=   0.0 cpu=  8.0 api=38.84 top=None(0.00) primary 
+11:20:54 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:20:54 RECOVERING p=0.45 pin=   0.0 cpu=  8.5 api=32.86 top=None(0.00) primary 
+11:20:56 RECOVERING p=0.44 pin=   0.0 cpu=  9.5 api=32.22 top=None(0.00) primary 
+11:20:58 RECOVERING p=0.44 pin=   0.0 cpu=  7.0 api=33.78 top=None(0.00) primary 
+11:21:00 RECOVERING p=0.44 pin=   2.0 cpu=  9.5 api=32.95 top=192.168.200.11(1.00) primary 
+11:21:02 RECOVERING p=0.52 pin=   2.0 cpu=  9.0 api=47.38 top=192.168.200.11(1.00) primary 
+11:21:04 RECOVERING p=0.46 pin=   1.0 cpu=  9.5 api=34.92 top=192.168.200.11(1.00) primary 
+11:21:06 RECOVERING p=0.49 pin=   2.0 cpu=  9.5 api=35.92 top=192.168.200.11(1.00) primary 
+11:21:08 RECOVERING p=0.50 pin=   4.0 cpu=  9.5 api=34.81 top=192.168.200.11(1.00) primary 
+11:21:10 RECOVERING p=0.49 pin=   0.0 cpu=  8.0 api=35.57 top=None(0.00) primary 
+11:21:12 RECOVERING p=0.49 pin=   1.0 cpu=  9.5 api=36.36 top=192.168.200.11(1.00) primary 
+11:21:14 RECOVERING p=0.49 pin=   1.0 cpu=  9.0 api=35.29 top=192.168.200.11(1.00) primary 
+11:21:16 RECOVERING p=0.51 pin=   1.0 cpu=  8.0 api=38.7 top=192.168.200.11(1.00) primary 
+11:21:18 RECOVERING p=0.48 pin=   0.0 cpu=  9.0 api=35.74 top=None(0.00) primary 
+11:21:20 RECOVERING p=0.52 pin=   1.0 cpu=  9.5 api=39.47 top=192.168.200.11(1.00) primary 
+11:21:22 RECOVERING p=0.48 pin=   0.0 cpu=  8.0 api=34.41 top=None(0.00) primary 
+11:21:24 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+11:21:24 state {"frm": "RECOVERING", "to": "NORMAL"}
+11:21:24 NORMAL     p=0.49 pin=   0.0 cpu= 11.5 api=33.52 top=None(0.00) primary remove rules
+11:21:26 state {"frm": "NORMAL", "to": "SUSPECT", "prob": 0.813}
+11:21:26 SUSPECT    p=0.81 pin=  20.0 cpu= 12.0 api=38.49 top=192.168.200.13(0.89) primary 
+11:21:28 SUSPECT    p=0.83 pin=  17.0 cpu=  9.5 api=42.18 top=192.168.200.13(1.00) primary 
+11:21:30 state {"frm": "SUSPECT", "to": "MITIGATING", "prob": 0.921, "top_src": "192.168.200.13", "share": 1.0, "pin_from_src": 60}
+11:21:30 target {"ip": "192.168.200.13", "share": 1.0, "excess_pin": 60, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.99, "192.168.200.13": 8.2}}
+11:21:32 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 9.5, "on_switch_s": 1.52, "total_s": 1.53, "error": null}
+11:21:30 MITIGATING p=0.92 pin=  18.5 cpu= 12.5 api=112.78 top=192.168.200.13(0.97) primary L1 bypass 192.168.200.13
+11:21:32 MITIGATING p=0.70 pin=   0.0 cpu= 14.5 api=58.08 top=None(0.00) primary 
+11:21:34 MITIGATING p=0.68 pin=   0.0 cpu= 10.0 api=53.67 top=None(0.00) primary 
+11:21:36 MITIGATING p=0.63 pin=   1.0 cpu= 12.5 api=59.21 top=192.168.200.11(1.00) primary 
+11:21:38 MITIGATING p=0.61 pin=   2.0 cpu= 12.0 api=43.99 top=192.168.200.11(1.00) primary 
+11:21:40 MITIGATING p=0.52 pin=   2.0 cpu= 11.0 api=43.61 top=192.168.200.11(1.00) primary 
+11:21:42 MITIGATING p=0.44 pin=   2.0 cpu=  9.5 api=37.29 top=192.168.200.11(1.00) primary 
+11:21:44 MITIGATING p=0.43 pin=   3.0 cpu= 10.0 api=37.0 top=192.168.200.11(1.00) primary 
+11:21:46 MITIGATING p=0.52 pin=   0.0 cpu=  8.0 api=40.43 top=None(0.00) primary 
+11:21:48 MITIGATING p=0.49 pin=   0.0 cpu=  9.5 api=36.56 top=None(0.00) primary 
+11:21:50 MITIGATING p=0.51 pin=   0.0 cpu=  9.5 api=37.06 top=None(0.00) primary 
+11:21:52 MITIGATING p=0.49 pin=   2.5 cpu=  8.0 api=35.9 top=192.168.200.11(1.00) primary 
+11:21:54 MITIGATING p=0.49 pin=   2.0 cpu=  9.0 api=35.11 top=192.168.200.11(1.00) primary 
+11:21:56 MITIGATING p=0.50 pin=   3.0 cpu=  9.0 api=36.95 top=192.168.200.11(1.00) primary 
+11:21:58 MITIGATING p=0.50 pin=   1.0 cpu=  8.0 api=37.09 top=192.168.200.11(1.00) primary 
+11:22:00 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:22:00 RECOVERING p=0.49 pin=   1.0 cpu= 11.0 api=35.2 top=192.168.200.11(1.00) primary 
+11:22:02 RECOVERING p=0.49 pin=   0.0 cpu=  9.0 api=35.13 top=None(0.00) primary 
+11:22:04 RECOVERING p=0.48 pin=   0.0 cpu=  7.5 api=35.15 top=None(0.00) primary 
+11:22:06 RECOVERING p=0.49 pin=   0.0 cpu=  9.0 api=35.95 top=None(0.00) primary 
+11:22:08 RECOVERING p=0.49 pin=   1.0 cpu=  9.5 api=34.08 top=192.168.200.11(1.00) primary 
+11:22:10 RECOVERING p=0.48 pin=   2.0 cpu=  7.5 api=34.43 top=192.168.200.11(1.00) primary 
+11:22:12 RECOVERING p=0.48 pin=   0.0 cpu=  9.0 api=34.2 top=None(0.00) primary 
+11:22:14 RECOVERING p=0.50 pin=   3.0 cpu= 10.0 api=36.75 top=192.168.200.11(1.00) primary 
+11:22:16 RECOVERING p=0.48 pin=   2.0 cpu=  8.0 api=34.97 top=192.168.200.11(1.00) primary 
+11:22:18 RECOVERING p=0.51 pin=   1.0 cpu=  8.5 api=39.17 top=192.168.200.11(1.00) primary 
+11:22:20 RECOVERING p=0.48 pin=   1.0 cpu= 13.0 api=35.13 top=192.168.200.11(1.00) primary 
+11:22:22 RECOVERING p=0.51 pin=   1.0 cpu=  7.5 api=39.52 top=192.168.200.11(1.00) primary 
+11:22:24 state {"frm": "RECOVERING", "to": "MITIGATING", "prob": 0.5, "reason": "tái phát"}
+11:22:24 MITIGATING p=0.50 pin=   0.0 cpu=  9.0 api=39.67 top=None(0.00) primary 
+11:22:26 MITIGATING p=0.49 pin=   1.0 cpu= 10.5 api=38.96 top=192.168.200.11(1.00) primary 
+11:22:29 rule_install {"level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 201, "rest_ms": 8.1, "on_switch_s": 1.01, "total_s": 1.02, "error": null}
+11:22:28 MITIGATING p=0.50 pin=   2.5 cpu=  7.5 api=41.47 top=192.168.200.11(1.00) primary L2 drop 192.168.200.13
+11:22:30 MITIGATING p=0.47 pin=   2.0 cpu= 11.0 api=35.5 top=192.168.200.11(1.00) primary 
+11:22:32 MITIGATING p=0.46 pin=   0.0 cpu=  9.5 api=34.01 top=None(0.00) primary 
+11:22:34 MITIGATING p=0.46 pin=   4.0 cpu=  8.0 api=33.89 top=192.168.200.11(1.00) primary 
+11:22:36 MITIGATING p=0.45 pin=   1.0 cpu=  8.5 api=36.31 top=192.168.200.11(1.00) primary 
+11:22:38 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:22:38 RECOVERING p=0.47 pin=   3.0 cpu= 10.5 api=37.27 top=192.168.200.11(1.00) primary 
+11:22:40 RECOVERING p=0.52 pin=   2.0 cpu=  7.5 api=48.33 top=192.168.200.11(1.00) primary 
+11:22:42 RECOVERING p=0.48 pin=   2.0 cpu= 11.0 api=36.83 top=192.168.200.11(1.00) primary 
+11:22:44 RECOVERING p=0.47 pin=   2.0 cpu=  9.5 api=36.09 top=192.168.200.11(1.00) primary 
+11:22:46 RECOVERING p=0.46 pin=   1.0 cpu=  8.5 api=36.42 top=192.168.200.11(1.00) primary 
+11:22:48 RECOVERING p=0.49 pin=   1.0 cpu=  8.5 api=35.29 top=192.168.200.11(1.00) primary 
+11:22:50 RECOVERING p=0.49 pin=   2.0 cpu=  9.5 api=35.15 top=192.168.200.11(1.00) primary 
+11:22:52 RECOVERING p=0.51 pin=   1.0 cpu=  8.0 api=39.23 top=192.168.200.11(1.00) primary 
+11:22:54 RECOVERING p=0.48 pin=   2.0 cpu=  9.0 api=34.59 top=192.168.200.11(1.00) primary 
+11:22:56 RECOVERING p=0.48 pin=   2.0 cpu=  9.5 api=35.49 top=192.168.200.11(1.00) primary 
+11:22:58 RECOVERING p=0.51 pin=   3.0 cpu=  8.0 api=38.58 top=192.168.200.11(1.00) primary 
+11:23:00 RECOVERING p=0.55 pin=   1.0 cpu=  8.5 api=48.37 top=192.168.200.11(1.00) primary 
+11:23:02 RECOVERING p=0.49 pin=   1.0 cpu= 12.0 api=35.39 top=192.168.200.11(1.00) primary 
+11:23:04 state {"frm": "RECOVERING", "to": "MITIGATING", "prob": 0.507, "reason": "tái phát"}
+11:23:04 MITIGATING p=0.51 pin=   2.0 cpu=  8.0 api=36.69 top=192.168.200.11(1.00) primary 
+11:23:06 MITIGATING p=0.53 pin=   4.0 cpu=  7.5 api=41.1 top=192.168.200.11(1.00) primary 
+11:23:08 MITIGATING p=0.51 pin=   3.0 cpu= 12.0 api=37.65 top=192.168.200.11(1.00) primary 
+11:23:10 MITIGATING p=0.50 pin=   1.0 cpu=  7.5 api=37.14 top=192.168.200.11(1.00) primary 
+11:23:12 MITIGATING p=0.54 pin=   1.0 cpu=  8.0 api=43.84 top=192.168.200.11(1.00) primary 
+11:23:14 MITIGATING p=0.51 pin=   5.0 cpu= 12.0 api=37.07 top=192.168.200.11(1.00) primary 
+11:23:16 MITIGATING p=0.54 pin=   2.0 cpu=  6.5 api=108.7 top=192.168.200.11(1.00) primary 
+11:23:18 MITIGATING p=0.46 pin=   0.0 cpu= 10.5 api=36.73 top=None(0.00) primary 
+11:23:20 MITIGATING p=0.45 pin=   2.0 cpu= 11.0 api=49.6 top=192.168.200.11(1.00) primary 
+11:23:22 MITIGATING p=0.22 pin=   2.0 cpu=  8.0 api=36.05 top=192.168.200.11(1.00) primary 
+11:23:24 MITIGATING p=0.05 pin=   1.5 cpu= 10.0 api=35.34 top=192.168.200.11(1.00) primary 
+11:23:26 state {"frm": "MITIGATING", "to": "RECOVERING"}
+11:23:26 RECOVERING p=0.00 pin=   0.0 cpu=  8.5 api=43.44 top=None(0.00) primary 
+11:23:28 RECOVERING p=0.00 pin=   3.0 cpu=  8.5 api=37.99 top=192.168.200.11(1.00) primary 
+11:23:30 RECOVERING p=0.00 pin=   3.0 cpu= 11.0 api=35.72 top=192.168.200.11(1.00) primary 
+11:23:32 RECOVERING p=0.00 pin=   3.0 cpu=  9.0 api=36.09 top=192.168.200.11(1.00) primary 
+11:23:34 RECOVERING p=0.00 pin=   3.0 cpu=  8.5 api=36.82 top=192.168.200.11(1.00) primary 
+11:23:36 RECOVERING p=0.00 pin=   5.0 cpu= 11.0 api=39.85 top=192.168.200.11(1.00) primary 
+11:23:38 RECOVERING p=0.00 pin=   5.0 cpu=  9.5 api=40.54 top=192.168.200.11(1.00) primary 
+11:23:40 RECOVERING p=0.00 pin=   7.0 cpu= 10.0 api=39.6 top=192.168.200.11(1.00) primary 
+11:23:42 RECOVERING p=0.00 pin=   2.0 cpu= 11.5 api=40.32 top=192.168.200.11(1.00) primary 
+11:23:44 RECOVERING p=0.00 pin=   4.0 cpu=  9.5 api=38.37 top=192.168.200.11(1.00) primary 
+11:23:46 RECOVERING p=0.00 pin=   2.5 cpu=  8.0 api=38.25 top=192.168.200.11(1.00) primary 
+11:23:48 RECOVERING p=0.00 pin=   7.0 cpu= 10.5 api=37.94 top=192.168.200.11(1.00) primary 
+11:23:50 RECOVERING p=0.00 pin=   2.0 cpu= 10.0 api=38.92 top=192.168.200.11(1.00) primary 
+11:23:52 RECOVERING p=0.00 pin=   3.0 cpu=  8.5 api=42.45 top=192.168.200.11(1.00) primary 
+11:23:54 RECOVERING p=0.00 pin=   1.0 cpu=  9.5 api=40.22 top=192.168.200.11(1.00) primary 
+11:23:56 RECOVERING p=0.00 pin=   2.0 cpu= 10.0 api=37.73 top=192.168.200.11(1.00) primary 
+11:23:58 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "hết tấn công"}
+11:23:58 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 204, "why": "hết tấn công"}
+11:23:58 state {"frm": "RECOVERING", "to": "NORMAL"}
+11:23:58 NORMAL     p=0.00 pin=   1.0 cpu=  8.0 api=37.82 top=192.168.200.11(1.00) primary remove rules
+11:24:00 NORMAL     p=0.00 pin=   3.0 cpu= 13.5 api=35.83 top=192.168.200.11(1.00) primary 
+11:24:02 NORMAL     p=0.00 pin=   5.0 cpu=  9.0 api=36.9 top=192.168.200.11(1.00) primary 
+11:24:04 NORMAL     p=0.02 pin=   2.0 cpu=  8.5 api=38.03 top=192.168.200.11(1.00) primary 
+11:24:06 NORMAL     p=0.00 pin=   1.0 cpu= 10.0 api=38.19 top=192.168.200.11(1.00) primary 
+11:24:08 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=41.38 top=192.168.200.11(1.00) primary 
+11:24:10 NORMAL     p=0.06 pin=   4.0 cpu=  9.0 api=39.7 top=192.168.200.11(1.00) primary 
+11:24:12 NORMAL     p=0.07 pin=   3.0 cpu= 10.5 api=47.91 top=192.168.200.11(1.00) primary 
+11:24:14 NORMAL     p=0.05 pin=   1.0 cpu=  9.5 api=44.33 top=192.168.200.11(1.00) primary 
+11:24:16 NORMAL     p=0.05 pin=   1.0 cpu=  9.5 api=40.94 top=192.168.200.11(1.00) primary 
+11:24:18 NORMAL     p=0.00 pin=   3.0 cpu= 10.0 api=52.16 top=192.168.200.11(1.00) primary 
+11:24:20 NORMAL     p=0.00 pin=   3.0 cpu= 11.0 api=38.5 top=192.168.200.11(1.00) primary 
+11:24:22 NORMAL     p=0.00 pin=   4.0 cpu=  8.5 api=39.24 top=192.168.200.11(1.00) primary 
+11:24:24 NORMAL     p=0.00 pin=   6.0 cpu= 11.0 api=40.19 top=192.168.200.11(1.00) primary 
+11:24:26 NORMAL     p=0.00 pin=   2.0 cpu=  9.0 api=38.31 top=192.168.200.11(1.00) primary 
+11:24:28 NORMAL     p=0.00 pin=   4.0 cpu=  8.5 api=40.94 top=192.168.200.11(1.00) primary 
+11:24:30 NORMAL     p=0.00 pin=   1.0 cpu= 10.0 api=37.71 top=192.168.200.11(1.00) primary 
+11:24:32 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=36.96 top=192.168.200.11(1.00) primary 
+11:24:34 NORMAL     p=0.00 pin=   3.0 cpu=  8.5 api=38.68 top=192.168.200.11(1.00) primary 
+11:24:36 NORMAL     p=0.00 pin=   5.0 cpu= 10.5 api=36.84 top=192.168.200.11(1.00) primary 
+11:24:38 NORMAL     p=0.00 pin=   5.0 cpu= 10.0 api=41.42 top=192.168.200.11(1.00) primary 
+11:24:40 NORMAL     p=0.00 pin=   2.5 cpu= 10.0 api=37.28 top=192.168.200.11(1.00) primary 
+11:24:42 NORMAL     p=0.00 pin=   2.5 cpu= 10.0 api=43.83 top=192.168.200.11(1.00) primary 
+11:24:44 NORMAL     p=0.01 pin=   5.0 cpu=  9.0 api=39.29 top=192.168.200.11(1.00) primary 
+11:24:46 NORMAL     p=0.03 pin=   4.0 cpu= 10.0 api=39.74 top=192.168.200.11(1.00) primary 
+11:24:48 NORMAL     p=0.03 pin=   3.0 cpu= 10.5 api=37.98 top=192.168.200.11(1.00) primary 
+11:24:50 NORMAL     p=0.01 pin=   2.0 cpu=  8.0 api=39.17 top=192.168.200.11(1.00) primary 
+11:24:52 NORMAL     p=0.00 pin=   6.0 cpu= 10.0 api=42.71 top=192.168.200.11(1.00) primary 
+11:24:54 NORMAL     p=0.00 pin=   0.0 cpu= 10.5 api=100.64 top=None(0.00) primary 
+11:24:56 NORMAL     p=0.00 pin=   4.0 cpu=  8.0 api=53.96 top=192.168.200.11(1.00) primary 
+11:24:58 NORMAL     p=0.00 pin=   7.5 cpu= 12.5 api=37.88 top=192.168.200.11(1.00) primary 
+11:25:00 NORMAL     p=0.00 pin=   2.0 cpu= 10.0 api=38.61 top=192.168.200.11(1.00) primary 
+11:25:02 NORMAL     p=0.00 pin=   1.0 cpu=  8.5 api=37.91 top=192.168.200.11(1.00) primary 
+11:25:04 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=39.94 top=192.168.200.11(1.00) primary 
+11:25:06 NORMAL     p=0.00 pin=   3.0 cpu= 10.5 api=39.78 top=192.168.200.11(1.00) primary 
+11:25:08 NORMAL     p=0.00 pin=   4.0 cpu=  8.0 api=37.17 top=192.168.200.11(1.00) primary 
+11:25:10 NORMAL     p=0.00 pin=   1.0 cpu= 10.0 api=37.2 top=192.168.200.11(1.00) primary 
+11:25:12 NORMAL     p=0.00 pin=   0.0 cpu=  9.0 api=40.42 top=None(0.00) primary 
+11:25:14 NORMAL     p=0.00 pin=   1.0 cpu=  8.0 api=35.75 top=192.168.200.11(1.00) primary 
+11:25:16 NORMAL     p=0.00 pin=   1.0 cpu= 11.5 api=36.11 top=192.168.200.11(1.00) primary 
+11:25:18 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=39.21 top=192.168.200.11(1.00) primary 
+11:25:20 NORMAL     p=0.00 pin=   7.5 cpu=  8.0 api=34.57 top=192.168.200.11(1.00) primary 
+11:25:22 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=35.32 top=192.168.200.11(1.00) primary 
+11:25:24 NORMAL     p=0.00 pin=   4.0 cpu= 10.0 api=37.22 top=192.168.200.11(1.00) primary 
+11:25:26 NORMAL     p=0.00 pin=   3.0 cpu=  8.5 api=37.11 top=192.168.200.11(1.00) primary 
+11:25:28 NORMAL     p=0.00 pin=   5.0 cpu=  9.0 api=39.77 top=192.168.200.11(1.00) primary 
+11:25:30 NORMAL     p=0.00 pin=   0.0 cpu= 10.0 api=38.83 top=None(0.00) primary 
+11:25:32 NORMAL     p=0.00 pin=   1.0 cpu=  8.5 api=39.35 top=192.168.200.11(1.00) primary 
+11:25:34 NORMAL     p=0.00 pin=   1.0 cpu=  9.5 api=38.5 top=192.168.200.11(1.00) primary 
+11:25:36 NORMAL     p=0.00 pin=   3.5 cpu= 12.0 api=38.38 top=192.168.200.11(1.00) primary 
+11:25:38 NORMAL     p=0.00 pin=   3.0 cpu=  8.5 api=38.47 top=192.168.200.11(1.00) primary 
+11:25:40 NORMAL     p=0.00 pin=   6.0 cpu=  9.5 api=38.33 top=192.168.200.11(1.00) primary 
+11:25:42 NORMAL     p=0.00 pin=   4.0 cpu= 10.5 api=38.97 top=192.168.200.11(1.00) primary 
+11:25:44 NORMAL     p=0.01 pin=   4.0 cpu=  8.5 api=39.74 top=192.168.200.11(1.00) primary 
+11:25:46 NORMAL     p=0.04 pin=   1.0 cpu=  9.0 api=41.55 top=192.168.200.11(1.00) primary 
+11:25:48 NORMAL     p=0.00 pin=   3.0 cpu= 10.5 api=44.36 top=192.168.200.11(1.00) primary 
+11:25:50 NORMAL     p=0.00 pin=   2.0 cpu=  8.5 api=39.45 top=192.168.200.11(1.00) primary 
+11:25:52 NORMAL     p=0.00 pin=   0.0 cpu=  9.5 api=37.9 top=None(0.00) primary 
+11:25:54 NORMAL     p=0.00 pin=   2.0 cpu= 11.5 api=35.7 top=192.168.200.11(1.00) primary 
+11:25:56 NORMAL     p=0.00 pin=   7.0 cpu=  8.0 api=37.7 top=192.168.200.11(1.00) primary 
+11:25:58 NORMAL     p=0.00 pin=   4.5 cpu=  9.0 api=42.4 top=192.168.200.11(1.00) primary 
+11:26:00 NORMAL     p=0.00 pin=   2.0 cpu=  8.5 api=41.57 top=192.168.200.11(1.00) primary 
+11:26:02 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=40.92 top=192.168.200.11(1.00) primary 
+11:26:04 NORMAL     p=0.02 pin=   5.5 cpu= 11.5 api=40.64 top=192.168.200.11(1.00) primary 
+11:26:06 NORMAL     p=0.01 pin=   2.0 cpu=  8.5 api=48.8 top=192.168.200.11(1.00) primary 
+11:26:08 NORMAL     p=0.01 pin=   3.0 cpu=  9.0 api=46.16 top=192.168.200.11(1.00) primary 
+11:26:10 NORMAL     p=0.01 pin=   3.0 cpu= 12.0 api=43.23 top=192.168.200.11(1.00) primary 
+11:26:12 NORMAL     p=0.00 pin=   2.0 cpu=  8.0 api=39.25 top=192.168.200.11(1.00) primary 
+11:26:14 NORMAL     p=0.01 pin=   2.0 cpu= 11.5 api=37.88 top=192.168.200.11(1.00) primary 
+11:26:16 NORMAL     p=0.00 pin=   3.5 cpu= 11.0 api=36.3 top=192.168.200.11(1.00) primary 
+11:26:18 NORMAL     p=0.00 pin=   0.0 cpu=  8.0 api=41.26 top=None(0.00) primary 
+11:26:20 NORMAL     p=0.00 pin=   1.0 cpu=  8.0 api=36.02 top=192.168.200.11(1.00) primary 
+11:26:22 NORMAL     p=0.00 pin=   2.0 cpu= 11.5 api=37.03 top=192.168.200.11(1.00) primary 
+11:26:24 NORMAL     p=0.00 pin=   0.0 cpu=  7.5 api=36.19 top=None(0.00) primary 
+11:26:26 NORMAL     p=0.00 pin=   3.0 cpu=  8.0 api=35.35 top=192.168.200.11(1.00) primary 
+11:26:28 NORMAL     p=0.00 pin=   3.0 cpu= 11.0 api=36.53 top=192.168.200.11(1.00) primary 
+11:26:30 NORMAL     p=0.00 pin=   1.0 cpu=  7.0 api=36.91 top=192.168.200.11(1.00) primary 
+11:26:32 NORMAL     p=0.00 pin=   3.0 cpu=  8.0 api=39.67 top=192.168.200.11(1.00) primary 
+11:26:34 NORMAL     p=0.00 pin=   3.0 cpu= 13.0 api=37.03 top=192.168.200.11(1.00) primary 
+11:26:36 NORMAL     p=0.00 pin=   0.0 cpu=  7.5 api=36.2 top=None(0.00) primary 
+11:26:38 NORMAL     p=0.00 pin=   0.0 cpu=  8.0 api=34.73 top=None(0.00) primary 
+11:26:40 NORMAL     p=0.00 pin=   0.0 cpu=  9.0 api=36.71 top=None(0.00) primary 
+11:26:42 NORMAL     p=0.00 pin=   0.0 cpu=  8.5 api=33.95 top=None(0.00) primary 
+11:26:44 NORMAL     p=0.01 pin=   0.0 cpu=  6.0 api=32.42 top=None(0.00) primary 
+11:26:46 NORMAL     p=0.01 pin=   0.0 cpu=  7.0 api=32.41 top=None(0.00) primary 
+11:26:46 stop {}

@@ -1,0 +1,25 @@
+﻿18:08:45 === A04-M2  gen=vm-attacker  dur=780s  capture=910s samples=455
+18:09:42 T0=1795345933 (UTC 11:12:13)
+18:09:49 Module thời gian thực: mitigate --allow-drop
+18:09:55 Running as unit: aig-A04-M2-pcap.service
+18:09:55 Running as unit: aig-A04-M2-tel.service
+18:09:55 Running as unit: aig-A04-M2-det.service
+18:09:55 scheduled-controller
+18:10:02 Running as unit: aig-A04-M2-dp.service
+18:10:02 scheduled-leaf1
+18:10:08 Running as unit: aig-A04-M2-qos.service
+18:10:08 Running as unit: aig-A04-M2-bg.service
+18:10:08 scheduled-client
+18:10:14 Running as unit: aig-A04-M2-gen.service
+18:10:14 scheduled-generator
+18:10:20 Tất cả đã hẹn giờ. Còn 112s tới T0; kết thúc thu sau ~997s
+18:27:04 PHASE=recovery 660-780s RATE=0/s LABEL=0 SENT=0 | A04_END= 2026-11-22T11:25:13.292431+00:00 | TOTAL_SENT= 10800 | GROUNDTRUTH= /home/anh2004zai_gmail_com/aiguard-runs/A04-M2/A04-M2.groundtruth.json
+18:28:48 === A04-M2 FINALIZE ===
+18:28:48 SOURCE_ROWS = 455
+18:28:48 SELECTED_ROWS = 385
+18:28:48 EXCLUDED = {'phase_boundary': 69}
+18:28:48 LABELS = {0: 118, 1: 267}
+18:28:48 TOTAL_PACKET_IN = 6206
+18:28:48 TOTAL_FLOW_MOD = 18
+18:28:48 OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/A04-M2/A04-M2.csv
+18:29:33 {"ts": "2026-11-22T11:14:23.267809+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.518} || {"ts": "2026-11-22T11:14:27.281048+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.561, "top_src": null, "share": 0.92, "pin_from_src": 6} || {"ts": "2026-11-22T11:15:50.853762+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 201, "rest_ms": 29.1, "on_switch_s": 3.54, "total_s": 3.57, "error": null} || {"ts": "2026-11-22T11:15:56.562049+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 10.5, "on_switch_s": 3.54, "total_s": 3.55, "error": null} || {"ts": "2026-11-22T11:16:06.692996+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"} || {"ts": "2026-11-22T11:16:36.716310+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 204, "why": "háº¿t táº¥n cÃ´ng"} || {"ts": "2026-11-22T11:16:36.724904+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "háº¿t táº¥n cÃ´ng"} || {"ts": "2026-11-22T11:16:36.725068+00:00", "event": "state", "frm": "RECOVERING", "to": "NORMAL"}

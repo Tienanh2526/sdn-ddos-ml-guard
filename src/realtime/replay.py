@@ -35,6 +35,7 @@ ROOT = HERE.parent.parent
 class FakeODL:
     def __init__(self):
         self.calls = []
+        self.pkts = 0.0
 
     def put_flow(self, node, flow, table=0):
         self.calls.append(("PUT", node, flow["id"], flow.get("priority")))
@@ -42,6 +43,9 @@ class FakeODL:
 
     def wait_on_switch(self, node, fid, table=0, timeout_s=15, poll_s=0.5):
         return 0.6
+
+    def flow_packets(self, node, fid, table=0):
+        return int(self.pkts)            # replay cập nhật self.pkts theo nhãn (nguồn còn gửi hay không)
 
     def delete_flow(self, node, fid, table=0):
         self.calls.append(("DELETE", node, fid))
@@ -107,6 +111,8 @@ def main():
                 src[attacker] = int(rng.poisson(max(0.0, pin - bg) * 2))
             for ip in eng.targets:
                 src[ip] = 0
+            # nguồn tấn công còn gửi (nhãn 1) -> rule bị khớp ~ tốc độ tấn công (≈ Packet-In vượt nền khi chưa chặn)
+            odl.pkts += (max(5.0, pin - bg) if lab == 1 else 0.0) * 2.0
             eng.step(p, src)
             if lab == 1 and first_att is None:
                 first_att = clock["t"]
@@ -125,9 +131,10 @@ def main():
                             mitigate_on_normal=mit_in_normal, rules_put=len(puts), rules_deleted=len(dels),
                             rules_on_legit=sum(1 for c in puts if legit.replace(".", "-") in c[2]),
                             drops_on_legit=sum(1 for c in puts if c[2].startswith("aig-l2-") and legit.replace(".", "-") in c[2]),
+                            l1_installs_attacker=sum(1 for c in puts if c[2] == "aig-l1-" + attacker.replace(".", "-")),
                             final_state=eng.state))
         for t, kind, kw in events:
-            if kind in ("state", "rule_install", "rule_remove"):
+            if kind in ("state", "rule_install", "rule_remove", "target", "hold", "escalation_blocked"):
                 print(f"  {r} t={t:6.1f}s {kind} {kw}")
     print(pd.DataFrame(summary).to_string(index=False))
 

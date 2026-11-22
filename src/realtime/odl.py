@@ -62,6 +62,17 @@ class ODL:
         st, body, _ = self._req("GET", self._flow_path(node, table, flow_id, operational=True))
         return st == 200
 
+    def flow_packets(self, node, flow_id, table=0):
+        """Số gói đã khớp rule (thống kê switch qua operational datastore, ODL cập nhật ~3 s). None nếu không đọc được."""
+        st, body, _ = self._req("GET", self._flow_path(node, table, flow_id, operational=True))
+        if st != 200:
+            return None
+        try:
+            fl = body["flow-node-inventory:flow"][0]
+            return int(fl["opendaylight-flow-statistics:flow-statistics"]["packet-count"])
+        except (KeyError, IndexError, TypeError, ValueError):
+            return None
+
     def wait_on_switch(self, node, flow_id, table=0, timeout_s=15.0, poll_s=0.5):
         """Chờ flow lên switch; trả về số giây đã chờ hoặc None nếu quá hạn."""
         t0 = time.monotonic()
