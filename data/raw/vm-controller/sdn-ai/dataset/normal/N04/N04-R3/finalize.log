@@ -1,0 +1,8 @@
+=== N04-R3 FINALIZE ===
+SOURCE_ROWS = 365
+SELECTED_ROWS = 296
+EXCLUDED = {'phase_boundary': 68}
+LABELS = {0: 296}
+TOTAL_PACKET_IN = 63213
+TOTAL_FLOW_MOD = 0
+OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/N04-R3/N04-R3.csv

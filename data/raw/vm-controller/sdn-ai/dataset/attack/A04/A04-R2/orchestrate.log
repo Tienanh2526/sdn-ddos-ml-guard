@@ -1,0 +1,22 @@
+﻿12:09:47 === A04-R2  gen=vm-attacker  dur=780s  capture=910s samples=455
+12:09:54 T0=1795324344 (UTC 05:12:24)
+12:10:01 Running as unit: aig-A04-R2-pcap.service
+12:10:01 Running as unit: aig-A04-R2-tel.service
+12:10:01 scheduled-controller
+12:10:09 Running as unit: aig-A04-R2-dp.service
+12:10:09 scheduled-leaf1
+12:10:17 Running as unit: aig-A04-R2-qos.service
+12:10:17 Running as unit: aig-A04-R2-bg.service
+12:10:17 scheduled-client
+12:10:24 Running as unit: aig-A04-R2-gen.service
+12:10:24 scheduled-generator
+12:10:30 Tất cả đã hẹn giờ. Còn 114s tới T0; kết thúc thu sau ~999s
+12:27:17 PHASE=recovery 660-780s RATE=0/s LABEL=0 SENT=0 | A04_END= 2026-11-22T05:25:24.469190+00:00 | TOTAL_SENT= 10800 | GROUNDTRUTH= /home/anh2004zai_gmail_com/aiguard-runs/A04-R2/A04-R2.groundtruth.json
+12:30:26 === A04-R2 FINALIZE ===
+12:30:26 SOURCE_ROWS = 455
+12:30:26 SELECTED_ROWS = 385
+12:30:26 EXCLUDED = {'invalid_window': 1, 'phase_boundary': 68}
+12:30:26 LABELS = {0: 118, 1: 267}
+12:30:26 TOTAL_PACKET_IN = 16326
+12:30:26 TOTAL_FLOW_MOD = 0
+12:30:26 OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/A04-R2/A04-R2.csv

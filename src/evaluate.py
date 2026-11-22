@@ -83,8 +83,14 @@ def load(grace_s: float):
     }
     sets["combined"] = sets["traffic_only"] + sets["controller_aware"]
     for k in sets:
-        sets[k] = [f for f in sets[k] if f in w.columns and w[f].notna().all()]
+        sets[k] = [f for f in sets[k] if f in w.columns and w[f].notna().all() and f not in EXCLUDE]
     return w, sets, n_grace
+
+
+# Loại khỏi mô hình: số IP nguồn phân biệt phản ánh DANH TÍNH/SỐ MÁY trong lab (R1–R3: tấn công luôn thêm
+# đúng 1 nguồn .13 bên cạnh nền .11) chứ không phải hành vi -> khi tráo vai (R4–R5, tấn công từ .11 trùng
+# nguồn nền) đặc trưng này đảo chiều. Thí nghiệm loại bỏ (22/11): F1 RF kết hợp 0,999 -> 0,998, không mất gì.
+EXCLUDE = {"dp_src_mean"}
 
 
 # ============================================================================================

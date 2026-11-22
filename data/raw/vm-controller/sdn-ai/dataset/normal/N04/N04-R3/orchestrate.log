@@ -1,0 +1,22 @@
+﻿13:28:51 === N04-R3  gen=vm-client  dur=600s  capture=730s samples=365
+13:28:56 T0=1795329086 (UTC 06:31:26)
+13:29:02 Running as unit: aig-N04-R3-pcap.service
+13:29:02 Running as unit: aig-N04-R3-tel.service
+13:29:02 scheduled-controller
+13:29:10 Running as unit: aig-N04-R3-dp.service
+13:29:10 scheduled-leaf1
+13:29:17 Running as unit: aig-N04-R3-qos.service
+13:29:17 Running as unit: aig-N04-R3-bg.service
+13:29:17 scheduled-client
+13:29:22 Running as unit: aig-N04-R3-gen.service
+13:29:22 scheduled-generator
+13:29:28 Tất cả đã hẹn giờ. Còn 117s tới T0; kết thúc thu sau ~822s
+13:43:17 PHASE=cooldown 480-600s CONN_RATE=15/s LABEL=0 CONN=1770 HTTP_OK=13556 HTTP_FAIL=0 HTTP_P50_MS=5.8 UDP_SESSIONS=0 UDP_SENT=0 UDP_ECHO=0 | N04_END= 2026-11-22T06:41:26.359945+00:00 | TOTAL_SENT= 13556 | GROUNDTRUTH= /home/anh2004zai_gmail_com/aiguard-runs/N04-R3/N04-R3.groundtruth.json
+13:45:07 === N04-R3 FINALIZE ===
+13:45:07 SOURCE_ROWS = 365
+13:45:07 SELECTED_ROWS = 296
+13:45:07 EXCLUDED = {'phase_boundary': 68}
+13:45:07 LABELS = {0: 296}
+13:45:07 TOTAL_PACKET_IN = 63213
+13:45:07 TOTAL_FLOW_MOD = 0
+13:45:07 OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/N04-R3/N04-R3.csv
