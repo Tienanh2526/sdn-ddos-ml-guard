@@ -41,9 +41,13 @@ $samples = [math]::Ceiling($cap / 2)
 $odlPw = if ($env:ODL_PASSWORD) { $env:ODL_PASSWORD } else { "admin" }
 # Thư mục tạm NẰM TRONG repo (gitignore): $env:TEMP có dạng tên ngắn "NGOCTU~1" mà Push-Location
 # hiểu sai dấu "~" -> file rơi ra thư mục hiện tại.
-$work = Join-Path $repo ".runs-tmp\$RunId"; New-Item -ItemType Directory -Force $work | Out-Null
+$work = Join-Path $repo ".runs-tmp\$RunId"
+if (Test-Path -LiteralPath $work) { Rename-Item -LiteralPath $work "$RunId.bak-$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())" }
+New-Item -ItemType Directory -Force $work | Out-Null
 $work = (Get-Item -LiteralPath $work).FullName
 $GenCmd = $GenCmd -replace "~/", "$H/"     # systemd-run --uid không chắc có HOME -> đường dẫn tuyệt đối
+# Có giảm thiểu cấp 2: máy tấn công bị chặn tới web là mong đợi -> generator không được coi đó là lab hỏng
+if ($Detector -eq "mitigate" -and $AllowDrop) { $GenCmd = "AIGUARD_EXPECT_BLOCK=1 $GenCmd" }
 
 function Log($m) { "{0:HH:mm:ss} {1}" -f (Get-Date), $m | Tee-Object -FilePath (Join-Path $work "orchestrate.log") -Append }
 
@@ -80,6 +84,11 @@ function Push([string]$vm, [string]$localDir, [string]$name, [string]$dst) {
 }
 
 Log "=== $RunId  gen=$GenVm  dur=${GenDuration}s  capture=${cap}s samples=$samples"
+# Chạy lại cùng RunId: các bộ thu (đúng) từ chối ghi đè file cũ -> lần chạy mới mất telemetry/HTTP và tải về
+# nhầm file cũ (A06-M1 lần 2). -> Cất thư mục cũ trên MỌI VM tham gia thành $R.bak-<epoch> trước khi bắt đầu.
+foreach ($vm in @("vm-controller", "vm-leaf1", "vm-client", $GenVm) | Select-Object -Unique) {
+  Remote $vm "if [ -d $R ]; then mv $R $R.bak-`$(date +%s) && echo MOVED_OLD; fi" | ForEach-Object { if ($_ -match 'MOVED_OLD') { Log "  $vm : cất thư mục $RunId cũ sang .bak" } }
+}
 $now = [int64]((Remote "vm-controller" "date +%s") | Select-String '^\d+$' | Select-Object -First 1).ToString()
 $T0 = $now + 150
 Log "T0=$T0 (UTC $([DateTimeOffset]::FromUnixTimeSeconds($T0).UtcDateTime.ToString('HH:mm:ss')))"
@@ -151,6 +160,9 @@ cd $R && python3 $H/scenarios/common/finalize_run.py --run $RunId --groundtruth 
 
 # --- tải về repo
 $dest = Join-Path $repo "data\raw\vm-controller\sdn-ai\dataset\$cat\$scn\$RunId"
+if (Test-Path -LiteralPath $dest) {   # bản cũ cùng RunId -> cất vào .runs-tmp (không trộn file cũ/mới)
+  $old = Join-Path $repo ".runs-tmp\$RunId.dataset-bak-$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())"
+  Move-Item -LiteralPath $dest $old; Log "Cất bản tải về cũ sang $old" }
 New-Item -ItemType Directory -Force $dest | Out-Null
 foreach ($f in "$RunId.csv", "telemetry.csv", "telemetry.log", "finalize.log") { Pull "vm-controller" "$R/$f" $dest | Out-Null }
 foreach ($f in "$RunId.groundtruth.json", "dataplane.csv", "dataplane.log", "http.csv", "http.log", "background.log", "generator.log") {

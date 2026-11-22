@@ -14,6 +14,7 @@ An toàn (bắt buộc, vì đây là lab tự dựng cho đồ án phòng thủ
 Cần quyền root (raw socket): chạy bằng sudo. Chạy trên vm-attacker.
 """
 import argparse
+import os
 import shutil
 import subprocess
 import sys
@@ -41,6 +42,12 @@ PHASES = [
 ]
 
 
+# Lần chạy CÓ module giảm thiểu cấp 2 (run_scenario -AllowDrop đặt biến này): máy tấn công bị rule drop chặn
+# tới web là KẾT QUẢ MONG ĐỢI, không phải lab hỏng -> chỉ dừng khẩn cấp khi controller mất kết nối.
+# (A06-M1 lần 2: thiếu điều này nên generator tự dừng sau P1 vì "web=False" do chính nó bị chặn.)
+EXPECT_BLOCK = os.environ.get("AIGUARD_EXPECT_BLOCK") == "1"
+
+
 def health_ok():
     ctrl = False
     web = False
@@ -56,8 +63,9 @@ def health_ok():
             web = r.status == 200
     except Exception:
         web = False
-    print(f"{now_iso()} HEALTH controller={ctrl} web={web}", flush=True)
-    return ctrl and web
+    print(f"{now_iso()} HEALTH controller={ctrl} web={web}"
+          + (" (web bị chặn = mong đợi khi có giảm thiểu)" if EXPECT_BLOCK and not web else ""), flush=True)
+    return ctrl and (web or EXPECT_BLOCK)
 
 
 def run_hping_phase(rate, duration):
