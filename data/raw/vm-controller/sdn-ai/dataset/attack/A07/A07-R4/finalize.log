@@ -1,0 +1,8 @@
+=== A07-R4 FINALIZE ===
+SOURCE_ROWS = 455
+SELECTED_ROWS = 384
+EXCLUDED = {'phase_boundary': 70}
+LABELS = {0: 117, 1: 267}
+TOTAL_PACKET_IN = 70137
+TOTAL_FLOW_MOD = 0
+OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/A07-R4/A07-R4.csv

@@ -201,6 +201,42 @@ def metrics(y, p, s=None):
 
 
 # ============================================================================================
+# Tổng quát hóa khi TRÁO VAI máy (R1–R3 -> R4–R5)
+# ============================================================================================
+def role_swap(w, mk, sets):
+    """Huấn luyện CHỈ trên R1–R3 (tấn công từ .13, người dùng/flash crowd từ .11), kiểm thử trên R4–R5 (ĐẢO vai:
+    tấn công từ .11, flash crowd từ .13). Mô hình học HÀNH VI thì giữ nguyên chất lượng; mô hình học DANH TÍNH máy
+    thì sụp — kiểm chứng bằng biến thể cố ý thêm lại `dp_src_mean` (số nguồn, đặc trưng đã loại)."""
+    rep_ = w["run_id"].str.split("-").str[1]
+    tr, te = rep_.isin(["R1", "R2", "R3"]), rep_.isin(["R4", "R5"])
+    if not tr.any() or not te.any():
+        return None
+    mk = dict(mk)
+    if "dp_src_mean" in w.columns and w["dp_src_mean"].notna().all():
+        mk["RF kết hợp + dp_src_mean (danh tính)"] = lambda: RF(sets["combined"] + ["dp_src_mean"])
+    y_tr, y_te = w.loc[tr, "label"].to_numpy(), w.loc[te, "label"].to_numpy()
+    rows = {}
+    for name, make in mk.items():
+        m = make().fit(w[tr], y_tr)
+        p = m.predict(w[te])
+        r = metrics(y_te, p)
+        scn = w.loc[te, "scn"].to_numpy()
+        for sc in NEW_SCENARIOS:
+            sel = scn == sc
+            if (y_te[sel] == 1).any():
+                r[f"recall_{sc}"] = float(((y_te[sel] == 1) & (p[sel] == 1)).sum() / (y_te[sel] == 1).sum())
+        sel = scn == "N04"
+        r["fpr_N04"] = float(((y_te[sel] == 0) & (p[sel] == 1)).sum() / max(1, (y_te[sel] == 0).sum()))
+        rows[name] = r
+    t = pd.DataFrame(rows).T
+    out = pd.DataFrame({"Precision": t["precision"], "Recall": t["recall"], "F1": t["f1"], "FPR": t["fpr"],
+                        **{f"Recall {SCN_NAME[s]}": t.get(f"recall_{s}") for s in NEW_SCENARIOS if s != "N04"},
+                        "FPR flash crowd": t["fpr_N04"]})
+    out.index.name = "Phương pháp (train R1–R3 → test R4–R5)"
+    return out, int(tr.sum()), int(te.sum())
+
+
+# ============================================================================================
 # Xác nhận nhiều cửa sổ (k-of-n): độ trễ phát hiện, báo động giả
 # ============================================================================================
 def confirm(p: np.ndarray, k: int, n: int):
@@ -413,6 +449,10 @@ def main():
                 per_run.append(dict(method=name, run=r, f1=f1_score(y[sel], pred.loc[sel, name].astype(int))))
         temporal_rows[name] = temporal(w, pred, name, args.k, args.n)
 
+    rs = role_swap(w, mk, sets)
+    if rs is not None:
+        print(rs[0].round(3).to_string())
+
     # ---- mô hình cuối cho chặng 4: RF kết hợp trên toàn bộ dữ liệu
     final = RF(sets["combined"]).fit(w, y)
     imp = sorted(zip(sets["combined"], final.m.feature_importances_), key=lambda x: -x[1])
@@ -499,10 +539,15 @@ def main():
         "## 9. Mô hình xuất cho module phát hiện thời gian thực\n",
         f"`models/detector_rf.joblib` — RF kết hợp huấn luyện trên toàn bộ {len(runs)} lần chạy, "
         f"{len(sets['combined'])} đặc trưng, xác nhận {args.k}/{args.n}. Suy luận ~{infer_ms:.2f} ms/cửa sổ.\n",
-        "## 10. Ghi chú trung thực\n",
-        "- Kết quả sẽ ổn định hơn khi đủ 5 lần chạy/kịch bản (R4–R5 tráo vai máy nguồn). Với ít lần chạy, một fold "
-        "LORO có thể thiếu hẳn một loại lưu lượng trong tập huấn luyện (ví dụ bỏ N04 ra làm test thì mô hình chưa "
-        "từng thấy flash crowd) — đây là kiểm thử tổng quát hóa khắt khe, không phải lỗi.",
+        "## 10. Tổng quát hóa khi tráo vai máy (train R1–R3 → test R4–R5)\n",
+        *(["R1–R3: tấn công phát từ vm-attacker (.13), flash crowd/người dùng từ vm-client (.11). R4–R5 **đảo vai**: "
+           "tấn công từ .11, flash crowd từ .13. Huấn luyện chỉ trên R1–R3 "
+           f"({rs[1]} cửa sổ), kiểm thử trên R4–R5 ({rs[2]} cửa sổ) — mô hình chưa từng thấy tấn công đến từ .11. "
+           "Dòng cuối cố ý thêm lại `dp_src_mean` (số máy nguồn — phản ánh danh tính, đã loại khỏi mô hình) "
+           "để đo cái giá của việc học danh tính.\n", md(rs[0]), ""] if rs is not None else ["(chưa có R4–R5)\n"]),
+        "## 11. Ghi chú trung thực\n",
+        "- LORO có thể để một fold thiếu hẳn một loại lưu lượng trong tập huấn luyện (ví dụ bỏ N04 ra làm test thì mô "
+        "hình chưa từng thấy flash crowd) — đây là kiểm thử tổng quát hóa khắt khe, không phải lỗi.",
         "- Đặc trưng theo cổng/máy (`rxpps_<port>`) KHÔNG được dùng (tránh học thuộc danh tính máy).",
         "- Flow-Mod luôn = 0 (switch tự học flow trong chế độ reactive mô phỏng) → `fmod_*` không mang thông tin.",
     ]
