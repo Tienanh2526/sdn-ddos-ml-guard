@@ -33,6 +33,7 @@ import json
 import math
 import os
 import re
+import socket
 import subprocess
 import tempfile
 import threading
@@ -210,12 +211,18 @@ def main():
     ap.add_argument("--samples", type=int,
                     default=int(os.environ.get("SDN_SAMPLES", "450")))
     ap.add_argument("--out", required=True, help="file CSV đầu ra")
+    ap.add_argument("--push", default=None,
+                    help="HOST:PORT — gửi thêm mỗi dòng (JSON/UDP) cho detector thời gian thực, vd 10.10.0.10:47000")
     args = ap.parse_args()
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     if out.exists():
         raise SystemExit(f"Output đã tồn tại: {out}")
+    push = None
+    if args.push:
+        h, p = args.push.rsplit(":", 1)
+        push, push_sock = (h, int(p)), socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     local, hosts = discover_vteps()
     vteps = args.host_vteps.split(",") if args.host_vteps else sorted(set(hosts.values()))
@@ -278,6 +285,11 @@ def main():
             row.update(features(agg_in.drain(cut), agg_out.drain(cut)))
             w.writerow(row)
             f.flush()
+            if push:
+                try:
+                    push_sock.sendto(json.dumps(row).encode(), push)
+                except OSError:
+                    pass
             print(
                 f"{i+1}/{args.samples} pkts={row['dp_pkts']} "
                 f"flows={row['dp_flows']} ppf={row['dp_pkts_per_flow']} "
