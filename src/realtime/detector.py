@@ -168,6 +168,10 @@ class Engine:
         -> vẫn MITIGATING nhưng CHƯA cài rule, quy kết lại ở chu kỳ sau
       * đang xử lý mà Packet-In vượt nền vẫn đến từ nguồn KHÁC -> nhắm thêm nguồn đó (đa nguồn), và các nguồn
         đã nhắm trước bị gắn "nghi nhắm sai" -> KHÔNG bao giờ nâng lên cấp 2 (drop) => không chặn nhầm người dùng.
+      * (A06/A07-M2) quy kết bổ sung chỉ sau khi CẢ cửa sổ bằng chứng nằm sau rule vừa cài (hết nhiễu chuyển
+        tiếp), và chỉ gắn "nghi nhắm sai" khi nguồn mới vượt nền >= bằng chứng lúc nhắm nguồn cũ: Packet-In
+        của người dùng tăng NHẸ do chính cuộc tấn công (retransmit, flow học chậm) không được chặn cấp 2 lên
+        kẻ tấn công thật — với SYN flood chỉ cấp 2 cắt được SYN-ACK trả về (Packet-In ở leaf phía web).
     """
 
     def __init__(self, args, odl: ODL | None, log, clock=time.time):
@@ -184,6 +188,7 @@ class Engine:
         self._hit_snap = None                                                    # (thời điểm, tổng gói khớp rule)
         self.alpha = getattr(args, "base_alpha", 0.05)
         self.min_evidence = getattr(args, "min_evidence", 15)
+        self.cyc_since_target = 0                                                # chu kỳ kể từ lần nhắm gần nhất
 
     def _remove_secondary(self, why):
         sec = [ip for ip, t in self.targets.items() if t.get("l1_only")]
@@ -292,9 +297,13 @@ class Engine:
         xử lý chỉ cấp 1 (chuyển tiếp thẳng: controller được bảo vệ, dịch vụ không bị cắt) — khi không chắc
         chắn thì chọn hành động không gây hại."""
         node, in_port, uplink = HOSTS[ip]
-        for t in self.targets.values():      # đã nhắm nguồn khác mà bão vẫn đến từ ip -> nghi nhắm sai nguồn cũ
-            t["doubt"] = True
-        self.targets[ip] = {"level": 1, "t1": self.clock(), "doubt": False, "l1_only": not primary}
+        for t in self.targets.values():
+            # Nguồn mới vượt nền ít nhất bằng bằng chứng đã dùng để nhắm nguồn cũ -> nghi nhắm sai nguồn cũ.
+            # Nhỏ hơn hẳn (Packet-In người dùng tăng theo tấn công) -> nguồn cũ vẫn là kẻ tấn công chính.
+            if ev >= t.get("ev", 0):
+                t["doubt"] = True
+        self.cyc_since_target = 0
+        self.targets[ip] = {"level": 1, "t1": self.clock(), "doubt": False, "l1_only": not primary, "ev": ev}
         self.log("target", ip=ip, share=round(share, 2), excess_pin=ev, primary=primary,
                  base_pin_per_cycle={k: round(v, 2) for k, v in self.base.items()})
         self._install(bypass_flow("aig-l1-" + ip.replace(".", "-"), node, in_port, ip, uplink,
@@ -308,6 +317,7 @@ class Engine:
         self.pos.append(int(pos))
         confirmed = sum(self.pos) >= a.k
         self.observe(src_counter, learn=(self.state == "NORMAL" and not pos))
+        self.cyc_since_target += 1
         action = ""
         mitigate = a.mode == "mitigate"
         if self.state == "NORMAL":
@@ -325,7 +335,8 @@ class Engine:
             if pos:
                 self.clear_cycles = 0
                 # quy kết (lại): Packet-In vượt nền từ nguồn CHƯA xử lý -> nhắm thêm
-                if mitigate:
+                settled = not self.targets or self.cyc_since_target > (self.hist.maxlen or 1)
+                if mitigate and settled:
                     ip, share, ev = self.attribute(exclude=tuple(self.targets))
                     if ip:
                         action = self._target_l1(ip, share, ev, primary=not self.targets)

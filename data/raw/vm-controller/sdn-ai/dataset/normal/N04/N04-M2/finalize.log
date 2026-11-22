@@ -1,0 +1,8 @@
+=== N04-M2 FINALIZE ===
+SOURCE_ROWS = 365
+SELECTED_ROWS = 295
+EXCLUDED = {'invalid_window': 1, 'phase_boundary': 68}
+LABELS = {0: 295}
+TOTAL_PACKET_IN = 64928
+TOTAL_FLOW_MOD = 0
+OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/N04-M2/N04-M2.csv
