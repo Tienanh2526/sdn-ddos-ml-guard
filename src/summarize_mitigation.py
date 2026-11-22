@@ -17,12 +17,12 @@ import pandas as pd
 
 from analyze_mitigation import C_BASE, C_MIT, GRID, INK, INK2, ROOT, SURFACE, BASE, load
 
-PAIRS = [  # (kịch bản, lần chạy không module, lần chạy có module, ghi chú)
-    ("A04 low-rate", "A04-R1", "A04-M4", "bản quy kết cuối (sau 3 vòng sửa A04-M1..M3)"),
-    ("A05 pulsing", "A05-R1", "A05-M1", ""),
-    ("A06 SYN flood", "A06-R1", "A06-M1", ""),
-    ("A07 flow burst", "A07-R1", "A07-M1", ""),
-    ("N04 flash crowd", "N04-R1", "N04-M1", "lưu lượng hợp lệ: mong đợi KHÔNG can thiệp"),
+PAIRS = [  # (kịch bản, lần chạy không module, lần chạy có module, ghi chú) — bản module cuối cùng
+    ("A04 low-rate", "A04-R1", "A04-M4", "sau 3 vòng sửa quy kết (A04-M1..M3)"),
+    ("A05 pulsing", "A05-R1", "A05-M2", ""),
+    ("A06 SYN flood", "A06-R1", "A06-M3", "sau sửa quy kết bổ sung (A06-M2)"),
+    ("A07 flow burst", "A07-R1", "A07-M3", "sau sửa quy kết bổ sung (A07-M2)"),
+    ("N04 flash crowd", "N04-R1", "N04-M2", "lưu lượng hợp lệ: mong đợi KHÔNG can thiệp"),
 ]
 METRICS = [("packet_in_rate", "Packet-In (pps)"), ("controller_cpu_pct", "CPU ODL (%)"),
            ("api_latency_ms", "RESTCONF (ms)"), ("http_latency_mean_ms", "HTTP người dùng (ms)"),
@@ -122,12 +122,13 @@ def main():
     R += ["", "Thời gian tính từ lúc pha tấn công đầu tiên bắt đầu. *Rule nhắm người dùng* = rule cấp 1 (chuyển tiếp "
           "thẳng, không cắt dịch vụ) đặt lên nguồn hợp lệ do quy kết bổ sung; *Drop người dùng* phải luôn bằng 0.\n",
           f"![Tổng hợp](figures/{fig_path.name})\n",
-          "## 3. Quá trình hoàn thiện module trên A04 (tấn công tốc độ thấp — khó nhất)\n",
+          "## 3. Quá trình hoàn thiện module (lỗi thấy khi chạy thật → sửa → kiểm thử hồi quy)\n",
           "| Lần chạy | Vấn đề quan sát | Sửa |", "|---|---|---|",
           "| A04-M1 | Quy kết theo 1 mẫu 2 s → nhắm & drop người dùng .11, HTTP thành công 0% | Mức nền Packet-In mỗi nguồn, bằng chứng 10 s, kiểm định ≥ 2× và > 4σ Poisson; nguồn bổ sung chỉ cấp 1 |",
           "| A04-M2 | HTTP 100% nhưng mức nền máy tấn công học sai (5,0) → nhắm .11 trước; gỡ/cài lại ~1 phút/lần | Mức nền cho mọi máy (im lặng = 0); đọc bộ đếm gói của rule trước khi gỡ (hold) |",
           "| A04-M3 | Nhắm đúng ngay; hold hoạt động nhưng đo hỏng khi rule cấp 1 bị idle-timeout | Đo bộ đếm theo từng rule |",
           "| A04-M4 | Cấp 1 cài một lần; Packet-In −78…−95%; nguồn phụ hợp lệ bị giữ rule tới hết | Phản hồi bộ đếm chỉ cho nguồn chính; nguồn phụ gỡ theo mô hình (`test_engine.py`) |",
+          "| A06/A07-M2 | Packet-In người dùng tăng nhẹ do chính tấn công → nhắm bổ sung .11 → .13 bị nghi nhắm sai, không lên cấp 2; SYN flood chỉ giảm −66% (SYN-ACK trả về vẫn sinh Packet-In ở leaf phía web) | Quy kết bổ sung sau khi cửa sổ bằng chứng nằm trọn sau rule; chỉ nghi nhắm sai khi nguồn mới vượt nền ≥ bằng chứng nguồn cũ |",
           ""]
     out = ROOT / "reports" / "mitigation_summary.md"
     out.write_text("\n".join(R), encoding="utf-8")
