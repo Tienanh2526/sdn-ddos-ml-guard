@@ -41,3 +41,14 @@ Spine1: một rule tĩnh `in_port=1 → output:2` (trung chuyển). Leaf2: rule 
 
 → Đây là lý do tấn công (mọi gói là flow mới) đè được controller, còn lưu lượng hợp lệ cùng
 số gói thì gần như không: **controller chịu tải theo số flow mới, không theo số gói.**
+
+## Lưu ý đo thực tế: flow TCP ngắn gây NHIỀU Packet-In (N04-R1, 22/11)
+
+Trace ở trên là mô phỏng lý tưởng (gói sau luôn thấy flow đã học). Khi chạy thật ở tải cao,
+pcap của N04-R1 cho thấy **trung bình 3,5 Packet-In mỗi flow TCP một chiều** (phân bố 1 → 8+),
+gồm cả SYN, SYN-ACK, ACK, dữ liệu, FIN của cùng kết nối: các gói của một kết nối HTTP rất ngắn
+(~5 ms) tới switch **trước khi flow vừa học kịp có hiệu lực** trong datapath OVS → vẫn bị gửi
+lên controller. Ở tải thấp (kiểm chứng 21/11) chỉ ~1 Packet-In/flow/chiều. Đây là hiện tượng
+"độ trễ cài flow" có thật ở mạng reactive (gói đến trước flow-mod đều thành Packet-In), và nó
+làm flash crowd hợp lệ đẩy Packet-In lên rất cao (31 → 191 pps) — đúng vai trò "hard negative".
+UDP tấn công 1 gói/flow không bị ảnh hưởng (luôn đúng 1 Packet-In/gói).

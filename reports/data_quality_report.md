@@ -1,6 +1,6 @@
 # Báo cáo chất lượng dữ liệu – Dataset bảo vệ SDN Controller
 
-Sinh tự động bởi `src/build_dataset.py` lúc 2026-11-21 18:50 UTC. Nguồn: dữ liệu thô chép nguyên trạng từ vm-controller, vm-client, vm-attacker (19/11/2026). Cửa sổ trượt W = 5 mẫu (10 s), bước trượt 1 mẫu (2 s).
+Sinh tự động bởi `src/build_dataset.py` lúc 2026-11-22 03:47 UTC. Nguồn: dữ liệu thô chép nguyên trạng từ vm-controller, vm-client, vm-attacker (19/11/2026). Cửa sổ trượt W = 5 mẫu (10 s), bước trượt 1 mẫu (2 s).
 
 ## 1. Tổng quan các lần chạy
 
@@ -17,8 +17,9 @@ Sinh tự động bởi `src/build_dataset.py` lúc 2026-11-21 18:50 UTC. Nguồ
 | A02-R1 | A02 | attack | dataset | train | 2026-11-19 06:53 | 797 | 394 | 394 | 158 | 236 |
 | A03-R1 | A03 | attack | dataset | test | 2026-11-19 09:06 | 897 | 444 | 444 | 208 | 236 |
 | A04-R1 | A04 | attack | dataset | train | 2026-11-21 18:32 | 777 | 385 | 385 | 118 | 267 |
+| N04-R1 | N04 | normal | dataset | train | 2026-11-22 03:31 | 595 | 295 | 295 | 295 | 0 |
 
-Tổng: **2479 mẫu**, 2472 mẫu hợp lệ; 1545 mẫu nhãn 0, 748 mẫu nhãn 1. Mẫu đầu mỗi lần chạy không hợp lệ vì chưa có khoảng để tính tốc độ.
+Tổng: **2774 mẫu**, 2767 mẫu hợp lệ; 1840 mẫu nhãn 0, 748 mẫu nhãn 1. Mẫu đầu mỗi lần chạy không hợp lệ vì chưa có khoảng để tính tốc độ.
 
 ## 2. Cửa sổ thời gian (W = 5)
 
@@ -27,10 +28,10 @@ Tổng: **2479 mẫu**, 2472 mẫu hợp lệ; 1545 mẫu nhãn 0, 748 mẫu nh�
 | excluded | không nhãn | 167 |
 | test | 0 (bình thường) | 204 |
 | test | 1 (tấn công) | 236 |
-| train | 0 (bình thường) | 1309 |
+| train | 0 (bình thường) | 1600 |
 | train | 1 (tấn công) | 512 |
 
-- Cửa sổ chứa cả mẫu thường lẫn mẫu tấn công (vắt qua thời điểm bắt đầu/kết thúc tấn công): **30** / 2261. Ít vì dữ liệu gốc đã bỏ các mẫu nằm vắt qua ranh giới pha.
+- Cửa sổ chứa cả mẫu thường lẫn mẫu tấn công (vắt qua thời điểm bắt đầu/kết thúc tấn công): **30** / 2552. Ít vì dữ liệu gốc đã bỏ các mẫu nằm vắt qua ranh giới pha.
 - Nhãn của cửa sổ = nhãn của mẫu cuối cùng (trạng thái tại thời điểm ra quyết định).
 - Split theo **lần chạy**, không xáo trộn từng cửa sổ, để tránh rò rỉ giữa các cửa sổ chồng lấn.
 
@@ -49,6 +50,7 @@ Tổng: **2479 mẫu**, 2472 mẫu hợp lệ; 1545 mẫu nhãn 0, 748 mẫu nh�
 | A02-R1 | 2.00 | 4.01 | 5 | 1 |
 | A03-R1 | 2.00 | 4.01 | 5 | 1 |
 | A04-R1 | 2.00 | 4.01 | 4 | 1 |
+| N04-R1 | 2.00 | 4.02 | 3 | 1 |
 
 ## 4. Giá trị thiếu (trên mẫu hợp lệ)
 
@@ -88,6 +90,10 @@ Không có giá trị thiếu ở các cột đo.
 | N03-R1 | normal | 10.00 | 99 | 10.00 | 8.93 | 32.47 | 1.00 |
 | N03-R1 | normal | 20.00 | 99 | 20.00 | 9.99 | 32.78 | 1.00 |
 | N03-R1 | normal | 30.00 | 99 | 30.00 | 9.39 | 31.57 | 1.00 |
+| N04-R1 | warmup | 10.00 | 59 | 31.16 | 18.08 | 60.93 | 3.12 |
+| N04-R1 | cooldown | 15.00 | 59 | 66.73 | 20.26 | 80.99 | 4.45 |
+| N04-R1 | surge1 | 25.00 | 89 | 115.98 | 20.60 | 93.77 | 4.64 |
+| N04-R1 | surge2 | 35.00 | 88 | 191.47 | 29.70 | 124.18 | 5.47 |
 
 Tỉ lệ Đo/Sinh ≈ 1 nghĩa là mốc thời gian gán nhãn khớp với lưu lượng thực tế.
 
@@ -106,45 +112,46 @@ Tỉ lệ Đo/Sinh ≈ 1 nghĩa là mốc thời gian gán nhãn khớp với l�
 | A02-R1 | 1438.99 | 53 | 54 | 12.32 | 63.43 | 34.14 |
 | A03-R1 | 1443.82 | 53 | 54 | 10.74 | 36.96 | 35.74 |
 | A04-R1 | 1626.65 | 88 | 429 | 11.74 | 33.45 | 58.73 |
+| N04-R1 | 1615.72 | 120 | 875 | 22.74 | 78.95 | 93.72 |
 
 - RAM (RSS) tuyệt đối và tổng số flow thay đổi theo **phiên chạy/ngày**, không theo tấn công. Nếu dùng giá trị tuyệt đối, mô hình có thể học thuộc "ngày nào" thay vì "có tấn công không". Vì vậy dataset chỉ dùng **độ biến thiên trong cửa sổ** (`rss_delta`, `flows_delta`).
-- CPU có **đỉnh đơn lẻ ngay cả khi bình thường** (14 mẫu nhãn 0 vượt 30%; cao nhất: N03-R1 mẫu 0: 118%, N02-R1 mẫu 302: 55%, N02-R1 mẫu 271: 37%). Ngưỡng tĩnh đặt trên CPU từng mẫu sẽ báo động giả → nên dùng giá trị trung bình/cửa sổ (`cpu_mean`).
+- CPU có **đỉnh đơn lẻ ngay cả khi bình thường** (51 mẫu nhãn 0 vượt 30%; cao nhất: N03-R1 mẫu 0: 118%, N04-R1 mẫu 235: 79%, N04-R1 mẫu 287: 77%). Ngưỡng tĩnh đặt trên CPU từng mẫu sẽ báo động giả → nên dùng giá trị trung bình/cửa sổ (`cpu_mean`).
 
 ## 8. Khả năng phân tách của từng đặc trưng (ROC-AUC đơn biến, cửa sổ có nhãn)
 
 | Đặc trưng | Nhóm | AUC đơn biến | Chiều |
 |---|---|---|---|
-| dp_src_mean | data_plane_traffic | 0.997 | tấn công cao hơn |
-| dp_reply_mean | data_plane_traffic | 0.991 | tấn công thấp hơn |
-| dp_flows_mean | data_plane_traffic | 0.985 | tấn công cao hơn |
-| dp_ppf_mean | data_plane_traffic | 0.980 | tấn công thấp hơn |
-| pin_last | control_plane | 0.978 | tấn công cao hơn |
-| pin_max | control_plane | 0.974 | tấn công cao hơn |
-| pin_mean | control_plane | 0.972 | tấn công cao hơn |
-| dp_flows_max | data_plane_traffic | 0.969 | tấn công cao hơn |
-| pin_min | control_plane | 0.966 | tấn công cao hơn |
-| cpu_mean | controller_resource | 0.954 | tấn công cao hơn |
-| cpu_last | controller_resource | 0.907 | tấn công cao hơn |
-| pin_std | control_plane | 0.906 | tấn công cao hơn |
-| dp_dport_h_mean | data_plane_traffic | 0.899 | tấn công cao hơn |
-| dp_udp_frac_mean | data_plane_traffic | 0.896 | tấn công cao hơn |
-| cpu_max | controller_resource | 0.882 | tấn công cao hơn |
-| dp_size_mean | data_plane_traffic | 0.837 | tấn công cao hơn |
-| dp_pkts_mean | data_plane_traffic | 0.805 | tấn công cao hơn |
-| dp_pkts_max | data_plane_traffic | 0.776 | tấn công cao hơn |
-| api_mean | controller_resource | 0.773 | tấn công cao hơn |
-| api_max | controller_resource | 0.756 | tấn công cao hơn |
-| api_last | controller_resource | 0.744 | tấn công cao hơn |
-| cpu_std | controller_resource | 0.687 | tấn công cao hơn |
-| api_std | controller_resource | 0.661 | tấn công cao hơn |
-| pin_slope | control_plane | 0.540 | tấn công cao hơn |
-| flows_delta | topology | 0.521 | tấn công cao hơn |
-| dp_syn_mean | data_plane_traffic | 0.512 | tấn công cao hơn |
-| rss_delta | controller_resource | 0.505 | tấn công thấp hơn |
+| dp_src_mean | data_plane_traffic | 0.999 | tấn công cao hơn |
+| dp_reply_mean | data_plane_traffic | 0.997 | tấn công thấp hơn |
+| dp_ppf_mean | data_plane_traffic | 0.981 | tấn công thấp hơn |
+| dp_udp_frac_mean | data_plane_traffic | 0.970 | tấn công cao hơn |
+| dp_size_mean | data_plane_traffic | 0.950 | tấn công cao hơn |
+| dp_dport_h_mean | data_plane_traffic | 0.932 | tấn công cao hơn |
+| pin_min | control_plane | 0.857 | tấn công cao hơn |
+| pin_last | control_plane | 0.857 | tấn công cao hơn |
+| pin_mean | control_plane | 0.849 | tấn công cao hơn |
+| pin_max | control_plane | 0.844 | tấn công cao hơn |
+| cpu_mean | controller_resource | 0.811 | tấn công cao hơn |
+| cpu_last | controller_resource | 0.786 | tấn công cao hơn |
+| pin_std | control_plane | 0.764 | tấn công cao hơn |
+| cpu_max | controller_resource | 0.758 | tấn công cao hơn |
+| dp_pkts_max | data_plane_traffic | 0.753 | tấn công thấp hơn |
+| dp_pkts_mean | data_plane_traffic | 0.749 | tấn công thấp hơn |
+| api_mean | controller_resource | 0.657 | tấn công cao hơn |
+| api_max | controller_resource | 0.645 | tấn công cao hơn |
+| api_last | controller_resource | 0.634 | tấn công cao hơn |
+| cpu_std | controller_resource | 0.605 | tấn công cao hơn |
+| api_std | controller_resource | 0.596 | tấn công cao hơn |
+| dp_flows_mean | data_plane_traffic | 0.571 | tấn công cao hơn |
+| dp_syn_mean | data_plane_traffic | 0.558 | tấn công cao hơn |
+| rss_delta | controller_resource | 0.539 | tấn công thấp hơn |
+| pin_slope | control_plane | 0.535 | tấn công cao hơn |
+| dp_flows_max | data_plane_traffic | 0.523 | tấn công cao hơn |
+| flows_delta | topology | 0.513 | tấn công cao hơn |
 
-- Packet-In lớn nhất khi **bình thường**: **30.48 pps**; nhỏ nhất khi **tấn công**: **11.00 pps** → hai lớp có vùng chồng lấn.
+- Packet-In lớn nhất khi **bình thường**: **244.15 pps**; nhỏ nhất khi **tấn công**: **11.00 pps** → hai lớp có vùng chồng lấn.
 
-- Đặc trưng tài nguyên controller tốt nhất: `cpu_mean` (AUC 0.954) – tấn công hiện tại quá nhẹ để làm controller quá tải rõ rệt.
+- Đặc trưng tài nguyên controller tốt nhất: `cpu_mean` (AUC 0.811) – tấn công hiện tại quá nhẹ để làm controller quá tải rõ rệt.
 
 ## 9. Kết luận và việc cần làm với dữ liệu
 
