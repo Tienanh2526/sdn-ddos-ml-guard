@@ -1,6 +1,6 @@
 # Báo cáo thực nghiệm — Phát hiện tấn công bảo vệ SDN Controller (chương 4)
 
-Sinh tự động bởi `src/evaluate.py` lúc 2026-11-22 08:08 UTC.
+Sinh tự động bởi `src/evaluate.py` lúc 2026-11-22 08:43 UTC.
 
 ## 1. Thiết lập
 
@@ -96,7 +96,7 @@ Báo động khi ≥ 3 trong 4 cửa sổ gần nhất (cửa sổ trượt 2 s)
 
 ## 9. Mô hình xuất cho module phát hiện thời gian thực
 
-`models/detector_rf.joblib` — RF kết hợp huấn luyện trên toàn bộ 15 lần chạy, 30 đặc trưng, xác nhận 3/4. Suy luận ~41.46 ms/cửa sổ.
+`models/detector_rf.joblib` — RF kết hợp huấn luyện trên toàn bộ 15 lần chạy, 30 đặc trưng, xác nhận 3/4. Suy luận ~98.37 ms/cửa sổ.
 
 ## 10. Ghi chú trung thực
 

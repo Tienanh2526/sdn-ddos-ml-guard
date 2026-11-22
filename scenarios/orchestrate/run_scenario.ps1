@@ -89,6 +89,10 @@ $at = { param($off) "sleep `$(( $T0 + $off - `$(date +%s) ))" }
 $pushArg = ""; $detLine = ""
 if ($Detector -ne "none") {
   $pushArg = "--push 10.10.0.10:47000"
+  # Bản collector trên leaf1 phải có --push (A06-M1 lần đầu hỏng vì leaf1 còn bản cũ -> 0 đặc trưng dp_*,
+  # detector p=nan suốt lần chạy) -> luôn đồng bộ bản trong repo trước, lỗi thì dừng.
+  if (-not (Push "vm-leaf1" (Join-Path $repo "scenarios\vm-leaf") "dataplane_collector.py" "$H/scenarios/vm-leaf/")) {
+    Log "Không chép được dataplane_collector.py lên vm-leaf1 -> dừng"; exit 1 }
   $dropArg = if ($AllowDrop) { "--allow-drop" } else { "" }
   # chạy bằng root (tshark cần quyền bắt gói); bật cùng lúc với telemetry, dừng khi hết thời gian thu
   $detLine = "sudo systemd-run --unit=aig-$RunId-det --collect bash -c '$(& $at (-$Lead)); cd $H/aiguard-app/realtime && $H/aiguard-venv/bin/python detector.py --model $H/aiguard-app/models/detector_rf.joblib --telemetry-module $H/aiguard-tools/telemetry_collector_a03.py --mode $Detector $dropArg --password $odlPw --duration $cap --out-dir $R/detector > $R/detector.log 2>&1'"

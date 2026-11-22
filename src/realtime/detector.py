@@ -272,6 +272,8 @@ def main():
 
     bundle = joblib.load(args.model)
     model, feats = bundle["model"], bundle["features"]
+    # Dự phòng: mất kênh đặc trưng data-plane (leaf hỏng/nghẽn) -> mô hình chỉ dùng đặc trưng phía controller
+    fb_model, fb_feats = bundle.get("fallback_model"), bundle.get("fallback_features", [])
     args.threshold = args.threshold if args.threshold is not None else bundle.get("threshold", 0.5)
     args.k = args.k or bundle.get("confirm_k", 3)
     args.n = args.n or bundle.get("confirm_n", 4)
@@ -301,11 +303,12 @@ def main():
     signal.signal(signal.SIGTERM, on_sig); signal.signal(signal.SIGINT, on_sig)
 
     cols = ["timestamp_utc", "state", "prob", "pos", "confirmed", "action", "packet_in_rate", "flow_mod_rate",
-            "controller_cpu_pct", "api_latency_ms", "dp_age_s", "top_src", "top_share", "score_ms"]
+            "controller_cpu_pct", "api_latency_ms", "dp_age_s", "top_src", "top_share", "score_ms", "model"]
     dec = csv.DictWriter((out / "decisions.csv").open("w", newline="", buffering=1), fieldnames=cols)
     dec.writeheader()
     log("start", mode=args.mode, allow_drop=args.allow_drop, threshold=args.threshold, k=args.k, n=args.n,
-        features=len(feats), odl_pid=pid, out=str(out))
+        features=len(feats), fallback_features=len(fb_feats), odl_pid=pid, out=str(out))
+    dp_ok = None          # None = chưa biết; True/False = kênh data-plane đang có/mất (log khi đổi)
 
     buf = collections.deque(maxlen=W)
     prev_ticks, prev_t = tel.cpu_ticks(pid), time.monotonic()
@@ -333,12 +336,22 @@ def main():
             buf.append(sample); seq += 1
             prob, pos, confirmed, action, score_ms = np.nan, "", "", "", np.nan
             top, share, _ = eng.attribute(src)
-            if len(buf) == W and row is not None:
+            now_ok = row is not None
+            if now_ok != dp_ok and seq > W:
+                log("dp_feed", ok=now_ok, age_s=round(age, 1),
+                    model="primary" if now_ok else ("fallback" if fb_model is not None else "none"))
+                dp_ok = now_ok
+            # cửa sổ đủ dữ liệu data-plane -> mô hình chính; không -> mô hình dự phòng (nếu có)
+            use, m_feats, m_name = (model, feats, "primary") if now_ok else (fb_model, fb_feats, "fallback")
+            if len(buf) == W and use is not None:
                 t0 = time.perf_counter()
                 wf = bd.window_features(pd.DataFrame(list(buf)), W)[-1]
-                x = pd.DataFrame([[wf[f] for f in feats]], columns=feats)
+                x = pd.DataFrame([[wf[f] for f in m_feats]], columns=m_feats)
+                if not x.notna().all(axis=None) and m_name == "primary" and fb_model is not None:
+                    use, m_feats, m_name = fb_model, fb_feats, "fallback"     # cửa sổ còn mẫu thiếu dp_*
+                    x = pd.DataFrame([[wf[f] for f in m_feats]], columns=m_feats)
                 if x.notna().all(axis=None):
-                    prob = float(model.predict_proba(x)[0, 1])
+                    prob = float(use.predict_proba(x)[0, 1])
                     score_ms = (time.perf_counter() - t0) * 1000
                     confirmed, action = eng.step(prob, src)
                     pos = int(prob >= args.threshold)
@@ -346,9 +359,10 @@ def main():
                               confirmed=confirmed, action=action, packet_in_rate=round(sample["packet_in_rate"], 2),
                               flow_mod_rate=round(sample["flow_mod_rate"], 2), controller_cpu_pct=round(cpu, 2),
                               api_latency_ms=lat, dp_age_s=round(age, 1), top_src=top, top_share=round(share, 2),
-                              score_ms=None if np.isnan(score_ms) else round(score_ms, 2)))
+                              score_ms=None if np.isnan(score_ms) else round(score_ms, 2),
+                              model=m_name if not np.isnan(prob) else ""))
             print(f"{sample['timestamp_utc'][11:19]} {eng.state:10s} p={prob:.2f} pin={sample['packet_in_rate']:6.1f} "
-                  f"cpu={cpu:5.1f} api={lat} top={top}({share:.2f}) {action}", flush=True)
+                  f"cpu={cpu:5.1f} api={lat} top={top}({share:.2f}) {m_name if not np.isnan(prob) else '-'} {action}", flush=True)
     finally:
         if eng.rules and odl:
             eng._remove_all("detector dừng")

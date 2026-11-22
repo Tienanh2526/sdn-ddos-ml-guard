@@ -418,7 +418,9 @@ def main():
     imp = sorted(zip(sets["combined"], final.m.feature_importances_), key=lambda x: -x[1])
     t1 = time.perf_counter(); final.score(w.head(1)); infer_ms = (time.perf_counter() - t1) * 1000
     MODEL.parent.mkdir(parents=True, exist_ok=True)
+    fallback = RF(sets["controller_aware"]).fit(w, y)   # dùng khi mất kênh data-plane (chặng 4)
     joblib.dump({"model": final.m, "features": sets["combined"], "threshold": 0.5,
+                 "fallback_model": fallback.m, "fallback_features": sets["controller_aware"],
                  "confirm_k": args.k, "confirm_n": args.n, "window_size": 5, "interval_s": 2.0,
                  "trained_on": runs, "feature_sets": sets}, MODEL)
 

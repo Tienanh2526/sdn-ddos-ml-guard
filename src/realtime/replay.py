@@ -55,12 +55,17 @@ def main():
     ap.add_argument("--mode", default="mitigate", choices=["detect", "mitigate"])
     ap.add_argument("--allow-drop", action="store_true")
     ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--fallback", action="store_true",
+                    help="giả lập MẤT kênh data-plane: xóa cột dp_*, dùng mô hình dự phòng (controller-only)")
     a = ap.parse_args()
 
     b = joblib.load(ROOT / "models" / "detector_rf.joblib")
     model, feats, W = b["model"], b["features"], b["window_size"]
     s = pd.read_csv(ROOT / "data" / "processed" / "samples.csv")
     s = s[s["is_valid"] == 1]
+    if a.fallback:
+        model, feats = b["fallback_model"], b["fallback_features"]
+        s = s.assign(**{c: np.nan for c in bd.DP_COLS})
     runs = a.runs.split(",") if a.runs else [r for r in sorted(s["run_id"].unique())
                                              if r.split("-")[0] in ("N04", "A04", "A05", "A06", "A07")]
     args = SimpleNamespace(mode=a.mode, allow_drop=a.allow_drop, threshold=b["threshold"], k=b["confirm_k"],
