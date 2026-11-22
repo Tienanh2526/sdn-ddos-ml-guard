@@ -1,0 +1,8 @@
+=== A05-R1 FINALIZE ===
+SOURCE_ROWS = 325
+SELECTED_ROWS = 237
+EXCLUDED = {'phase_boundary': 87}
+LABELS = {0: 148, 1: 89}
+TOTAL_PACKET_IN = 16428
+TOTAL_FLOW_MOD = 0
+OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/A05-R1/A05-R1.csv
