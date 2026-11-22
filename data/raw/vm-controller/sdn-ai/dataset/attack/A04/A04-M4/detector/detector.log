@@ -1,0 +1,493 @@
+12:06:58 start {"mode": "mitigate", "allow_drop": true, "threshold": 0.5, "k": 3, "n": 4, "features": 30, "fallback_features": 20, "odl_pid": 875, "out": "/home/anh2004zai_gmail_com/aiguard-runs/A04-M4/detector"}
+12:07:00 NORMAL     p=nan pin=   0.0 cpu=  8.5 api=36.92 top=None(0.00) - 
+12:07:02 NORMAL     p=nan pin=   0.0 cpu=  8.0 api=33.44 top=None(0.00) - 
+12:07:04 NORMAL     p=nan pin=   0.0 cpu=  9.0 api=32.64 top=None(0.00) - 
+12:07:06 NORMAL     p=nan pin=   0.0 cpu=  7.0 api=33.61 top=None(0.00) - 
+12:07:08 NORMAL     p=0.01 pin=   4.0 cpu=  9.0 api=32.95 top=192.168.200.11(1.00) primary 
+12:07:10 dp_feed {"ok": true, "age_s": 1.3, "model": "primary"}
+12:07:10 NORMAL     p=0.00 pin=   2.0 cpu=  9.0 api=34.63 top=192.168.200.11(1.00) primary 
+12:07:12 NORMAL     p=0.01 pin=   5.5 cpu=  8.0 api=98.98 top=192.168.200.11(1.00) primary 
+12:07:14 NORMAL     p=0.00 pin=   5.5 cpu=  9.5 api=35.6 top=192.168.200.11(1.00) primary 
+12:07:16 NORMAL     p=0.01 pin=   0.0 cpu=  9.5 api=43.28 top=None(0.00) primary 
+12:07:18 NORMAL     p=0.00 pin=   1.0 cpu=  8.0 api=50.08 top=192.168.200.11(1.00) primary 
+12:07:20 NORMAL     p=0.00 pin=   1.0 cpu= 11.5 api=37.93 top=192.168.200.11(1.00) primary 
+12:07:22 NORMAL     p=0.00 pin=   2.0 cpu= 10.0 api=38.36 top=192.168.200.11(1.00) primary 
+12:07:24 NORMAL     p=0.00 pin=   4.0 cpu=  9.0 api=42.98 top=192.168.200.11(1.00) primary 
+12:07:26 NORMAL     p=0.00 pin=   3.0 cpu= 10.0 api=35.93 top=192.168.200.11(1.00) primary 
+12:07:28 NORMAL     p=0.00 pin=   2.0 cpu=  9.0 api=40.56 top=192.168.200.11(1.00) primary 
+12:07:30 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=38.28 top=192.168.200.11(1.00) primary 
+12:07:32 NORMAL     p=0.00 pin=   0.0 cpu=  9.5 api=41.13 top=None(0.00) primary 
+12:07:34 NORMAL     p=0.00 pin=   2.0 cpu= 10.0 api=35.82 top=192.168.200.11(1.00) primary 
+12:07:36 NORMAL     p=0.00 pin=   2.0 cpu=  7.5 api=35.85 top=192.168.200.11(1.00) primary 
+12:07:38 NORMAL     p=0.00 pin=   2.0 cpu= 11.0 api=37.07 top=192.168.200.11(1.00) primary 
+12:07:40 NORMAL     p=0.00 pin=   0.0 cpu=  9.0 api=36.34 top=None(0.00) primary 
+12:07:42 NORMAL     p=0.00 pin=   1.0 cpu=  8.5 api=34.62 top=192.168.200.11(1.00) primary 
+12:07:44 NORMAL     p=0.00 pin=   1.5 cpu=  8.5 api=35.31 top=192.168.200.11(1.00) primary 
+12:07:46 NORMAL     p=0.00 pin=   1.0 cpu=  9.0 api=34.69 top=192.168.200.11(1.00) primary 
+12:07:48 NORMAL     p=0.00 pin=   2.0 cpu=  6.5 api=38.62 top=192.168.200.11(1.00) primary 
+12:07:50 NORMAL     p=0.00 pin=   2.0 cpu= 10.5 api=36.77 top=192.168.200.11(1.00) primary 
+12:07:52 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=38.41 top=192.168.200.11(1.00) primary 
+12:07:54 NORMAL     p=0.00 pin=   2.0 cpu=  6.5 api=36.29 top=192.168.200.11(1.00) primary 
+12:07:56 NORMAL     p=0.00 pin=   0.0 cpu= 10.5 api=45.76 top=None(0.00) primary 
+12:07:58 NORMAL     p=0.00 pin=   6.0 cpu= 11.0 api=35.57 top=192.168.200.11(1.00) primary 
+12:08:00 NORMAL     p=0.00 pin=   0.0 cpu=  6.5 api=35.6 top=None(0.00) primary 
+12:08:02 NORMAL     p=0.00 pin=   1.0 cpu= 10.5 api=34.85 top=192.168.200.11(1.00) primary 
+12:08:04 NORMAL     p=0.00 pin=   1.0 cpu=  9.5 api=33.91 top=192.168.200.11(1.00) primary 
+12:08:06 NORMAL     p=0.00 pin=   1.0 cpu=  5.5 api=35.3 top=192.168.200.11(1.00) primary 
+12:08:08 NORMAL     p=0.00 pin=   2.0 cpu= 11.0 api=35.53 top=192.168.200.11(1.00) primary 
+12:08:10 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=38.72 top=192.168.200.11(1.00) primary 
+12:08:12 NORMAL     p=0.00 pin=   3.0 cpu=  6.0 api=34.3 top=192.168.200.11(1.00) primary 
+12:08:14 NORMAL     p=0.00 pin=   1.0 cpu= 11.0 api=35.03 top=192.168.200.11(1.00) primary 
+12:08:16 NORMAL     p=0.00 pin=   3.5 cpu= 11.0 api=35.02 top=192.168.200.11(1.00) primary 
+12:08:18 NORMAL     p=0.00 pin=   2.0 cpu=  6.5 api=35.28 top=192.168.200.11(1.00) primary 
+12:08:20 NORMAL     p=0.00 pin=   1.0 cpu= 10.5 api=37.26 top=192.168.200.11(1.00) primary 
+12:08:22 NORMAL     p=0.00 pin=   1.0 cpu=  9.5 api=34.87 top=192.168.200.11(1.00) primary 
+12:08:24 NORMAL     p=0.00 pin=   4.0 cpu=  6.5 api=35.65 top=192.168.200.11(1.00) primary 
+12:08:26 NORMAL     p=0.00 pin=   1.0 cpu= 11.0 api=38.95 top=192.168.200.11(1.00) primary 
+12:08:28 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=37.02 top=192.168.200.11(1.00) primary 
+12:08:30 NORMAL     p=0.00 pin=   0.0 cpu=  6.0 api=36.11 top=None(0.00) primary 
+12:08:32 NORMAL     p=0.00 pin=   3.0 cpu= 11.0 api=35.85 top=192.168.200.11(1.00) primary 
+12:08:34 NORMAL     p=0.00 pin=   1.0 cpu=  8.0 api=49.74 top=192.168.200.11(1.00) primary 
+12:08:36 NORMAL     p=0.00 pin=   3.0 cpu=  9.5 api=34.21 top=192.168.200.11(1.00) primary 
+12:08:38 NORMAL     p=0.00 pin=   2.0 cpu=  9.5 api=41.41 top=192.168.200.11(1.00) primary 
+12:08:40 NORMAL     p=0.00 pin=   4.0 cpu=  9.5 api=39.58 top=192.168.200.11(1.00) primary 
+12:08:42 NORMAL     p=0.00 pin=   2.0 cpu=  8.0 api=35.98 top=192.168.200.11(1.00) primary 
+12:08:44 NORMAL     p=0.00 pin=   0.0 cpu=  9.5 api=37.57 top=None(0.00) primary 
+12:08:46 NORMAL     p=0.00 pin=   0.0 cpu=  9.0 api=36.9 top=None(0.00) primary 
+12:08:48 NORMAL     p=0.00 pin=   0.0 cpu=  8.0 api=41.03 top=None(0.00) primary 
+12:08:50 NORMAL     p=0.00 pin=   3.0 cpu= 10.0 api=36.84 top=192.168.200.11(1.00) primary 
+12:08:52 NORMAL     p=0.00 pin=   1.0 cpu=  9.0 api=35.54 top=192.168.200.11(1.00) primary 
+12:08:54 NORMAL     p=0.00 pin=   0.0 cpu= 10.0 api=33.98 top=None(0.00) primary 
+12:08:56 NORMAL     p=0.00 pin=   2.0 cpu=  9.0 api=35.68 top=192.168.200.11(1.00) primary 
+12:08:58 NORMAL     p=0.00 pin=   1.0 cpu=  8.5 api=35.95 top=192.168.200.11(1.00) primary 
+12:09:00 NORMAL     p=0.00 pin=   1.0 cpu=  8.0 api=33.82 top=192.168.200.11(1.00) primary 
+12:09:02 NORMAL     p=0.00 pin=   2.0 cpu=  8.5 api=33.94 top=192.168.200.11(1.00) primary 
+12:09:04 NORMAL     p=0.00 pin=   3.0 cpu=  9.0 api=94.04 top=192.168.200.11(1.00) primary 
+12:09:06 NORMAL     p=0.01 pin=   0.0 cpu=  7.5 api=35.05 top=None(0.00) primary 
+12:09:08 NORMAL     p=0.00 pin=   0.0 cpu=  9.5 api=34.05 top=None(0.00) primary 
+12:09:10 NORMAL     p=0.00 pin=   0.0 cpu=  8.5 api=33.4 top=None(0.00) primary 
+12:09:12 NORMAL     p=0.00 pin=   0.0 cpu=  7.5 api=35.28 top=None(0.00) primary 
+12:09:14 NORMAL     p=0.01 pin=   0.0 cpu= 11.0 api=35.99 top=None(0.00) primary 
+12:09:16 NORMAL     p=0.00 pin=   1.0 cpu=  9.0 api=33.99 top=192.168.200.11(1.00) primary 
+12:09:18 NORMAL     p=0.00 pin=   2.0 cpu=  7.0 api=33.54 top=192.168.200.11(1.00) primary 
+12:09:20 NORMAL     p=0.00 pin=   0.0 cpu=  9.5 api=34.64 top=None(0.00) primary 
+12:09:22 NORMAL     p=0.00 pin=   0.0 cpu=  8.5 api=33.64 top=None(0.00) primary 
+12:09:24 NORMAL     p=0.01 pin=   0.0 cpu=  7.5 api=32.62 top=None(0.00) primary 
+12:09:26 NORMAL     p=0.01 pin=   2.0 cpu=  8.5 api=33.44 top=192.168.200.11(1.00) primary 
+12:09:28 NORMAL     p=0.00 pin=   1.0 cpu=  9.0 api=33.83 top=192.168.200.11(1.00) primary 
+12:09:30 NORMAL     p=0.01 pin=   0.0 cpu=  7.5 api=32.61 top=None(0.00) primary 
+12:09:32 NORMAL     p=0.01 pin=   2.0 cpu=  8.5 api=49.46 top=192.168.200.11(1.00) primary 
+12:09:34 NORMAL     p=0.00 pin=   0.0 cpu= 11.0 api=35.4 top=None(0.00) primary 
+12:09:36 NORMAL     p=0.00 pin=   2.0 cpu=  8.0 api=33.76 top=192.168.200.13(0.67) primary 
+12:09:38 NORMAL     p=0.03 pin=   7.0 cpu= 10.0 api=34.68 top=192.168.200.13(0.92) primary 
+12:09:40 NORMAL     p=0.26 pin=   7.5 cpu= 10.0 api=42.98 top=192.168.200.13(0.93) primary 
+12:09:42 NORMAL     p=0.40 pin=   8.5 cpu=  8.5 api=37.79 top=192.168.200.13(0.87) primary 
+12:09:44 NORMAL     p=0.48 pin=   7.0 cpu= 10.5 api=45.88 top=192.168.200.13(1.00) primary 
+12:09:46 state {"frm": "NORMAL", "to": "SUSPECT", "prob": 0.551}
+12:09:46 SUSPECT    p=0.55 pin=   4.5 cpu= 10.5 api=43.44 top=192.168.200.13(1.00) primary 
+12:09:48 SUSPECT    p=0.54 pin=   5.0 cpu=  9.0 api=44.14 top=192.168.200.13(1.00) primary 
+12:09:50 state {"frm": "SUSPECT", "to": "MITIGATING", "prob": 0.522, "top_src": "192.168.200.13", "share": 1.0, "pin_from_src": 43}
+12:09:50 target {"ip": "192.168.200.13", "share": 1.0, "excess_pin": 43, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 1.08, "192.168.200.13": 2.5}}
+12:09:52 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 201, "rest_ms": 13.2, "on_switch_s": 2.02, "total_s": 2.04, "error": null}
+12:09:50 MITIGATING p=0.52 pin=   5.0 cpu= 11.5 api=54.46 top=192.168.200.13(1.00) primary L1 bypass 192.168.200.13
+12:09:52 MITIGATING p=0.48 pin=   0.9 cpu= 29.3 api=48.32 top=192.168.200.11(1.00) primary 
+12:09:54 MITIGATING p=0.40 pin=   1.0 cpu=  8.5 api=41.7 top=192.168.200.11(1.00) primary 
+12:09:56 MITIGATING p=0.40 pin=   0.0 cpu= 10.5 api=40.31 top=None(0.00) primary 
+12:09:58 MITIGATING p=0.36 pin=   0.0 cpu=  9.0 api=36.15 top=None(0.00) primary 
+12:10:00 state {"frm": "MITIGATING", "to": "RECOVERING"}
+12:10:00 RECOVERING p=0.40 pin=   0.0 cpu=  8.0 api=36.22 top=None(0.00) primary 
+12:10:02 RECOVERING p=0.48 pin=   0.0 cpu=  9.0 api=34.59 top=None(0.00) primary 
+12:10:04 RECOVERING p=0.46 pin=   2.0 cpu=  8.5 api=33.47 top=192.168.200.11(1.00) primary 
+12:10:06 RECOVERING p=0.45 pin=   1.0 cpu=  7.5 api=35.88 top=192.168.200.11(1.00) primary 
+12:10:08 RECOVERING p=0.47 pin=   0.0 cpu= 11.0 api=35.25 top=None(0.00) primary 
+12:10:10 RECOVERING p=0.47 pin=   0.0 cpu=  8.5 api=33.54 top=None(0.00) primary 
+12:10:12 RECOVERING p=0.46 pin=   0.0 cpu=  7.5 api=34.72 top=None(0.00) primary 
+12:10:14 RECOVERING p=0.47 pin=   0.0 cpu=  9.0 api=36.84 top=None(0.00) primary 
+12:10:16 RECOVERING p=0.45 pin=   0.0 cpu=  8.5 api=33.5 top=None(0.00) primary 
+12:10:18 RECOVERING p=0.45 pin=   0.0 cpu=  7.5 api=33.05 top=None(0.00) primary 
+12:10:20 RECOVERING p=0.47 pin=   0.0 cpu=  9.0 api=34.43 top=None(0.00) primary 
+12:10:22 RECOVERING p=0.48 pin=   0.0 cpu=  9.0 api=33.25 top=None(0.00) primary 
+12:10:24 RECOVERING p=0.48 pin=   0.0 cpu=  7.5 api=36.45 top=None(0.00) primary 
+12:10:26 RECOVERING p=0.48 pin=   1.0 cpu=  9.0 api=33.81 top=192.168.200.11(1.00) primary 
+12:10:28 RECOVERING p=0.48 pin=   0.0 cpu= 11.0 api=34.56 top=None(0.00) primary 
+12:10:30 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 10.1}
+12:10:30 RECOVERING p=0.47 pin=   0.0 cpu=  7.0 api=34.01 top=None(0.00) primary hold rules
+12:10:32 RECOVERING p=0.46 pin=   0.0 cpu= 10.0 api=37.2 top=None(0.00) primary 
+12:10:34 RECOVERING p=0.44 pin=   2.0 cpu=  8.5 api=33.78 top=192.168.200.11(1.00) primary 
+12:10:36 RECOVERING p=0.47 pin=   0.0 cpu=  8.0 api=38.49 top=None(0.00) primary 
+12:10:38 RECOVERING p=0.45 pin=   0.0 cpu=  9.5 api=33.84 top=None(0.00) primary 
+12:10:40 RECOVERING p=0.44 pin=   1.0 cpu=  8.0 api=32.83 top=192.168.200.11(1.00) primary 
+12:10:42 RECOVERING p=0.48 pin=   1.0 cpu=  8.0 api=40.11 top=192.168.200.11(1.00) primary 
+12:10:44 RECOVERING p=0.46 pin=   3.0 cpu= 10.0 api=35.16 top=192.168.200.11(1.00) primary 
+12:10:46 RECOVERING p=0.46 pin=   1.0 cpu=  8.5 api=34.85 top=192.168.200.11(1.00) primary 
+12:10:48 RECOVERING p=0.45 pin=   0.0 cpu=  9.5 api=33.86 top=None(0.00) primary 
+12:10:50 RECOVERING p=0.45 pin=   0.0 cpu=  9.0 api=34.61 top=None(0.00) primary 
+12:10:52 RECOVERING p=0.45 pin=   0.0 cpu=  9.0 api=33.96 top=None(0.00) primary 
+12:10:54 RECOVERING p=0.47 pin=   2.0 cpu=  8.0 api=37.77 top=192.168.200.11(1.00) primary 
+12:10:56 RECOVERING p=0.45 pin=   2.0 cpu=  9.5 api=38.43 top=192.168.200.11(1.00) primary 
+12:10:58 RECOVERING p=0.48 pin=   1.0 cpu=  7.5 api=39.26 top=192.168.200.11(1.00) primary 
+12:11:00 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 10.0}
+12:11:00 RECOVERING p=0.45 pin=   2.0 cpu=  9.5 api=34.37 top=192.168.200.11(1.00) primary hold rules
+12:11:02 RECOVERING p=0.51 pin=   0.0 cpu=  9.5 api=99.62 top=None(0.00) primary 
+12:11:04 RECOVERING p=0.48 pin=   1.0 cpu=  6.5 api=39.57 top=192.168.200.11(1.00) primary 
+12:11:06 RECOVERING p=0.46 pin=   2.0 cpu= 11.5 api=35.02 top=192.168.200.11(1.00) primary 
+12:11:08 RECOVERING p=0.47 pin=   0.0 cpu= 11.0 api=34.19 top=None(0.00) primary 
+12:11:10 RECOVERING p=0.47 pin=   2.0 cpu=  5.5 api=34.86 top=192.168.200.11(1.00) primary 
+12:11:12 RECOVERING p=0.49 pin=   2.0 cpu= 12.0 api=36.48 top=192.168.200.11(1.00) primary 
+12:11:14 RECOVERING p=0.51 pin=   0.0 cpu= 10.0 api=38.18 top=None(0.00) primary 
+12:11:16 RECOVERING p=0.49 pin=   7.5 cpu=  7.0 api=36.1 top=192.168.200.11(1.00) primary 
+12:11:18 RECOVERING p=0.50 pin=   2.0 cpu= 12.0 api=37.89 top=192.168.200.11(1.00) primary 
+12:11:20 RECOVERING p=0.48 pin=   0.0 cpu=  9.5 api=35.4 top=None(0.00) primary 
+12:11:22 RECOVERING p=0.52 pin=   1.0 cpu=  6.0 api=41.52 top=192.168.200.11(1.00) primary 
+12:11:24 RECOVERING p=0.48 pin=   0.0 cpu= 11.5 api=35.91 top=None(0.00) primary 
+12:11:26 RECOVERING p=0.48 pin=   2.0 cpu= 11.5 api=34.46 top=192.168.200.11(1.00) primary 
+12:11:28 RECOVERING p=0.51 pin=   0.0 cpu=  6.0 api=38.94 top=None(0.00) primary 
+12:11:30 RECOVERING p=0.49 pin=   1.0 cpu= 10.5 api=33.7 top=192.168.200.11(1.00) primary 
+12:11:32 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 10.3}
+12:11:32 RECOVERING p=0.47 pin=   2.0 cpu= 10.0 api=37.91 top=192.168.200.11(1.00) primary hold rules
+12:11:34 RECOVERING p=0.39 pin=   1.0 cpu=  6.5 api=37.12 top=192.168.200.11(1.00) primary 
+12:11:36 RECOVERING p=0.41 pin=   1.0 cpu= 11.5 api=35.84 top=192.168.200.11(1.00) primary 
+12:11:38 RECOVERING p=0.43 pin=   2.0 cpu=  9.5 api=34.7 top=192.168.200.11(1.00) primary 
+12:11:40 RECOVERING p=0.46 pin=   4.0 cpu=  6.5 api=36.1 top=192.168.200.11(1.00) primary 
+12:11:42 RECOVERING p=0.47 pin=   1.0 cpu= 11.5 api=35.1 top=192.168.200.11(1.00) primary 
+12:11:44 RECOVERING p=0.53 pin=   1.0 cpu=  9.5 api=50.9 top=192.168.200.11(1.00) primary 
+12:11:46 RECOVERING p=0.48 pin=   1.0 cpu=  8.5 api=35.26 top=192.168.200.11(1.00) primary 
+12:11:48 RECOVERING p=0.50 pin=   0.0 cpu= 11.0 api=37.01 top=None(0.00) primary 
+12:11:50 RECOVERING p=0.52 pin=   2.0 cpu= 10.0 api=39.59 top=192.168.200.11(1.00) primary 
+12:11:52 RECOVERING p=0.50 pin=   2.0 cpu=  6.5 api=36.22 top=192.168.200.11(1.00) primary 
+12:11:54 RECOVERING p=0.49 pin=   1.0 cpu= 11.0 api=34.02 top=192.168.200.11(1.00) primary 
+12:11:56 RECOVERING p=0.49 pin=   1.0 cpu=  9.5 api=34.7 top=192.168.200.11(1.00) primary 
+12:11:58 RECOVERING p=0.52 pin=   2.0 cpu=  6.5 api=40.11 top=192.168.200.11(1.00) primary 
+12:12:00 RECOVERING p=0.48 pin=   4.0 cpu= 11.0 api=35.9 top=192.168.200.11(1.00) primary 
+12:12:02 RECOVERING p=0.45 pin=   1.0 cpu=  9.0 api=34.64 top=192.168.200.11(1.00) primary 
+12:12:04 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 9.4}
+12:12:04 RECOVERING p=0.45 pin=   4.0 cpu=  8.5 api=33.49 top=192.168.200.11(1.00) primary hold rules
+12:12:06 RECOVERING p=0.48 pin=   1.0 cpu= 11.0 api=38.23 top=192.168.200.11(1.00) primary 
+12:12:08 RECOVERING p=0.49 pin=   2.0 cpu=  8.5 api=39.48 top=192.168.200.11(1.00) primary 
+12:12:10 RECOVERING p=0.49 pin=   2.0 cpu=  8.0 api=37.14 top=192.168.200.11(1.00) primary 
+12:12:12 RECOVERING p=0.50 pin=   1.0 cpu= 11.0 api=36.7 top=192.168.200.11(1.00) primary 
+12:12:14 RECOVERING p=0.53 pin=   1.0 cpu=  8.0 api=39.7 top=192.168.200.11(1.00) primary 
+12:12:16 state {"frm": "RECOVERING", "to": "MITIGATING", "prob": 0.502, "reason": "tái phát"}
+12:12:16 MITIGATING p=0.50 pin=   1.0 cpu=  8.5 api=37.42 top=192.168.200.11(1.00) primary 
+12:12:18 MITIGATING p=0.49 pin=   2.0 cpu= 10.5 api=34.96 top=192.168.200.11(1.00) primary 
+12:12:23 rule_install {"level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 201, "rest_ms": 9.0, "on_switch_s": 2.53, "total_s": 2.54, "error": null}
+12:12:20 MITIGATING p=0.54 pin=   2.5 cpu=  8.0 api=41.9 top=192.168.200.11(1.00) primary L2 drop 192.168.200.13
+12:12:23 MITIGATING p=0.48 pin=   0.7 cpu= 14.5 api=35.62 top=192.168.200.11(1.00) primary 
+12:12:25 MITIGATING p=0.48 pin=   2.0 cpu=  7.5 api=35.34 top=192.168.200.11(1.00) primary 
+12:12:27 MITIGATING p=0.48 pin=   3.0 cpu=  9.5 api=35.16 top=192.168.200.11(1.00) primary 
+12:12:29 MITIGATING p=0.47 pin=   3.0 cpu=  9.0 api=36.4 top=192.168.200.11(1.00) primary 
+12:12:31 MITIGATING p=0.51 pin=   4.0 cpu=  8.0 api=40.1 top=192.168.200.11(1.00) primary 
+12:12:33 MITIGATING p=0.50 pin=   1.0 cpu= 10.0 api=36.08 top=192.168.200.11(1.00) primary 
+12:12:35 MITIGATING p=0.52 pin=   2.0 cpu=  9.0 api=40.76 top=192.168.200.11(1.00) primary 
+12:12:37 MITIGATING p=0.50 pin=   2.0 cpu=  8.0 api=34.96 top=192.168.200.11(1.00) primary 
+12:12:39 MITIGATING p=0.52 pin=   4.0 cpu=  9.5 api=39.92 top=192.168.200.11(1.00) primary 
+12:12:41 MITIGATING p=0.48 pin=   3.0 cpu= 12.5 api=36.39 top=192.168.200.11(1.00) primary 
+12:12:43 MITIGATING p=0.49 pin=   5.5 cpu=  8.0 api=36.36 top=192.168.200.11(1.00) primary 
+12:12:45 target {"ip": "192.168.200.11", "share": 1.0, "excess_pin": 15, "primary": false, "base_pin_per_cycle": {"192.168.200.11": 1.08, "192.168.200.13": 2.5}}
+12:12:47 rule_install {"level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 201, "rest_ms": 7.0, "on_switch_s": 2.02, "total_s": 2.03, "error": null}
+12:12:45 MITIGATING p=0.51 pin=   6.0 cpu= 10.0 api=36.89 top=192.168.200.11(1.00) primary L1 bypass 192.168.200.11
+12:12:47 MITIGATING p=0.51 pin=   1.8 cpu= 10.6 api=38.66 top=None(0.00) primary 
+12:12:49 MITIGATING p=0.51 pin=   2.5 cpu=  8.5 api=39.34 top=None(0.00) primary 
+12:12:51 MITIGATING p=0.52 pin=   2.5 cpu= 10.0 api=38.96 top=None(0.00) primary 
+12:12:53 MITIGATING p=0.49 pin=   1.5 cpu= 10.0 api=35.0 top=None(0.00) primary 
+12:12:55 MITIGATING p=0.49 pin=   1.5 cpu=  8.0 api=34.93 top=None(0.00) primary 
+12:12:57 MITIGATING p=0.51 pin=   2.5 cpu=  9.5 api=38.38 top=None(0.00) primary 
+12:12:59 MITIGATING p=0.49 pin=   3.5 cpu= 12.0 api=34.39 top=None(0.00) primary 
+12:13:01 MITIGATING p=0.48 pin=   1.5 cpu=  7.5 api=34.75 top=None(0.00) primary 
+12:13:03 MITIGATING p=0.49 pin=   1.5 cpu= 10.0 api=35.43 top=None(0.00) primary 
+12:13:05 MITIGATING p=0.48 pin=   2.0 cpu=  8.5 api=35.53 top=None(0.00) primary 
+12:13:07 state {"frm": "MITIGATING", "to": "RECOVERING"}
+12:13:07 RECOVERING p=0.50 pin=   2.0 cpu=  8.0 api=38.46 top=None(0.00) primary 
+12:13:09 RECOVERING p=0.48 pin=   1.0 cpu= 10.0 api=34.85 top=None(0.00) primary 
+12:13:11 RECOVERING p=0.53 pin=   3.5 cpu=  9.0 api=40.32 top=None(0.00) primary 
+12:13:13 RECOVERING p=0.54 pin=   2.5 cpu=  8.5 api=96.69 top=None(0.00) primary 
+12:13:15 RECOVERING p=0.48 pin=   1.0 cpu=  9.5 api=34.47 top=None(0.00) primary 
+12:13:17 state {"frm": "RECOVERING", "to": "MITIGATING", "prob": 0.532, "reason": "tái phát"}
+12:13:17 MITIGATING p=0.53 pin=   1.0 cpu=  7.5 api=55.27 top=None(0.00) primary 
+12:13:19 MITIGATING p=0.48 pin=   0.5 cpu= 11.5 api=33.94 top=None(0.00) primary 
+12:13:21 MITIGATING p=0.48 pin=   2.0 cpu=  9.5 api=36.19 top=None(0.00) primary 
+12:13:23 MITIGATING p=0.44 pin=   1.0 cpu=  7.0 api=33.54 top=None(0.00) primary 
+12:13:25 MITIGATING p=0.45 pin=   0.5 cpu=  9.5 api=33.34 top=None(0.00) primary 
+12:13:27 state {"frm": "MITIGATING", "to": "RECOVERING"}
+12:13:27 RECOVERING p=0.45 pin=   1.0 cpu=  9.0 api=33.14 top=None(0.00) primary 
+12:13:29 RECOVERING p=0.44 pin=   1.5 cpu=  7.0 api=32.22 top=None(0.00) primary 
+12:13:31 RECOVERING p=0.45 pin=   0.5 cpu= 10.0 api=33.58 top=None(0.00) primary 
+12:13:33 RECOVERING p=0.46 pin=   1.5 cpu=  9.5 api=32.35 top=None(0.00) primary 
+12:13:35 RECOVERING p=0.44 pin=   1.0 cpu=  6.5 api=32.84 top=None(0.00) primary 
+12:13:37 RECOVERING p=0.45 pin=   0.5 cpu= 11.5 api=33.05 top=None(0.00) primary 
+12:13:39 RECOVERING p=0.46 pin=   2.0 cpu=  9.0 api=34.27 top=None(0.00) primary 
+12:13:41 RECOVERING p=0.45 pin=   2.0 cpu=  7.5 api=32.15 top=None(0.00) primary 
+12:13:43 RECOVERING p=0.48 pin=   1.0 cpu=  9.5 api=32.53 top=None(0.00) primary 
+12:13:45 RECOVERING p=0.49 pin=   1.0 cpu=  8.5 api=34.19 top=None(0.00) primary 
+12:13:47 RECOVERING p=0.48 pin=   1.0 cpu=  7.0 api=32.68 top=None(0.00) primary 
+12:13:49 RECOVERING p=0.48 pin=   1.5 cpu=  9.5 api=34.42 top=None(0.00) primary 
+12:13:51 RECOVERING p=0.50 pin=   1.5 cpu=  9.5 api=37.87 top=None(0.00) primary 
+12:13:53 RECOVERING p=0.48 pin=   2.5 cpu=  7.5 api=33.59 top=None(0.00) primary 
+12:13:55 RECOVERING p=0.48 pin=   1.5 cpu=  9.5 api=34.27 top=None(0.00) primary 
+12:13:57 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 43.5}
+12:13:57 RECOVERING p=0.49 pin=   1.0 cpu= 11.0 api=34.26 top=None(0.00) primary hold rules
+12:13:59 RECOVERING p=0.52 pin=   1.5 cpu=  7.0 api=41.49 top=None(0.00) primary 
+12:14:01 RECOVERING p=0.49 pin=   1.5 cpu= 10.5 api=33.02 top=None(0.00) primary 
+12:14:03 RECOVERING p=0.49 pin=   1.5 cpu=  9.0 api=34.73 top=None(0.00) primary 
+12:14:05 RECOVERING p=0.53 pin=   0.5 cpu=  6.0 api=41.99 top=None(0.00) primary 
+12:14:07 RECOVERING p=0.49 pin=   1.0 cpu= 11.0 api=36.03 top=None(0.00) primary 
+12:14:09 RECOVERING p=0.49 pin=   2.0 cpu=  9.5 api=33.22 top=None(0.00) primary 
+12:14:11 RECOVERING p=0.48 pin=   1.0 cpu=  5.5 api=34.42 top=None(0.00) primary 
+12:14:13 RECOVERING p=0.48 pin=   0.5 cpu= 10.5 api=32.65 top=None(0.00) primary 
+12:14:15 RECOVERING p=0.52 pin=   0.5 cpu=  9.0 api=40.16 top=None(0.00) primary 
+12:14:17 RECOVERING p=0.48 pin=   2.0 cpu=  8.5 api=36.04 top=None(0.00) primary 
+12:14:19 RECOVERING p=0.49 pin=   0.5 cpu= 10.5 api=32.9 top=None(0.00) primary 
+12:14:21 RECOVERING p=0.49 pin=   1.0 cpu=  9.5 api=35.51 top=None(0.00) primary 
+12:14:23 RECOVERING p=0.48 pin=   1.0 cpu=  6.0 api=32.1 top=None(0.00) primary 
+12:14:25 RECOVERING p=0.48 pin=   2.5 cpu= 10.0 api=33.48 top=None(0.00) primary 
+12:14:27 RECOVERING p=0.49 pin=   1.0 cpu=  9.0 api=32.59 top=None(0.00) primary 
+12:14:29 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 50.4}
+12:14:29 RECOVERING p=0.48 pin=   1.0 cpu=  6.0 api=33.01 top=None(0.00) primary hold rules
+12:14:31 RECOVERING p=0.48 pin=   0.5 cpu= 10.5 api=34.31 top=None(0.00) primary 
+12:14:33 RECOVERING p=0.49 pin=   1.0 cpu=  7.5 api=40.88 top=None(0.00) primary 
+12:14:35 RECOVERING p=0.45 pin=   1.0 cpu=  8.0 api=34.22 top=None(0.00) primary 
+12:14:37 RECOVERING p=0.45 pin=   1.0 cpu= 12.5 api=33.28 top=None(0.00) primary 
+12:14:39 RECOVERING p=0.46 pin=   1.0 cpu=  7.5 api=33.99 top=None(0.00) primary 
+12:14:41 RECOVERING p=0.45 pin=   0.5 cpu=  7.5 api=33.58 top=None(0.00) primary 
+12:14:43 RECOVERING p=0.48 pin=   1.0 cpu= 12.5 api=32.58 top=None(0.00) primary 
+12:14:45 RECOVERING p=0.48 pin=   2.0 cpu=  7.5 api=36.66 top=None(0.00) primary 
+12:14:47 RECOVERING p=0.48 pin=   1.0 cpu=  8.0 api=34.4 top=None(0.00) primary 
+12:14:49 RECOVERING p=0.49 pin=   1.0 cpu= 10.5 api=33.66 top=None(0.00) primary 
+12:14:51 RECOVERING p=0.49 pin=   0.5 cpu=  7.5 api=33.68 top=None(0.00) primary 
+12:14:53 RECOVERING p=0.47 pin=   1.5 cpu=  7.5 api=35.99 top=None(0.00) primary 
+12:14:55 RECOVERING p=0.49 pin=   1.0 cpu= 12.5 api=32.88 top=None(0.00) primary 
+12:14:57 RECOVERING p=0.48 pin=   1.0 cpu=  8.0 api=32.79 top=None(0.00) primary 
+12:14:59 RECOVERING p=0.48 pin=   1.5 cpu=  7.0 api=34.65 top=None(0.00) primary 
+12:15:01 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 46.1}
+12:15:01 RECOVERING p=0.49 pin=   1.5 cpu= 11.0 api=33.96 top=None(0.00) primary hold rules
+12:15:03 RECOVERING p=0.49 pin=   2.0 cpu=  7.5 api=34.05 top=None(0.00) primary 
+12:15:05 RECOVERING p=0.48 pin=   2.0 cpu=  8.0 api=33.64 top=None(0.00) primary 
+12:15:07 RECOVERING p=0.49 pin=   2.0 cpu= 10.5 api=34.04 top=None(0.00) primary 
+12:15:09 RECOVERING p=0.48 pin=   1.5 cpu=  8.0 api=34.16 top=None(0.00) primary 
+12:15:11 RECOVERING p=0.48 pin=   1.5 cpu=  7.0 api=33.9 top=None(0.00) primary 
+12:15:13 RECOVERING p=0.48 pin=   2.0 cpu= 11.0 api=33.56 top=None(0.00) primary 
+12:15:15 RECOVERING p=0.49 pin=   2.0 cpu=  9.5 api=33.01 top=None(0.00) primary 
+12:15:17 RECOVERING p=0.50 pin=   2.0 cpu=  7.5 api=38.05 top=None(0.00) primary 
+12:15:19 RECOVERING p=0.49 pin=   0.5 cpu= 11.0 api=34.28 top=None(0.00) primary 
+12:15:21 RECOVERING p=0.48 pin=   2.5 cpu=  7.5 api=34.08 top=None(0.00) primary 
+12:15:23 RECOVERING p=0.47 pin=   1.0 cpu=  7.5 api=36.21 top=None(0.00) primary 
+12:15:25 RECOVERING p=0.48 pin=   1.5 cpu= 10.5 api=36.52 top=None(0.00) primary 
+12:15:27 RECOVERING p=0.48 pin=   1.0 cpu=  7.5 api=34.78 top=None(0.00) primary 
+12:15:29 RECOVERING p=0.50 pin=   2.5 cpu=  7.5 api=95.71 top=None(0.00) primary 
+12:15:31 RECOVERING p=0.46 pin=   1.5 cpu= 11.0 api=34.09 top=None(0.00) primary 
+12:15:33 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 77.0}
+12:15:33 RECOVERING p=0.53 pin=   0.5 cpu=  7.5 api=47.03 top=None(0.00) primary hold rules
+12:15:35 RECOVERING p=0.48 pin=   0.5 cpu= 11.0 api=34.35 top=None(0.00) primary 
+12:15:37 RECOVERING p=0.48 pin=   1.0 cpu= 10.0 api=34.55 top=None(0.00) primary 
+12:15:39 RECOVERING p=0.52 pin=   1.5 cpu=  7.5 api=38.74 top=None(0.00) primary 
+12:15:41 RECOVERING p=0.49 pin=   1.0 cpu=  8.0 api=35.58 top=None(0.00) primary 
+12:15:43 RECOVERING p=0.51 pin=   2.0 cpu= 10.5 api=37.63 top=None(0.00) primary 
+12:15:45 RECOVERING p=0.49 pin=   1.0 cpu=  8.0 api=37.17 top=None(0.00) primary 
+12:15:47 RECOVERING p=0.48 pin=   1.5 cpu=  7.5 api=36.12 top=None(0.00) primary 
+12:15:49 RECOVERING p=0.49 pin=   1.0 cpu= 10.5 api=36.27 top=None(0.00) primary 
+12:15:51 RECOVERING p=0.48 pin=   0.5 cpu=  7.0 api=34.81 top=None(0.00) primary 
+12:15:53 RECOVERING p=0.48 pin=   1.0 cpu= 10.5 api=33.79 top=None(0.00) primary 
+12:15:55 RECOVERING p=0.49 pin=   2.5 cpu= 10.0 api=32.56 top=None(0.00) primary 
+12:15:57 RECOVERING p=0.48 pin=   0.5 cpu=  7.5 api=36.14 top=None(0.00) primary 
+12:15:59 RECOVERING p=0.48 pin=   1.5 cpu=  7.5 api=33.13 top=None(0.00) primary 
+12:16:01 RECOVERING p=0.52 pin=   2.5 cpu=  9.5 api=39.19 top=None(0.00) primary 
+12:16:03 RECOVERING p=0.49 pin=   1.5 cpu=  9.5 api=33.94 top=None(0.00) primary 
+12:16:05 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 74.6}
+12:16:05 RECOVERING p=0.48 pin=   1.5 cpu=  7.5 api=34.45 top=None(0.00) primary hold rules
+12:16:07 RECOVERING p=0.47 pin=   1.5 cpu= 16.5 api=34.2 top=None(0.00) primary 
+12:16:09 RECOVERING p=0.47 pin=   0.5 cpu=  8.0 api=35.43 top=None(0.00) primary 
+12:16:11 RECOVERING p=0.48 pin=   3.0 cpu=  8.0 api=33.38 top=None(0.00) primary 
+12:16:13 RECOVERING p=0.49 pin=   1.5 cpu= 11.5 api=36.98 top=None(0.00) primary 
+12:16:15 RECOVERING p=0.49 pin=   1.5 cpu=  7.5 api=37.71 top=None(0.00) primary 
+12:16:17 RECOVERING p=0.52 pin=   1.5 cpu= 10.0 api=39.77 top=None(0.00) primary 
+12:16:19 RECOVERING p=0.49 pin=   1.0 cpu=  9.5 api=35.14 top=None(0.00) primary 
+12:16:21 RECOVERING p=0.49 pin=   1.5 cpu=  8.0 api=36.03 top=None(0.00) primary 
+12:16:23 RECOVERING p=0.49 pin=   1.0 cpu= 10.5 api=35.1 top=None(0.00) primary 
+12:16:25 RECOVERING p=0.49 pin=   3.5 cpu=  9.5 api=35.97 top=None(0.00) primary 
+12:16:27 RECOVERING p=0.48 pin=   1.5 cpu=  7.5 api=36.17 top=None(0.00) primary 
+12:16:29 RECOVERING p=0.49 pin=   1.0 cpu=  9.5 api=34.81 top=None(0.00) primary 
+12:16:31 RECOVERING p=0.48 pin=   0.5 cpu= 11.5 api=32.91 top=None(0.00) primary 
+12:16:33 RECOVERING p=0.50 pin=   0.5 cpu=  7.0 api=37.85 top=None(0.00) primary 
+12:16:35 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 62.1}
+12:16:35 RECOVERING p=0.50 pin=   0.5 cpu=  9.0 api=37.4 top=None(0.00) primary hold rules
+12:16:37 RECOVERING p=0.49 pin=   1.5 cpu= 10.0 api=34.07 top=None(0.00) primary 
+12:16:39 RECOVERING p=0.48 pin=   1.0 cpu=  7.0 api=32.61 top=None(0.00) primary 
+12:16:41 RECOVERING p=0.48 pin=   1.5 cpu=  9.5 api=32.19 top=None(0.00) primary 
+12:16:43 RECOVERING p=0.48 pin=   0.5 cpu=  8.5 api=33.81 top=None(0.00) primary 
+12:16:45 RECOVERING p=0.47 pin=   0.5 cpu=  7.0 api=33.84 top=None(0.00) primary 
+12:16:47 RECOVERING p=0.48 pin=   1.0 cpu=  9.0 api=33.55 top=None(0.00) primary 
+12:16:49 RECOVERING p=0.48 pin=   0.5 cpu=  9.0 api=32.68 top=None(0.00) primary 
+12:16:51 RECOVERING p=0.48 pin=   1.0 cpu=  9.0 api=31.57 top=None(0.00) primary 
+12:16:53 RECOVERING p=0.46 pin=   0.5 cpu=  9.5 api=32.8 top=None(0.00) primary 
+12:16:55 RECOVERING p=0.46 pin=   0.5 cpu=  9.0 api=32.07 top=None(0.00) primary 
+12:16:57 RECOVERING p=0.45 pin=   0.5 cpu=  6.5 api=32.94 top=None(0.00) primary 
+12:16:59 RECOVERING p=0.45 pin=   0.5 cpu=  9.0 api=34.07 top=None(0.00) primary 
+12:17:01 RECOVERING p=0.45 pin=   1.0 cpu=  9.0 api=31.86 top=None(0.00) primary 
+12:17:03 RECOVERING p=0.44 pin=   3.0 cpu=  7.5 api=32.47 top=None(0.00) primary 
+12:17:05 RECOVERING p=0.44 pin=   1.0 cpu=  8.5 api=31.65 top=None(0.00) primary 
+12:17:07 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 44.3}
+12:17:07 RECOVERING p=0.47 pin=   2.0 cpu=  9.0 api=36.69 top=None(0.00) primary hold rules
+12:17:09 RECOVERING p=0.45 pin=   2.5 cpu=  8.0 api=33.4 top=None(0.00) primary 
+12:17:11 RECOVERING p=0.46 pin=   6.0 cpu= 11.5 api=35.28 top=None(0.00) primary 
+12:17:13 RECOVERING p=0.48 pin=   2.5 cpu=  9.5 api=34.87 top=None(0.00) primary 
+12:17:15 RECOVERING p=0.49 pin=   2.5 cpu=  7.0 api=37.11 top=None(0.00) primary 
+12:17:17 RECOVERING p=0.49 pin=   3.5 cpu=  9.5 api=35.76 top=None(0.00) primary 
+12:17:19 RECOVERING p=0.54 pin=   6.0 cpu=  9.0 api=99.12 top=None(0.00) primary 
+12:17:21 RECOVERING p=0.47 pin=   1.5 cpu=  7.5 api=36.42 top=None(0.00) primary 
+12:17:23 RECOVERING p=0.49 pin=   1.0 cpu= 10.0 api=36.84 top=None(0.00) primary 
+12:17:25 RECOVERING p=0.51 pin=   0.5 cpu=  7.5 api=41.38 top=None(0.00) primary 
+12:17:27 RECOVERING p=0.48 pin=   2.0 cpu=  9.0 api=34.38 top=None(0.00) primary 
+12:17:29 RECOVERING p=0.49 pin=   2.0 cpu= 11.5 api=35.47 top=None(0.00) primary 
+12:17:31 RECOVERING p=0.48 pin=   2.0 cpu=  8.0 api=33.6 top=None(0.00) primary 
+12:17:33 RECOVERING p=0.48 pin=   2.0 cpu=  9.0 api=34.94 top=None(0.00) primary 
+12:17:35 RECOVERING p=0.49 pin=   2.5 cpu=  9.5 api=33.45 top=None(0.00) primary 
+12:17:37 RECOVERING p=0.48 pin=   1.0 cpu=  7.5 api=36.0 top=None(0.00) primary 
+12:17:39 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 97.0}
+12:17:39 RECOVERING p=0.52 pin=   1.0 cpu=  8.0 api=42.47 top=None(0.00) primary hold rules
+12:17:41 RECOVERING p=0.49 pin=   2.0 cpu= 11.5 api=34.08 top=None(0.00) primary 
+12:17:43 RECOVERING p=0.48 pin=   1.5 cpu=  8.0 api=34.86 top=None(0.00) primary 
+12:17:45 RECOVERING p=0.48 pin=   2.5 cpu=  7.5 api=35.26 top=None(0.00) primary 
+12:17:47 RECOVERING p=0.53 pin=   1.5 cpu= 10.5 api=39.06 top=None(0.00) primary 
+12:17:49 RECOVERING p=0.46 pin=   1.0 cpu= 10.0 api=33.46 top=None(0.00) primary 
+12:17:51 RECOVERING p=0.45 pin=   2.5 cpu=  8.0 api=34.92 top=None(0.00) primary 
+12:17:53 RECOVERING p=0.46 pin=   1.0 cpu= 10.0 api=33.38 top=None(0.00) primary 
+12:17:55 RECOVERING p=0.46 pin=   2.0 cpu=  8.0 api=33.57 top=None(0.00) primary 
+12:17:57 RECOVERING p=0.45 pin=   0.5 cpu=  7.0 api=34.62 top=None(0.00) primary 
+12:17:59 RECOVERING p=0.45 pin=   1.0 cpu= 11.0 api=32.99 top=None(0.00) primary 
+12:18:01 RECOVERING p=0.45 pin=   1.0 cpu=  7.0 api=33.55 top=None(0.00) primary 
+12:18:03 RECOVERING p=0.44 pin=   1.5 cpu=  8.0 api=34.26 top=None(0.00) primary 
+12:18:05 RECOVERING p=0.46 pin=   1.0 cpu= 10.5 api=33.55 top=None(0.00) primary 
+12:18:07 RECOVERING p=0.51 pin=   1.0 cpu=  7.5 api=44.66 top=None(0.00) primary 
+12:18:09 RECOVERING p=0.48 pin=   1.0 cpu=  9.5 api=34.26 top=None(0.00) primary 
+12:18:11 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 49.9}
+12:18:11 RECOVERING p=0.50 pin=   1.5 cpu= 11.0 api=36.82 top=None(0.00) primary hold rules
+12:18:13 RECOVERING p=0.49 pin=   0.5 cpu=  8.5 api=32.96 top=None(0.00) primary 
+12:18:15 RECOVERING p=0.48 pin=   1.0 cpu=  7.5 api=35.32 top=None(0.00) primary 
+12:18:17 RECOVERING p=0.48 pin=   0.5 cpu= 10.5 api=33.13 top=None(0.00) primary 
+12:18:19 RECOVERING p=0.49 pin=   2.5 cpu=  8.0 api=35.1 top=None(0.00) primary 
+12:18:21 RECOVERING p=0.48 pin=   0.0 cpu=  7.5 api=33.41 top=None(0.00) primary 
+12:18:23 RECOVERING p=0.49 pin=   0.5 cpu= 10.0 api=33.39 top=None(0.00) primary 
+12:18:25 RECOVERING p=0.48 pin=   0.5 cpu=  7.5 api=36.26 top=None(0.00) primary 
+12:18:27 RECOVERING p=0.49 pin=   3.0 cpu=  9.5 api=35.1 top=None(0.00) primary 
+12:18:29 RECOVERING p=0.49 pin=   0.5 cpu= 10.5 api=32.65 top=None(0.00) primary 
+12:18:31 RECOVERING p=0.48 pin=   3.0 cpu=  7.5 api=33.23 top=None(0.00) primary 
+12:18:33 RECOVERING p=0.48 pin=   2.0 cpu=  8.0 api=35.62 top=None(0.00) primary 
+12:18:35 RECOVERING p=0.49 pin=   1.0 cpu= 10.5 api=34.87 top=None(0.00) primary 
+12:18:37 RECOVERING p=0.48 pin=   1.0 cpu=  8.0 api=33.86 top=None(0.00) primary 
+12:18:39 RECOVERING p=0.47 pin=   2.0 cpu=  7.5 api=34.26 top=None(0.00) primary 
+12:18:41 RECOVERING p=0.52 pin=   1.5 cpu= 10.5 api=38.18 top=None(0.00) primary 
+12:18:43 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 84.5}
+12:18:43 RECOVERING p=0.48 pin=   1.5 cpu=  8.0 api=35.64 top=None(0.00) primary hold rules
+12:18:45 RECOVERING p=0.43 pin=   1.5 cpu=  8.5 api=45.64 top=None(0.00) primary 
+12:18:47 RECOVERING p=0.14 pin=   4.5 cpu= 12.5 api=39.53 top=None(0.00) primary 
+12:18:49 RECOVERING p=0.00 pin=   2.5 cpu=  8.0 api=37.78 top=None(0.00) primary 
+12:18:51 RECOVERING p=0.00 pin=   2.0 cpu=  8.0 api=35.75 top=None(0.00) primary 
+12:18:53 RECOVERING p=0.00 pin=   1.5 cpu= 11.0 api=36.63 top=None(0.00) primary 
+12:18:55 RECOVERING p=0.00 pin=   2.0 cpu=  7.5 api=38.66 top=None(0.00) primary 
+12:18:57 RECOVERING p=0.01 pin=   1.5 cpu=  8.0 api=36.72 top=None(0.00) primary 
+12:18:59 RECOVERING p=0.00 pin=   2.5 cpu= 10.5 api=34.9 top=None(0.00) primary 
+12:19:01 RECOVERING p=0.00 pin=   0.5 cpu=  6.0 api=42.88 top=None(0.00) primary 
+12:19:03 RECOVERING p=0.00 pin=   2.0 cpu= 10.0 api=38.42 top=None(0.00) primary 
+12:19:05 RECOVERING p=0.00 pin=   0.0 cpu= 12.0 api=33.16 top=None(0.00) primary 
+12:19:07 RECOVERING p=0.00 pin=   1.5 cpu=  6.5 api=34.04 top=None(0.00) primary 
+12:19:09 RECOVERING p=0.00 pin=   1.5 cpu=  9.0 api=35.82 top=None(0.00) primary 
+12:19:11 RECOVERING p=0.00 pin=   2.0 cpu= 11.0 api=32.96 top=None(0.00) primary 
+12:19:13 RECOVERING p=0.00 pin=   1.5 cpu=  6.0 api=33.95 top=None(0.00) primary 
+12:19:15 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 35.3}
+12:19:15 RECOVERING p=0.00 pin=   1.0 cpu=  9.0 api=33.53 top=None(0.00) primary hold rules
+12:19:17 RECOVERING p=0.00 pin=   1.5 cpu= 11.0 api=38.03 top=None(0.00) primary 
+12:19:19 RECOVERING p=0.00 pin=   1.5 cpu=  6.5 api=33.7 top=None(0.00) primary 
+12:19:21 RECOVERING p=0.00 pin=   1.0 cpu=  9.0 api=37.38 top=None(0.00) primary 
+12:19:23 RECOVERING p=0.00 pin=   3.5 cpu= 11.0 api=46.58 top=None(0.00) primary 
+12:19:25 RECOVERING p=0.00 pin=   0.0 cpu=  8.0 api=35.28 top=None(0.00) primary 
+12:19:27 RECOVERING p=0.00 pin=   0.0 cpu=  9.0 api=35.65 top=None(0.00) primary 
+12:19:29 RECOVERING p=0.00 pin=   1.5 cpu=  9.5 api=40.25 top=None(0.00) primary 
+12:19:31 RECOVERING p=0.00 pin=   1.0 cpu=  7.5 api=36.77 top=None(0.00) primary 
+12:19:33 RECOVERING p=0.00 pin=   0.5 cpu=  8.5 api=33.88 top=None(0.00) primary 
+12:19:35 RECOVERING p=0.00 pin=   1.0 cpu=  9.5 api=37.7 top=None(0.00) primary 
+12:19:37 RECOVERING p=0.01 pin=   1.5 cpu=  7.0 api=38.61 top=None(0.00) primary 
+12:19:39 RECOVERING p=0.01 pin=   1.0 cpu= 10.0 api=33.01 top=None(0.00) primary 
+12:19:41 RECOVERING p=0.01 pin=   0.5 cpu=  9.0 api=33.32 top=None(0.00) primary 
+12:19:43 RECOVERING p=0.01 pin=   0.5 cpu=  9.0 api=35.34 top=None(0.00) primary 
+12:19:45 RECOVERING p=0.01 pin=   1.0 cpu=  9.0 api=32.17 top=None(0.00) primary 
+12:19:47 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 11.7}
+12:19:47 RECOVERING p=0.01 pin=   0.0 cpu= 10.5 api=36.09 top=None(0.00) primary hold rules
+12:19:49 RECOVERING p=0.01 pin=   1.0 cpu=  8.0 api=32.63 top=None(0.00) primary 
+12:19:51 RECOVERING p=0.01 pin=   0.5 cpu=  8.5 api=94.15 top=None(0.00) primary 
+12:19:53 RECOVERING p=0.00 pin=   0.5 cpu=  9.0 api=34.47 top=None(0.00) primary 
+12:19:55 RECOVERING p=0.00 pin=   1.0 cpu=  7.0 api=33.83 top=None(0.00) primary 
+12:19:57 RECOVERING p=0.00 pin=   1.0 cpu=  9.5 api=33.7 top=None(0.00) primary 
+12:19:59 RECOVERING p=0.00 pin=   1.0 cpu= 10.0 api=31.98 top=None(0.00) primary 
+12:20:01 RECOVERING p=0.01 pin=   0.5 cpu=  7.0 api=31.88 top=None(0.00) primary 
+12:20:03 RECOVERING p=0.01 pin=   1.0 cpu= 11.5 api=31.33 top=None(0.00) primary 
+12:20:05 RECOVERING p=0.01 pin=   1.0 cpu=  8.5 api=32.04 top=None(0.00) primary 
+12:20:07 RECOVERING p=0.01 pin=   0.5 cpu=  7.0 api=37.22 top=None(0.00) primary 
+12:20:09 RECOVERING p=0.01 pin=   0.0 cpu=  9.5 api=32.33 top=None(0.00) primary 
+12:20:11 RECOVERING p=0.00 pin=   0.0 cpu=  7.5 api=37.3 top=None(0.00) primary 
+12:20:13 RECOVERING p=0.01 pin=   0.5 cpu=  9.0 api=32.53 top=None(0.00) primary 
+12:20:15 RECOVERING p=0.01 pin=   1.0 cpu=  9.0 api=33.44 top=None(0.00) primary 
+12:20:17 RECOVERING p=0.01 pin=   0.5 cpu=  7.5 api=33.09 top=None(0.00) primary 
+12:20:19 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 24.0}
+12:20:19 RECOVERING p=0.01 pin=   1.0 cpu=  8.5 api=32.42 top=None(0.00) primary hold rules
+12:20:21 RECOVERING p=0.00 pin=   2.0 cpu= 11.0 api=32.94 top=None(0.00) primary 
+12:20:23 RECOVERING p=0.00 pin=   1.5 cpu= 10.0 api=34.45 top=None(0.00) primary 
+12:20:25 RECOVERING p=0.00 pin=   0.5 cpu=  9.0 api=36.26 top=None(0.00) primary 
+12:20:27 RECOVERING p=0.00 pin=   0.5 cpu=  9.0 api=34.01 top=None(0.00) primary 
+12:20:29 RECOVERING p=0.00 pin=   1.5 cpu=  8.0 api=32.86 top=None(0.00) primary 
+12:20:31 RECOVERING p=0.00 pin=   0.0 cpu=  9.5 api=33.51 top=None(0.00) primary 
+12:20:33 RECOVERING p=0.00 pin=   0.5 cpu=  9.5 api=34.43 top=None(0.00) primary 
+12:20:35 RECOVERING p=0.00 pin=   0.5 cpu=  8.0 api=33.61 top=None(0.00) primary 
+12:20:37 RECOVERING p=0.00 pin=   1.5 cpu=  8.5 api=33.19 top=None(0.00) primary 
+12:20:39 RECOVERING p=0.00 pin=   1.0 cpu= 10.0 api=36.74 top=None(0.00) primary 
+12:20:41 RECOVERING p=0.00 pin=   1.5 cpu=  8.0 api=33.91 top=None(0.00) primary 
+12:20:43 RECOVERING p=0.00 pin=   1.5 cpu= 10.5 api=32.97 top=None(0.00) primary 
+12:20:45 RECOVERING p=0.00 pin=   1.0 cpu=  8.5 api=33.34 top=None(0.00) primary 
+12:20:47 RECOVERING p=0.01 pin=   0.5 cpu=  8.0 api=33.97 top=None(0.00) primary 
+12:20:49 RECOVERING p=0.00 pin=   2.0 cpu=  9.0 api=34.65 top=None(0.00) primary 
+12:20:51 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 18.9}
+12:20:51 RECOVERING p=0.00 pin=   1.0 cpu=  9.5 api=34.78 top=None(0.00) primary hold rules
+12:20:53 RECOVERING p=0.00 pin=   0.5 cpu=  9.0 api=35.01 top=None(0.00) primary 
+12:20:55 RECOVERING p=0.00 pin=   0.5 cpu=  9.0 api=37.91 top=None(0.00) primary 
+12:20:57 RECOVERING p=0.00 pin=   2.5 cpu=  9.0 api=35.09 top=None(0.00) primary 
+12:20:59 RECOVERING p=0.00 pin=   1.5 cpu=  8.0 api=33.8 top=None(0.00) primary 
+12:21:01 RECOVERING p=0.00 pin=   3.0 cpu= 11.0 api=36.58 top=None(0.00) primary 
+12:21:03 RECOVERING p=0.00 pin=   2.5 cpu=  9.5 api=34.77 top=None(0.00) primary 
+12:21:05 RECOVERING p=0.00 pin=   1.0 cpu=  8.0 api=36.19 top=None(0.00) primary 
+12:21:07 RECOVERING p=0.00 pin=   1.0 cpu=  9.0 api=37.25 top=None(0.00) primary 
+12:21:09 RECOVERING p=0.00 pin=   0.5 cpu=  9.0 api=33.59 top=None(0.00) primary 
+12:21:11 RECOVERING p=0.00 pin=   1.0 cpu=  7.5 api=33.88 top=None(0.00) primary 
+12:21:13 RECOVERING p=0.00 pin=   0.0 cpu=  7.5 api=37.42 top=None(0.00) primary 
+12:21:15 RECOVERING p=0.00 pin=   1.5 cpu= 10.5 api=35.6 top=None(0.00) primary 
+12:21:17 RECOVERING p=0.00 pin=   0.0 cpu=  8.0 api=33.03 top=None(0.00) primary 
+12:21:19 RECOVERING p=0.00 pin=   1.0 cpu=  7.0 api=32.95 top=None(0.00) primary 
+12:21:21 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 59.8}
+12:21:21 RECOVERING p=0.00 pin=   1.0 cpu= 12.5 api=33.69 top=None(0.00) primary hold rules
+12:21:23 RECOVERING p=0.00 pin=   0.5 cpu=  8.5 api=33.54 top=None(0.00) primary 
+12:21:25 RECOVERING p=0.00 pin=   1.0 cpu=  7.5 api=33.32 top=None(0.00) primary 
+12:21:27 RECOVERING p=0.01 pin=   0.5 cpu= 10.0 api=36.8 top=None(0.00) primary 
+12:21:29 RECOVERING p=0.01 pin=   0.5 cpu=  8.0 api=35.72 top=None(0.00) primary 
+12:21:31 RECOVERING p=0.01 pin=   1.0 cpu=  7.5 api=35.58 top=None(0.00) primary 
+12:21:33 RECOVERING p=0.01 pin=   0.5 cpu= 10.5 api=35.11 top=None(0.00) primary 
+12:21:35 RECOVERING p=0.01 pin=   0.0 cpu=  8.0 api=32.78 top=None(0.00) primary 
+12:21:37 RECOVERING p=0.01 pin=   0.0 cpu=  7.5 api=32.34 top=None(0.00) primary 
+12:21:39 RECOVERING p=0.01 pin=   0.5 cpu= 10.5 api=46.45 top=None(0.00) primary 
+12:21:41 RECOVERING p=0.00 pin=   0.0 cpu=  9.5 api=34.95 top=None(0.00) primary 
+12:21:43 RECOVERING p=0.00 pin=   0.5 cpu=  7.5 api=33.89 top=None(0.00) primary 
+12:21:45 RECOVERING p=0.00 pin=   1.5 cpu= 10.0 api=32.87 top=None(0.00) primary 
+12:21:47 RECOVERING p=0.00 pin=   1.0 cpu=  7.5 api=32.65 top=None(0.00) primary 
+12:21:49 RECOVERING p=0.00 pin=   2.0 cpu=  7.5 api=35.9 top=None(0.00) primary 
+12:21:51 RECOVERING p=0.00 pin=   0.5 cpu= 10.5 api=34.36 top=None(0.00) primary 
+12:21:53 hold {"why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 28.0}
+12:21:53 RECOVERING p=0.00 pin=   1.0 cpu=  6.5 api=38.6 top=None(0.00) primary hold rules
+12:21:55 RECOVERING p=0.00 pin=   0.5 cpu=  9.5 api=33.69 top=None(0.00) primary 
+12:21:57 RECOVERING p=0.00 pin=   0.0 cpu=  9.5 api=33.99 top=None(0.00) primary 
+12:21:59 RECOVERING p=0.21 pin=   0.0 cpu=  6.0 api=46.29 top=None(0.00) primary 
+12:22:01 RECOVERING p=0.19 pin=   0.0 cpu= 11.5 api=34.67 top=None(0.00) primary 
+12:22:03 RECOVERING p=0.21 pin=   0.0 cpu= 10.0 api=34.06 top=None(0.00) primary 
+12:22:05 RECOVERING p=0.00 pin=   0.5 cpu=  5.5 api=33.64 top=None(0.00) primary 
+12:22:07 RECOVERING p=0.00 pin=   0.0 cpu=  8.0 api=34.62 top=None(0.00) primary 
+12:22:09 RECOVERING p=0.26 pin=   0.0 cpu=  8.5 api=95.01 top=None(0.00) primary 
+12:22:09 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-13", "http": 204, "why": "detector dừng"}
+12:22:09 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-13", "http": 204, "why": "detector dừng"}
+12:22:09 rule_remove {"node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 204, "why": "detector dừng"}
+12:22:09 stop {}

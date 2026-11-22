@@ -185,13 +185,27 @@ class Engine:
         self.alpha = getattr(args, "base_alpha", 0.05)
         self.min_evidence = getattr(args, "min_evidence", 15)
 
+    def _remove_secondary(self, why):
+        sec = [ip for ip, t in self.targets.items() if t.get("l1_only")]
+        for ip in sec:
+            tag = ip.replace(".", "-")
+            for node, fid in [r for r in self.rules if r[1].split("-", 2)[-1] == tag]:
+                st, ms = self.odl.delete_flow(node, fid)
+                self.log("rule_remove", node=node, flow_id=fid, http=st, why=why)
+                self.rules.remove((node, fid))
+            del self.targets[ip]
+
     def _rule_hit_pps(self):
         """Tốc độ gói khớp các rule (gói/s) kể từ mốc chụp trước; lần đầu chỉ chụp mốc, trả None."""
         if self.odl is None or not self.rules or not hasattr(self.odl, "flow_packets"):
             return None
         # Từng rule riêng: rule cấp 1 có thể đã bị switch xóa do idle-timeout (sau khi cấp 2 drop ở priority
         # cao hơn hứng hết gói, A04-M3) -> đọc trả None; rule đó bỏ qua chứ không làm hỏng cả phép đo.
-        counts = {fid: self.odl.flow_packets(node, fid) for node, fid in self.rules}
+        # Chỉ rule của nguồn QUY KẾT CHÍNH: nguồn nhắm bổ sung (cấp 1) có thể là người dùng hợp lệ — lưu lượng
+        # của họ khớp rule liên tục nên bộ đếm không bao giờ về 0 -> giữ mãi (A04-M4). Nguồn phụ gỡ theo mô hình.
+        prim = {ip.replace(".", "-") for ip, t in self.targets.items() if not t.get("l1_only")}
+        counts = {fid: self.odl.flow_packets(node, fid) for node, fid in self.rules
+                  if fid.split("-", 2)[-1] in prim}
         counts = {k: v for k, v in counts.items() if v is not None}
         now = self.clock()
         snap, self._hit_snap = self._hit_snap, (now, counts)
@@ -348,6 +362,7 @@ class Engine:
                     self.log("hold", why="rule vẫn bị khớp — nguồn còn gửi", hit_pps=round(pps, 1))
                     self.since = self.clock()
                     action = "hold rules"
+                    self._remove_secondary("mô hình đã bình thường — gỡ nguồn nhắm bổ sung")
                 else:
                     if self.rules:
                         self._remove_all("hết tấn công" + (f" (rule khớp {pps:.1f} gói/s)" if pps is not None else ""))
