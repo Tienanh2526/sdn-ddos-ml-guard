@@ -118,7 +118,8 @@ Log ((Remote $GenVm "tail -4 $R/generator.log") -join " | ")
 
 # --- gom về controller
 foreach ($p in @(@($GenVm, "$R/$RunId.groundtruth.json"), @("vm-leaf1", "$R/dataplane.csv"), @("vm-leaf1", "$R/dataplane.log"),
-                 @("vm-client", "$R/http.csv"), @("vm-client", "$R/background.log"), @($GenVm, "$R/generator.log"))) {
+                 @("vm-client", "$R/http.csv"), @("vm-client", "$R/http.log"), @("vm-client", "$R/background.log"),
+                 @($GenVm, "$R/generator.log"))) {
   $name = Split-Path $p[1] -Leaf
   if (Pull $p[0] $p[1] $work) { Push "vm-controller" $work $name "$R/" | Out-Null }
 }
@@ -133,7 +134,7 @@ cd $R && python3 $H/scenarios/common/finalize_run.py --run $RunId --groundtruth 
 $dest = Join-Path $repo "data\raw\vm-controller\sdn-ai\dataset\$cat\$scn\$RunId"
 New-Item -ItemType Directory -Force $dest | Out-Null
 foreach ($f in "$RunId.csv", "telemetry.csv", "telemetry.log", "finalize.log") { Pull "vm-controller" "$R/$f" $dest | Out-Null }
-foreach ($f in "$RunId.groundtruth.json", "dataplane.csv", "dataplane.log", "http.csv", "background.log", "generator.log") {
+foreach ($f in "$RunId.groundtruth.json", "dataplane.csv", "dataplane.log", "http.csv", "http.log", "background.log", "generator.log") {
   $l = Join-Path $work $f; if (Test-Path $l) { Copy-Item $l $dest -Force }
 }
 Copy-Item (Join-Path $work "orchestrate.log") $dest -Force
