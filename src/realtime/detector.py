@@ -445,6 +445,11 @@ def main():
     model, feats = bundle["model"], bundle["features"]
     # Dự phòng: mất kênh đặc trưng data-plane (leaf hỏng/nghẽn) -> mô hình chỉ dùng đặc trưng phía controller
     fb_model, fb_feats = bundle.get("fallback_model"), bundle.get("fallback_features", [])
+    # Mỗi chu kỳ chỉ suy luận 1 cửa sổ: n_jobs=-1 (lúc huấn luyện) chỉ thêm chi phí khởi tạo luồng
+    # (compare_models.py: RF ~60 ms -> vài ms với 1 luồng)
+    for m_ in (model, fb_model):
+        if m_ is not None and hasattr(m_, "n_jobs"):
+            m_.set_params(n_jobs=1)
     args.threshold = args.threshold if args.threshold is not None else bundle.get("threshold", 0.5)
     args.k = args.k or bundle.get("confirm_k", 3)
     args.n = args.n or bundle.get("confirm_n", 4)
