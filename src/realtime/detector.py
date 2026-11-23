@@ -221,6 +221,28 @@ class Engine:
             return None
         return sum(max(0, counts[k] - snap[1][k]) for k in common) / (now - snap[0])
 
+    def _step_down(self):
+        """Cấp 2 -> cấp 1 cho mọi nguồn đang bị drop. Rule cấp 1 có thể đã bị switch xóa (idle-timeout khi cấp 2
+        hứng hết gói, A04-M3) -> xóa và CÀI LẠI cấp 1 thay vì giả định nó còn trên switch."""
+        done = []
+        for ip, t in self.targets.items():
+            if t["level"] != 2:
+                continue
+            tag = ip.replace(".", "-")
+            node, in_port, uplink = HOSTS[ip]
+            for nd, fid in [r for r in self.rules if r[1] in ("aig-l2-" + tag, "aig-l1-" + tag)]:
+                st, ms = self.odl.delete_flow(nd, fid)
+                self.rules.remove((nd, fid))
+                if fid.startswith("aig-l2-"):
+                    self.log("rule_remove", node=nd, flow_id=fid, http=st, why="hạ bậc: mô hình đã bình thường")
+            self._install(bypass_flow("aig-l1-" + tag, node, in_port, ip, uplink,
+                                      idle_timeout=self.a.rule_idle, hard_timeout=self.a.rule_hard), node, 1)
+            t["level"] = 1
+            done.append(ip)
+        self._hit_snap = None
+        self.log("step_down", ips=done, why="mô hình bình thường nhưng nguồn còn gửi — bỏ drop, giữ cấp 1")
+        return "step down " + ",".join(done)
+
     @property
     def target(self):
         return next(iter(self.targets), None)
@@ -374,6 +396,12 @@ class Engine:
                     self.since = self.clock()
                     action = "hold rules"
                     self._remove_secondary("mô hình đã bình thường — gỡ nguồn nhắm bổ sung")
+                    # Hạ bậc (A04/A06-S1): "còn gửi" có thể là lưu lượng HỢP LỆ của chính máy đó (máy bị lợi dụng
+                    # vẫn có người dùng) -> không giữ DROP khi mô hình đã thấy bình thường. Về cấp 1: máy dùng
+                    # mạng lại được, controller vẫn không nhận Packet-In từ máy đó; tấn công quay lại thì đặc
+                    # trưng mặt phẳng dữ liệu vẫn thấy -> xác nhận -> nâng cấp 2 lại ngay (t1 giữ nguyên).
+                    if any(t["level"] == 2 for t in self.targets.values()):
+                        action = self._step_down()
                 else:
                     if self.rules:
                         self._remove_all("hết tấn công" + (f" (rule khớp {pps:.1f} gói/s)" if pps is not None else ""))

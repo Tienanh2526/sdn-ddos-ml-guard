@@ -1,0 +1,48 @@
+{
+  "run_id": "A06-S1",
+  "scenario": "A06",
+  "target": "192.168.200.12",
+  "source": "192.168.200.11",
+  "generator": "synflood_a06.py",
+  "default_label": 1,
+  "start_utc": "2026-11-23T02:38:15.162814+00:00",
+  "end_utc": "2026-11-23T02:51:40.794283+00:00",
+  "total_sent": 63000,
+  "phases": [
+    {
+      "name": "baseline",
+      "begin_s": 0,
+      "end_s": 120,
+      "rate": 0,
+      "label": 0
+    },
+    {
+      "name": "P1",
+      "begin_s": 120,
+      "end_s": 300,
+      "rate": 50,
+      "label": 1
+    },
+    {
+      "name": "P2",
+      "begin_s": 300,
+      "end_s": 480,
+      "rate": 100,
+      "label": 1
+    },
+    {
+      "name": "P3",
+      "begin_s": 480,
+      "end_s": 660,
+      "rate": 200,
+      "label": 1
+    },
+    {
+      "name": "recovery",
+      "begin_s": 660,
+      "end_s": 780,
+      "rate": 0,
+      "label": 0
+    }
+  ]
+}

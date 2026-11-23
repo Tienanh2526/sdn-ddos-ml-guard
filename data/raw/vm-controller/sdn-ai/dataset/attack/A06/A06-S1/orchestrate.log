@@ -1,0 +1,26 @@
+﻿09:34:54 === A06-S1  gen=vm-client  dur=780s  capture=910s samples=455
+09:35:37 T0=1795401488 (UTC 02:38:08)
+09:35:45 Module thời gian thực: mitigate --allow-drop
+09:35:53 Running as unit: aig-A06-S1-pcap.service
+09:35:53 Running as unit: aig-A06-S1-tel.service
+09:35:53 Running as unit: aig-A06-S1-det.service
+09:35:53 scheduled-controller
+09:36:00 Running as unit: aig-A06-S1-dp.service
+09:36:00 scheduled-leaf1
+09:36:07 Running as unit: aig-A06-S1-qos.service
+09:36:07 scheduled-probe-vm-attacker
+09:36:15 Running as unit: aig-A06-S1-bg.service
+09:36:15 scheduled-client
+09:36:22 Running as unit: aig-A06-S1-gen.service
+09:36:22 scheduled-generator
+09:36:29 Tất cả đã hẹn giờ. Còn 98s tới T0; kết thúc thu sau ~983s
+09:54:13 PHASE=recovery rate=0 label=0 done | A06_END= 2026-11-23T02:51:40.794283+00:00 | TOTAL_SENT= 63000 | GROUNDTRUTH= /home/anh2004zai_gmail_com/aiguard-runs/A06-S1/A06-S1.groundtruth.json
+09:55:57 === A06-S1 FINALIZE ===
+09:55:57 SOURCE_ROWS = 455
+09:55:57 SELECTED_ROWS = 384
+09:55:57 EXCLUDED = {'phase_boundary': 70}
+09:55:57 LABELS = {0: 118, 1: 266}
+09:55:57 TOTAL_PACKET_IN = 3905
+09:55:57 TOTAL_FLOW_MOD = 2
+09:55:57 OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/A06-S1/A06-S1.csv
+09:56:41 {"ts": "2026-11-23T02:40:18.885912+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.832} || {"ts": "2026-11-23T02:40:22.941376+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.976, "top_src": "192.168.200.11", "share": 1.0, "pin_from_src": 275} || {"ts": "2026-11-23T02:40:24.976868+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 201, "rest_ms": 10.2, "on_switch_s": 2.02, "total_s": 2.04, "error": null} || {"ts": "2026-11-23T02:40:46.240221+00:00", "event": "rule_install", "level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-11", "http": 201, "rest_ms": 6.6, "on_switch_s": 3.03, "total_s": 3.04, "error": null} || {"ts": "2026-11-23T02:49:56.407803+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"} || {"ts": "2026-11-23T02:50:48.423282+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.506, "reason": "tÃ¡i phÃ¡t"} || {"ts": "2026-11-23T02:51:22.428775+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"} || {"ts": "2026-11-23T02:52:02.423332+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.525, "reason": "tÃ¡i phÃ¡t"}
