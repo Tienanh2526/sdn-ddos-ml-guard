@@ -120,6 +120,22 @@ def test_wrong_primary_still_blocked_from_drop():
     assert not any(c[1] == "aig-l2-" + LEGIT.replace(".", "-") for c in odl.calls), "không được drop người dùng"
 
 
+def test_step_down_releases_drop_on_host_with_legit_traffic():
+    """A04/A06-S1: máy tấn công (.11) cũng có lưu lượng hợp lệ -> sau tấn công rule vẫn bị khớp. Không được giữ DROP
+    mãi: hạ về cấp 1 (máy dùng mạng lại được, controller vẫn được bảo vệ). Tấn công quay lại -> cấp 2 lại ngay."""
+    eng, odl, ev, clock = make()
+    run(eng, odl, clock, 120, 0.1, {LEGIT: 6})
+    run(eng, odl, clock, 40, 0.95, {LEGIT: 6, ATT: 200}, {ATT: 100})
+    l2 = "aig-l2-" + ATT.replace(".", "-")
+    assert l2 in odl.flows, "phải lên cấp 2 khi đang tấn công"
+    run(eng, odl, clock, 90, 0.1, {LEGIT: 6}, {ATT: 8})                # hết tấn công, máy vẫn gửi hợp lệ 8 gói/s
+    assert any(k == "step_down" for _, k, _ in ev), "phải hạ bậc"
+    assert l2 not in odl.flows, "không được giữ drop khi mô hình đã bình thường"
+    assert "aig-l1-" + ATT.replace(".", "-") in odl.flows, "giữ cấp 1 để controller vẫn được bảo vệ"
+    run(eng, odl, clock, 12, 0.95, {LEGIT: 6}, {ATT: 100})             # tấn công quay lại
+    assert l2 in odl.flows, "tái phát -> phải lên cấp 2 lại"
+
+
 def test_no_action_on_normal():
     eng, odl, ev, clock = make()
     run(eng, odl, clock, 600, 0.1, {LEGIT: 60})

@@ -16,11 +16,15 @@ $PLAN = @{
   "A07" = @("vm-attacker", "python3 ~/scenarios/vm-attacker/flowburst_a07.py",    780, "vm-client",   "192.168.200.11")
 }
 foreach ($run in $Runs) {
-  $scn, $rep = $run.Split("-"); $mit = $rep.StartsWith("M"); $n = [int]$rep.Substring(1)
+  # Rn = thu dữ liệu (R4–R5 tráo vai); Mn = có module, máy mặc định; Sn = có module + TRÁO VAI (đo HTTP người
+  # dùng hợp lệ từ vm-attacker .13, vì vm-client .11 đang là máy tấn công)
+  $scn, $rep = $run.Split("-"); $swap = $rep.StartsWith("S"); $mit = $rep.StartsWith("M") -or $swap
+  $n = [int]$rep.Substring(1)
   $p = $PLAN[$scn]; if (-not $p) { Write-Host "Bỏ qua $run (kịch bản lạ)"; continue }
   $vm, $cmd = $p[0], $p[1]
-  if (-not $mit -and $n -ge 4) { $vm = $p[3]; $cmd = "$($p[1]) --src $($p[4])" }
+  if ($swap -or (-not $mit -and $n -ge 4)) { $vm = $p[3]; $cmd = "$($p[1]) --src $($p[4])" }
   $extra = if ($mit) { @{ Detector = "mitigate"; AllowDrop = $true } } else { @{} }
+  if ($swap -and $scn -ne "N04") { $extra.ProbeVm = "vm-attacker" }
   Write-Host ("{0:HH:mm:ss} >>> BẮT ĐẦU {1} trên {2}{3}" -f (Get-Date), $run, $vm, $(if ($mit) { " + module giảm thiểu" } else { "" }))
   try { & (Join-Path $here "run_scenario.ps1") -RunId $run -GenVm $vm -GenCmd $cmd -GenDuration $p[2] @extra }
   catch { Write-Host "!!! $run lỗi: $_" }

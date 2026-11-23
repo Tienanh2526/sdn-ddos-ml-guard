@@ -27,7 +27,9 @@ param(
   # Chạy kèm module thời gian thực trên vm-controller (cần deploy_detector.ps1 trước):
   #   none = không ; detect = chỉ phát hiện ; mitigate = phát hiện + cấp 1 ; thêm -AllowDrop cho cấp 2
   [ValidateSet("none", "detect", "mitigate")][string]$Detector = "none",
-  [switch]$AllowDrop
+  [switch]$AllowDrop,
+  # máy đo HTTP người dùng hợp lệ (tráo vai + giảm thiểu: vm-client là máy tấn công -> đo từ vm-attacker)
+  [string]$ProbeVm = "vm-client"
 )
 $ErrorActionPreference = "Continue"   # PS 5.1: stderr của gcloud bị coi là lỗi nếu để Stop
 $gcloud = "C:\Users\NGOC TU\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"
@@ -86,7 +88,7 @@ function Push([string]$vm, [string]$localDir, [string]$name, [string]$dst) {
 Log "=== $RunId  gen=$GenVm  dur=${GenDuration}s  capture=${cap}s samples=$samples"
 # Chạy lại cùng RunId: các bộ thu (đúng) từ chối ghi đè file cũ -> lần chạy mới mất telemetry/HTTP và tải về
 # nhầm file cũ (A06-M1 lần 2). -> Cất thư mục cũ trên MỌI VM tham gia thành $R.bak-<epoch> trước khi bắt đầu.
-foreach ($vm in @("vm-controller", "vm-leaf1", "vm-client", $GenVm) | Select-Object -Unique) {
+foreach ($vm in @("vm-controller", "vm-leaf1", "vm-client", $GenVm, $ProbeVm) | Select-Object -Unique) {
   Remote $vm "if [ -d $R ]; then mv $R $R.bak-`$(date +%s) && echo MOVED_OLD; fi" | ForEach-Object { if ($_ -match 'MOVED_OLD') { Log "  $vm : cất thư mục $RunId cũ sang .bak" } }
 }
 $now = [int64]((Remote "vm-controller" "date +%s") | Select-String '^\d+$' | Select-Object -First 1).ToString()
@@ -122,10 +124,14 @@ mkdir -p $R
 sudo systemd-run --unit=aig-$RunId-dp --collect bash -c '$(& $at (-$Lead)); python3 $H/scenarios/vm-leaf/dataplane_collector.py --out $R/dataplane.csv --samples $samples $pushArg > $R/dataplane.log 2>&1'
 echo scheduled-leaf1
 "@ | ForEach-Object { Log $_ }
-# --- client: QoS + background
-Remote "vm-client" @"
+# --- QoS người dùng (mặc định vm-client) + lưu lượng nền (luôn vm-client)
+Remote $ProbeVm @"
 mkdir -p $R
 sudo systemd-run --unit=aig-$RunId-qos --collect --uid=$User bash -c '$(& $at (-$Lead)); A03_HTTP_OUTPUT=$R/http.csv A03_HTTP_SAMPLES=$samples python3 $H/aiguard-tools/http_qos_monitor_a03.py > $R/http.log 2>&1'
+echo scheduled-probe-$ProbeVm
+"@ | ForEach-Object { Log $_ }
+Remote "vm-client" @"
+mkdir -p $R
 sudo systemd-run --unit=aig-$RunId-bg --collect --uid=$User bash -c '$(& $at (-30)); python3 $H/scenarios/vm-client/background_mix.py --duration $($cap - 20) > $R/background.log 2>&1'
 echo scheduled-client
 "@ | ForEach-Object { Log $_ }
@@ -146,7 +152,7 @@ Log ((Remote $GenVm "tail -4 $R/generator.log") -join " | ")
 
 # --- gom về controller
 foreach ($p in @(@($GenVm, "$R/$RunId.groundtruth.json"), @("vm-leaf1", "$R/dataplane.csv"), @("vm-leaf1", "$R/dataplane.log"),
-                 @("vm-client", "$R/http.csv"), @("vm-client", "$R/http.log"), @("vm-client", "$R/background.log"),
+                 @($ProbeVm, "$R/http.csv"), @($ProbeVm, "$R/http.log"), @("vm-client", "$R/background.log"),
                  @($GenVm, "$R/generator.log"))) {
   $name = Split-Path $p[1] -Leaf
   if (Pull $p[0] $p[1] $work) { Push "vm-controller" $work $name "$R/" | Out-Null }

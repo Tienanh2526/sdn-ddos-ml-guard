@@ -1,0 +1,17 @@
+{"ts": "2026-11-23T02:37:30.698462+00:00", "event": "start", "mode": "mitigate", "allow_drop": true, "threshold": 0.5, "k": 3, "n": 4, "features": 30, "fallback_features": 20, "odl_pid": 875, "out": "/home/anh2004zai_gmail_com/aiguard-runs/A06-S1/detector"}
+{"ts": "2026-11-23T02:37:42.748513+00:00", "event": "dp_feed", "ok": true, "age_s": 0.6, "model": "primary"}
+{"ts": "2026-11-23T02:40:18.885912+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.832}
+{"ts": "2026-11-23T02:40:22.941376+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.976, "top_src": "192.168.200.11", "share": 1.0, "pin_from_src": 275}
+{"ts": "2026-11-23T02:40:22.941520+00:00", "event": "target", "ip": "192.168.200.11", "share": 1.0, "excess_pin": 275, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 4.93, "192.168.200.13": 0.0}}
+{"ts": "2026-11-23T02:40:24.976868+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 201, "rest_ms": 10.2, "on_switch_s": 2.02, "total_s": 2.04, "error": null}
+{"ts": "2026-11-23T02:40:46.240221+00:00", "event": "rule_install", "level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-11", "http": 201, "rest_ms": 6.6, "on_switch_s": 3.03, "total_s": 3.04, "error": null}
+{"ts": "2026-11-23T02:49:56.407803+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-23T02:50:26.416029+00:00", "event": "hold", "why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 22.4}
+{"ts": "2026-11-23T02:50:48.423282+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.506, "reason": "tái phát"}
+{"ts": "2026-11-23T02:51:22.428775+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-23T02:51:54.430533+00:00", "event": "hold", "why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 50.7}
+{"ts": "2026-11-23T02:52:02.423332+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.525, "reason": "tái phát"}
+{"ts": "2026-11-23T02:52:14.416808+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-23T02:52:42.436454+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 204, "why": "detector dừng"}
+{"ts": "2026-11-23T02:52:42.444455+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-11", "http": 204, "why": "detector dừng"}
+{"ts": "2026-11-23T02:52:42.444704+00:00", "event": "stop"}

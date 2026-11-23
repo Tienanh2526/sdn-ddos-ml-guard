@@ -1,0 +1,21 @@
+{"ts": "2026-11-23T03:11:46.364194+00:00", "event": "start", "mode": "mitigate", "allow_drop": true, "threshold": 0.5, "k": 3, "n": 4, "features": 30, "fallback_features": 20, "odl_pid": 875, "out": "/home/anh2004zai_gmail_com/aiguard-runs/A04-S2/detector"}
+{"ts": "2026-11-23T03:11:58.409244+00:00", "event": "dp_feed", "ok": true, "age_s": 0.3, "model": "primary"}
+{"ts": "2026-11-23T03:14:34.517643+00:00", "event": "state", "frm": "NORMAL", "to": "SUSPECT", "prob": 0.55}
+{"ts": "2026-11-23T03:14:38.528479+00:00", "event": "state", "frm": "SUSPECT", "to": "MITIGATING", "prob": 0.585, "top_src": "192.168.200.11", "share": 1.0, "pin_from_src": 40}
+{"ts": "2026-11-23T03:14:38.528797+00:00", "event": "target", "ip": "192.168.200.11", "share": 1.0, "excess_pin": 40, "primary": true, "base_pin_per_cycle": {"192.168.200.11": 2.83, "192.168.200.13": 0.0}}
+{"ts": "2026-11-23T03:14:40.568637+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 201, "rest_ms": 16.2, "on_switch_s": 2.02, "total_s": 2.04, "error": null}
+{"ts": "2026-11-23T03:14:58.710703+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-23T03:15:30.702559+00:00", "event": "state", "frm": "RECOVERING", "to": "MITIGATING", "prob": 0.527, "reason": "tái phát"}
+{"ts": "2026-11-23T03:15:34.738478+00:00", "event": "rule_install", "level": 2, "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-11", "http": 201, "rest_ms": 8.1, "on_switch_s": 2.03, "total_s": 2.03, "error": null}
+{"ts": "2026-11-23T03:23:44.911010+00:00", "event": "state", "frm": "MITIGATING", "to": "RECOVERING"}
+{"ts": "2026-11-23T03:24:14.922080+00:00", "event": "hold", "why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 33.1}
+{"ts": "2026-11-23T03:24:14.935489+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l2-192-168-200-11", "http": 204, "why": "hạ bậc: mô hình đã bình thường"}
+{"ts": "2026-11-23T03:24:16.963895+00:00", "event": "rule_install", "level": 1, "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 201, "rest_ms": 7.7, "on_switch_s": 2.02, "total_s": 2.03, "error": null}
+{"ts": "2026-11-23T03:24:16.964053+00:00", "event": "step_down", "ips": ["192.168.200.11"], "why": "mô hình bình thường nhưng nguồn còn gửi — bỏ drop, giữ cấp 1"}
+{"ts": "2026-11-23T03:24:45.115105+00:00", "event": "hold", "why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 13.5}
+{"ts": "2026-11-23T03:25:15.120285+00:00", "event": "hold", "why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 54.7}
+{"ts": "2026-11-23T03:25:47.112328+00:00", "event": "hold", "why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 44.0}
+{"ts": "2026-11-23T03:26:19.114570+00:00", "event": "hold", "why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 38.2}
+{"ts": "2026-11-23T03:26:49.124857+00:00", "event": "hold", "why": "rule vẫn bị khớp — nguồn còn gửi", "hit_pps": 57.2}
+{"ts": "2026-11-23T03:26:57.114978+00:00", "event": "rule_remove", "node": "openflow:86529385323087", "flow_id": "aig-l1-192-168-200-11", "http": 204, "why": "detector dừng"}
+{"ts": "2026-11-23T03:26:57.116048+00:00", "event": "stop"}

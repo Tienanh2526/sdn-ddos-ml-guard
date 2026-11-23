@@ -24,6 +24,11 @@ PAIRS = [  # (kịch bản, lần chạy không module, lần chạy có module,
     ("A07 flow burst", "A07-R1", "A07-M3", "sau sửa quy kết bổ sung (A07-M2)"),
     ("N04 flash crowd", "N04-R1", "N04-M2", "lưu lượng hợp lệ: mong đợi KHÔNG can thiệp"),
 ]
+# Tráo vai: tấn công từ .11 (vm-client, cũng chạy lưu lượng nền hợp lệ), người dùng đo HTTP = .13 (vm-attacker)
+SWAP_PAIRS = [
+    ("A04 low-rate — tráo vai", "A04-R4", "A04-S2", "nguồn tấn công .11 mô hình chưa từng thấy khi huấn luyện R1–R3"),
+    ("A06 SYN flood — tráo vai", "A06-R4", "A06-S2", ""),
+]
 METRICS = [("packet_in_rate", "Packet-In (pps)"), ("controller_cpu_pct", "CPU ODL (%)"),
            ("api_latency_ms", "RESTCONF (ms)"), ("http_latency_mean_ms", "HTTP người dùng (ms)"),
            ("http_success_rate", "HTTP thành công")]
@@ -35,7 +40,7 @@ def attack_mean(df):
     return df.loc[sel, [m for m, _ in METRICS]].mean()
 
 
-def timeline(gt, ev):
+def timeline(gt, ev, legit=frozenset({"192.168.200.11"})):
     att = [p for p in gt["phases"] if p["label"] == 1]
     t0 = min(p["begin_s"] for p in att) if att else 0.0
     first = lambda f: next((e["t"] - t0 for e in ev if f(e)), np.nan)  # noqa: E731
@@ -45,11 +50,30 @@ def timeline(gt, ev):
         cap2_s=first(lambda e: e["event"] == "rule_install" and e.get("level") == 2),
         so_lan_cai_cap1=sum(1 for e in ev if e["event"] == "rule_install" and e.get("level") == 1),
         rule_nguoi_dung=sum(1 for e in ev if e["event"] == "rule_install"
-                            and any(ip.replace(".", "-") in e.get("flow_id", "") for ip in LEGIT)),
+                            and any(ip.replace(".", "-") in e.get("flow_id", "") for ip in legit)),
         drop_nguoi_dung=sum(1 for e in ev if e["event"] == "rule_install" and e.get("level") == 2
-                            and any(ip.replace(".", "-") in e.get("flow_id", "") for ip in LEGIT)),
+                            and any(ip.replace(".", "-") in e.get("flow_id", "") for ip in legit)),
         hold=sum(1 for e in ev if e["event"] == "hold"),
+        ha_bac_s=first(lambda e: e["event"] == "step_down") - (max(p["end_s"] for p in att) - t0 if att else 0),
     )
+
+
+def bg_after(run, t_from):
+    """Lưu lượng nền hợp lệ của vm-client (.11): số request HTTP thành công / lỗi SAU mốc t_from (giây UTC)."""
+    import json as _j, re
+    from analyze_mitigation import run_dir
+    d = run_dir(run)
+    rows = []
+    for line in (d / "background.log").read_text(encoding="utf-8").splitlines():
+        m = re.match(r"(\d\S+) .*HTTP_OK=(\d+) HTTP_FAIL=(\d+)", line)
+        if m:
+            rows.append((pd.Timestamp(m.group(1)).timestamp(), int(m.group(2)), int(m.group(3))))
+    if not rows:
+        return None
+    before = [r for r in rows if r[0] <= t_from]
+    b = before[-1] if before else rows[0]
+    e = rows[-1]
+    return e[1] - b[1], e[2] - b[2]
 
 
 def main():
@@ -64,6 +88,18 @@ def main():
             r[col + "_base"], r[col + "_mit"] = mb[col], mm[col]
         rows.append(r)
     t = pd.DataFrame(rows)
+    srows = []
+    for name, base, mit, note in SWAP_PAIRS:
+        b, _, _ = load(base)
+        m, gt, ev = load(mit)
+        mb, mm = attack_mean(b), attack_mean(m)
+        r = dict(kich_ban=name, base=base, mit=mit, note=note, **timeline(gt, ev, legit={"192.168.200.13"}))
+        sd = next((pd.Timestamp(e["ts"]).timestamp() for e in ev if e["event"] == "step_down"), None)
+        r["bg_after"] = bg_after(mit, sd) if sd else None
+        for col, _ in METRICS:
+            r[col + "_base"], r[col + "_mit"] = mb[col], mm[col]
+        srows.append(r)
+    ts = pd.DataFrame(srows)
 
     # ---- hình: small multiples, mỗi chỉ số 1 khung, 2 cột (không / có module) mỗi kịch bản
     import matplotlib
@@ -129,7 +165,29 @@ def main():
           "| A04-M3 | Nhắm đúng ngay; hold hoạt động nhưng đo hỏng khi rule cấp 1 bị idle-timeout | Đo bộ đếm theo từng rule |",
           "| A04-M4 | Cấp 1 cài một lần; Packet-In −78…−95%; nguồn phụ hợp lệ bị giữ rule tới hết | Phản hồi bộ đếm chỉ cho nguồn chính; nguồn phụ gỡ theo mô hình (`test_engine.py`) |",
           "| A06/A07-M2 | Packet-In người dùng tăng nhẹ do chính tấn công → nhắm bổ sung .11 → .13 bị nghi nhắm sai, không lên cấp 2; SYN flood chỉ giảm −66% (SYN-ACK trả về vẫn sinh Packet-In ở leaf phía web) | Quy kết bổ sung sau khi cửa sổ bằng chứng nằm trọn sau rule; chỉ nghi nhắm sai khi nguồn mới vượt nền ≥ bằng chứng nguồn cũ |",
+          "| A04/A06-S1 (tráo vai) | Nhắm đúng .11; nhưng .11 còn lưu lượng HỢP LỆ → rule drop vẫn bị khớp → hold giữ DROP tới khi tắt module (máy bị lợi dụng mất mạng sau khi tấn công đã dừng) | Hạ bậc: mô hình bình thường mà rule còn bị khớp → bỏ drop, cài lại cấp 1 (controller vẫn được bảo vệ); tái phát → cấp 2 lại ngay |",
           ""]
+    R += ["## 4. Tráo vai máy — module trên nguồn tấn công chưa từng thấy (chạy thật)\n",
+          "Tấn công phát từ **.11** (vm-client — máy này đồng thời chạy lưu lượng nền hợp lệ), người dùng đo HTTP là "
+          "**.13**. Mô hình huấn luyện cả 25 lần chạy, nhưng mọi lần chạy có module trước đó đều tấn công từ .13. "
+          "So với lần chạy cùng vai không module (R4).\n",
+          "| Kịch bản | Packet-In (pps) | CPU ODL (%) | RESTCONF (ms) | HTTP người dùng .13 (ms) | HTTP .13 thành công |",
+          "|---|---|---|---|---|---|"]
+    for r in ts.itertuples():
+        cells = []
+        for col, _ in METRICS:
+            a, b = getattr(r, col + "_base"), getattr(r, col + "_mit")
+            cells.append(f"{a:.2f} → {b:.2f}" if col == "http_success_rate" else f"{a:.1f} → {b:.1f} ({pct(a, b)})")
+        R.append(f"| {r.kich_ban} | " + " | ".join(cells) + " |")
+    R += ["", "| Kịch bản | Lần chạy | Phát hiện (s) | Cấp 1 (s) | Cấp 2 (s) | Rule nhắm .13 | Drop .13 | Hạ bậc sau khi tấn công dừng (s) | Nền .11 sau hạ bậc (OK / lỗi) |",
+          "|---|---|---|---|---|---|---|---|---|"]
+    for r in ts.itertuples():
+        bg = f"{r.bg_after[0]} / {r.bg_after[1]}" if r.bg_after else "—"
+        R.append(f"| {r.kich_ban} | {r.mit} | {f1(r.phat_hien_s)} | {f1(r.cap1_s)} | {f1(r.cap2_s)} | {r.rule_nguoi_dung} | "
+                 f"{r.drop_nguoi_dung} | {f1(r.ha_bac_s)} | {bg} |")
+    R += ["", "*Giới hạn (trung thực):* giảm thiểu theo địa chỉ IP nên trong lúc drop, lưu lượng hợp lệ của chính máy "
+          "tấn công (.11) cũng bị chặn; hạ bậc rút ngắn thời gian này về ~1 phút sau khi tấn công dừng (trước khi sửa, "
+          "A04/A06-S1: bị chặn tới khi tắt module).\n"]
     out = ROOT / "reports" / "mitigation_summary.md"
     out.write_text("\n".join(R), encoding="utf-8")
     print("\n".join(R[3:12]))

@@ -1,0 +1,8 @@
+=== A04-S2 FINALIZE ===
+SOURCE_ROWS = 455
+SELECTED_ROWS = 384
+EXCLUDED = {'invalid_window': 1, 'phase_boundary': 69}
+LABELS = {0: 118, 1: 266}
+TOTAL_PACKET_IN = 1660
+TOTAL_FLOW_MOD = 5
+OUTPUT = /home/anh2004zai_gmail_com/aiguard-runs/A04-S2/A04-S2.csv

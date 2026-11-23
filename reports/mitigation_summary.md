@@ -35,3 +35,20 @@ Thời gian tính từ lúc pha tấn công đầu tiên bắt đầu. *Rule nh�
 | A04-M3 | Nhắm đúng ngay; hold hoạt động nhưng đo hỏng khi rule cấp 1 bị idle-timeout | Đo bộ đếm theo từng rule |
 | A04-M4 | Cấp 1 cài một lần; Packet-In −78…−95%; nguồn phụ hợp lệ bị giữ rule tới hết | Phản hồi bộ đếm chỉ cho nguồn chính; nguồn phụ gỡ theo mô hình (`test_engine.py`) |
 | A06/A07-M2 | Packet-In người dùng tăng nhẹ do chính tấn công → nhắm bổ sung .11 → .13 bị nghi nhắm sai, không lên cấp 2; SYN flood chỉ giảm −66% (SYN-ACK trả về vẫn sinh Packet-In ở leaf phía web) | Quy kết bổ sung sau khi cửa sổ bằng chứng nằm trọn sau rule; chỉ nghi nhắm sai khi nguồn mới vượt nền ≥ bằng chứng nguồn cũ |
+| A04/A06-S1 (tráo vai) | Nhắm đúng .11; nhưng .11 còn lưu lượng HỢP LỆ → rule drop vẫn bị khớp → hold giữ DROP tới khi tắt module (máy bị lợi dụng mất mạng sau khi tấn công đã dừng) | Hạ bậc: mô hình bình thường mà rule còn bị khớp → bỏ drop, cài lại cấp 1 (controller vẫn được bảo vệ); tái phát → cấp 2 lại ngay |
+
+## 4. Tráo vai máy — module trên nguồn tấn công chưa từng thấy (chạy thật)
+
+Tấn công phát từ **.11** (vm-client — máy này đồng thời chạy lưu lượng nền hợp lệ), người dùng đo HTTP là **.13**. Mô hình huấn luyện cả 25 lần chạy, nhưng mọi lần chạy có module trước đó đều tấn công từ .13. So với lần chạy cùng vai không module (R4).
+
+| Kịch bản | Packet-In (pps) | CPU ODL (%) | RESTCONF (ms) | HTTP người dùng .13 (ms) | HTTP .13 thành công |
+|---|---|---|---|---|---|
+| A04 low-rate — tráo vai | 24.3 → 1.4 (-94%) | 10.5 → 9.1 (-14%) | 58.6 → 38.7 (-34%) | 5.8 → 5.9 (+1%) | 1.00 → 1.00 |
+| A06 SYN flood — tráo vai | 331.8 → 4.8 (-99%) | 42.8 → 9.6 (-77%) | 290.9 → 38.2 (-87%) | 7.2 → 6.1 (-14%) | 1.00 → 1.00 |
+
+| Kịch bản | Lần chạy | Phát hiện (s) | Cấp 1 (s) | Cấp 2 (s) | Rule nhắm .13 | Drop .13 | Hạ bậc sau khi tấn công dừng (s) | Nền .11 sau hạ bậc (OK / lỗi) |
+|---|---|---|---|---|---|---|---|---|
+| A04 low-rate — tráo vai | A04-S2 | 13.8 | 15.8 | 70.0 | 0 | 0 | 52.2 | 167 / 1 |
+| A06 SYN flood — tráo vai | A06-S2 | 7.2 | 10.7 | 32.0 | 0 | 0 | 74.7 | 91 / 0 |
+
+*Giới hạn (trung thực):* giảm thiểu theo địa chỉ IP nên trong lúc drop, lưu lượng hợp lệ của chính máy tấn công (.11) cũng bị chặn; hạ bậc rút ngắn thời gian này về ~1 phút sau khi tấn công dừng (trước khi sửa, A04/A06-S1: bị chặn tới khi tắt module).

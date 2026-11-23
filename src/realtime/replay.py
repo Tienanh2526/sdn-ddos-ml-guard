@@ -36,9 +36,11 @@ class FakeODL:
     def __init__(self):
         self.calls = []
         self.pkts = 0.0
+        self.present = set()      # rule đang nằm trên switch
 
     def put_flow(self, node, flow, table=0):
         self.calls.append(("PUT", node, flow["id"], flow.get("priority")))
+        self.present.add(flow["id"])
         return 200, 12.0, {}
 
     def wait_on_switch(self, node, fid, table=0, timeout_s=15, poll_s=0.5):
@@ -47,13 +49,14 @@ class FakeODL:
     def flow_packets(self, node, fid, table=0):
         # Như switch thật (A04-M3): có rule cấp 2 (drop, priority cao hơn) thì rule cấp 1 không còn gói khớp và
         # bị idle-timeout xóa -> đọc thống kê trả None. Rule còn lại trả bộ đếm theo nhãn (nguồn còn gửi hay không).
-        if fid.startswith("aig-l1-") and any(c[0] == "PUT" and c[2] == fid.replace("aig-l1-", "aig-l2-")
-                                              for c in self.calls):
+        if fid not in self.present or (fid.startswith("aig-l1-")
+                                       and fid.replace("aig-l1-", "aig-l2-") in self.present):
             return None
         return int(self.pkts)
 
     def delete_flow(self, node, fid, table=0):
         self.calls.append(("DELETE", node, fid))
+        self.present.discard(fid)
         return 204, 8.0
 
 
