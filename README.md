@@ -32,31 +32,7 @@ Hạ tầng: OpenDaylight + Open vSwitch, kiến trúc Leaf-Spine + VXLAN + ECMP
 
 ---
 
-## 2. Viết quyển: tư liệu từng chương nằm ở đâu
-
-| Chương / mục | Đọc file này |
-|---|---|
-| Bối cảnh, mục tiêu, cách tấn công lợi dụng Packet-In | Mục 1 ở trên · `docs/huong-dan-thuc-hanh-gcp.md` (mục 0, 8) |
-| Hạ tầng lab, topo, vai trò từng máy | `docs/huong-dan-thuc-hanh-gcp.md` (mục 0) · phần hạ tầng do bạn phụ trách topo viết |
-| Đường đi gói tin của từng kịch bản (hop by hop) | `docs/traces/` (A04…A07, N04, BG) |
-| Thiết kế dữ liệu, 5 kịch bản, cách gán nhãn | `scenarios/README.md` · `scenarios/RUNBOOK.md` |
-| Danh sách đặc trưng, cột dữ liệu, quy tắc nhãn | `docs/data_dictionary.md` · `data/processed/features.json` |
-| Chất lượng dữ liệu | `reports/data_quality_report.md` |
-| **Thực nghiệm phát hiện** (AI vs ngưỡng, đặc trưng, tráo vai, độ trễ, báo động giả) | `reports/experiment_report.md` |
-| **Vì sao chọn Random Forest** (so 8 thuật toán, khoảng tin cậy) | `reports/model_comparison.md` |
-| **Thực nghiệm giảm thiểu** (bảng tổng hợp, quá trình sửa lỗi) | `reports/mitigation_summary.md` |
-| Chi tiết từng lần chạy có module | `reports/mitigation_<RUN>.md` (A04-M1…M4, A05-M2, A06-M3, A07-M3, N04-M2, A04/A06-S2…) |
-| Hình vẽ cho quyển | `reports/figures/` (`exp_*`: phát hiện · `mit_*`: giảm thiểu · `cmp_models.png`: so thuật toán) |
-| Thiết kế module thời gian thực (máy trạng thái, quy kết nguồn, 2 cấp) | Đầu file `src/realtime/detector.py` (docstring lớp `Engine`) |
-| Kiểm thử hồi quy các lỗi đã gặp | `src/realtime/test_engine.py` |
-| Phụ lục: hướng dẫn thao tác lab | `docs/huong-dan-thuc-hanh-gcp.md` |
-
-Mọi số liệu trong `reports/` đều được **sinh tự động từ dữ liệu thật** bởi các script trong `src/`, nên chạy lại là ra
-đúng số đó (xem mục 4).
-
----
-
-## 3. Cấu trúc thư mục
+## 2. Cấu trúc thư mục
 
 ```
 data/raw/vm-controller/sdn-ai/dataset/
@@ -83,7 +59,7 @@ reports/                        báo cáo + hình (sinh tự động)
 
 ---
 
-## 4. Cài môi trường và chạy lại
+## 3. Cài môi trường và chạy lại
 
 Cần Python 3.11 trở lên.
 
@@ -108,7 +84,7 @@ Sinh lại toàn bộ số liệu, báo cáo và hình từ dữ liệu thô (kh
 
 ---
 
-## 5. Thao tác trên Google Cloud
+## 4. Thao tác trên Google Cloud
 
 Đọc **`docs/huong-dan-thuc-hanh-gcp.md`**: bật lab, bật chế độ reactive, tự tấn công thử bằng `hping3`, đọc log để
 thấy AI phát hiện và chặn, rồi tắt lab. Cần được thêm vào project GCP trước.
@@ -117,14 +93,13 @@ Lưu ý: tấn công **chỉ** nhắm vm-web trong mạng lab riêng, có giới
 
 ---
 
-## 6. Quy ước làm việc với Git
+## 5. Quy ước làm việc với Git
 
 - Nhánh chung: **`dev`**. Việc mới tách nhánh riêng từ `dev` (`feat/...`, `exp/...`, `fix/...`, `docs/...`), làm xong
   merge lại vào `dev`.
 - Không sửa tay dữ liệu trong `data/raw/` (dữ liệu gốc đo từ VM).
 - Không sửa tay file trong `reports/` và `data/processed/`. Muốn đổi thì sửa script trong `src/` rồi chạy lại.
-- Viết quyển nên để ngoài repo (Word / Google Docs), chỉ lấy số liệu và hình từ đây.
 
-## 7. Đang làm tiếp
+## 6. Đang làm tiếp
 
 - Giao diện web (dashboard topo + thao tác lab), phần AI phụ trách. Khi xong sẽ merge `dev` vào `main`.
