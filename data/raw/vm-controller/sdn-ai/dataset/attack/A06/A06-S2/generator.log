@@ -1,0 +1,64 @@
+2026-11-23T03:32:45.996142+00:00 HEALTH controller=True web=True
+2026-11-23T03:32:48.007555+00:00 HEALTH controller=True web=True
+2026-11-23T03:32:50.020405+00:00 HEALTH controller=True web=True
+A06_START= 2026-11-23T03:32:52.022932+00:00
+RUN_ID= A06-S2 TARGET= 192.168.200.12 SOURCE= 192.168.200.11
+2026-11-23T03:32:57.033978+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:02.044557+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:07.058724+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:12.073314+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:17.087353+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:22.101057+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:27.112206+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:32.127141+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:37.140876+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:42.150848+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:47.165198+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:52.174454+00:00 HEALTH controller=True web=True
+2026-11-23T03:33:57.185765+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:02.200951+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:07.215336+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:12.230181+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:17.244987+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:22.258021+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:27.266789+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:32.279047+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:37.288116+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:42.297159+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:47.311033+00:00 HEALTH controller=True web=True
+2026-11-23T03:34:52.324911+00:00 HEALTH controller=True web=True
+PHASE=baseline rate=0 label=0 done
+2026-11-23T03:34:52.325027+00:00 EXEC hping3 -S -p 8080 -i u20000 -c 9000 192.168.200.12
+2026-11-23T03:37:58.355220+00:00 HEALTH controller=True web=False (web bị chặn = mong đợi khi có giảm thiểu)
+PHASE=P1 rate=50 label=1 done
+2026-11-23T03:37:58.355358+00:00 EXEC hping3 -S -p 8080 -i u10000 -c 18000 192.168.200.12
+2026-11-23T03:41:06.434313+00:00 HEALTH controller=True web=False (web bị chặn = mong đợi khi có giảm thiểu)
+PHASE=P2 rate=100 label=1 done
+2026-11-23T03:41:06.434545+00:00 EXEC hping3 -S -p 8080 -i u5000 -c 36000 192.168.200.12
+2026-11-23T03:44:17.730808+00:00 HEALTH controller=True web=False (web bị chặn = mong đợi khi có giảm thiểu)
+PHASE=P3 rate=200 label=1 done
+2026-11-23T03:44:25.738501+00:00 HEALTH controller=True web=False (web bị chặn = mong đợi khi có giảm thiểu)
+2026-11-23T03:44:33.747559+00:00 HEALTH controller=True web=False (web bị chặn = mong đợi khi có giảm thiểu)
+2026-11-23T03:44:41.761681+00:00 HEALTH controller=True web=False (web bị chặn = mong đợi khi có giảm thiểu)
+2026-11-23T03:44:49.774139+00:00 HEALTH controller=True web=False (web bị chặn = mong đợi khi có giảm thiểu)
+2026-11-23T03:44:57.785035+00:00 HEALTH controller=True web=False (web bị chặn = mong đợi khi có giảm thiểu)
+2026-11-23T03:45:04.830800+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:09.846771+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:14.856118+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:19.871712+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:24.885695+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:29.899010+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:34.909241+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:39.917898+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:44.932389+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:49.946753+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:54.961049+00:00 HEALTH controller=True web=True
+2026-11-23T03:45:59.969554+00:00 HEALTH controller=True web=True
+2026-11-23T03:46:04.978695+00:00 HEALTH controller=True web=True
+2026-11-23T03:46:09.992189+00:00 HEALTH controller=True web=True
+2026-11-23T03:46:15.002961+00:00 HEALTH controller=True web=True
+2026-11-23T03:46:20.014582+00:00 HEALTH controller=True web=True
+PHASE=recovery rate=0 label=0 done
+A06_END= 2026-11-23T03:46:20.015182+00:00
+TOTAL_SENT= 63000
+GROUNDTRUTH= /home/anh2004zai_gmail_com/aiguard-runs/A06-S2/A06-S2.groundtruth.json
