@@ -5,6 +5,8 @@ venv/
 .ipynb_checkpoints/
 *.pcap
 models/*.joblib
+# mô hình đang triển khai: đưa lên để cả nhóm chạy lại được ngay (9,8 MB)
+!models/detector_rf.joblib
 .runs-tmp/
 
 # Ghi chú cá nhân / nhật ký Claude — không đưa lên git
